@@ -1,0 +1,340 @@
+{
+  "characters": [
+    {
+      "id": "vakt",
+      "name": "Sentinel",
+      "norwegianName": "Vakt",
+      "image": "vakt.webp",
+      "position": 0
+    },
+    {
+      "id": "dobbeltgjenger",
+      "name": "Doppelgänger",
+      "norwegianName": "Dobbeltgjenger",
+      "image": "dobbeltgjenger.webp",
+      "position": 1,
+      "activatesAt": [
+        1,
+        9,
+        10,
+        11
+      ],
+      "conditionalPositions": {
+        "9": "soevnloes",
+        "10": "avsloerer",
+        "11": "kurator"
+      },
+      "audioVariants": [
+        {
+          "id": "dobbeltgjenger_undersaatt",
+          "norwegianName": "Dobbeltgjenger: Undersått-fase",
+          "name": "Doppelgänger: Minion phase",
+          "requires": "undersaatt"
+        },
+        {
+          "id": "dobbeltgjenger_soevnloes",
+          "norwegianName": "Dobbeltgjenger: etter Søvnløs",
+          "name": "Doppelgänger: after Insomniac",
+          "requires": "soevnloes"
+        },
+        {
+          "id": "dobbeltgjenger_avsloerer",
+          "norwegianName": "Dobbeltgjenger: etter Trollmann",
+          "name": "Doppelgänger: after Exposer",
+          "requires": "avsloerer"
+        },
+        {
+          "id": "dobbeltgjenger_kurator",
+          "norwegianName": "Dobbeltgjenger: etter Kurator",
+          "name": "Doppelgänger: after Curator",
+          "requires": "kurator"
+        }
+      ]
+    },
+    {
+      "id": "varulv_1",
+      "name": "Werewolf",
+      "norwegianName": "Varulv",
+      "image": "varulv_1.webp",
+      "position": 2
+    },
+    {
+      "id": "varulv_2",
+      "name": "Werewolf",
+      "norwegianName": "Varulv",
+      "image": "varulv_2.webp",
+      "position": 2
+    },
+    {
+      "id": "alfa_ulv",
+      "name": "Alpha Wolf",
+      "norwegianName": "Alfaulv",
+      "image": "alfa_ulv.webp",
+      "position": 2
+    },
+    {
+      "id": "mystisk_ulv",
+      "name": "Mystic Wolf",
+      "norwegianName": "Mystisk ulv",
+      "image": "mystisk_ulv.webp",
+      "position": 2
+    },
+    {
+      "id": "undersaatt",
+      "name": "Minion",
+      "norwegianName": "Undersått",
+      "image": "undersaatt.webp",
+      "position": 3
+    },
+    {
+      "id": "frimurer_1",
+      "name": "Mason",
+      "norwegianName": "Frimurer",
+      "image": "frimurer.webp",
+      "position": 4
+    },
+    {
+      "id": "frimurer_2",
+      "name": "Mason",
+      "norwegianName": "Frimurer",
+      "image": "frimurer.webp",
+      "position": 4
+    },
+    {
+      "id": "klarsynt",
+      "name": "Seer",
+      "norwegianName": "Klarsynt",
+      "image": "klarsynt.webp",
+      "position": 5
+    },
+    {
+      "id": "roever",
+      "name": "Robber",
+      "norwegianName": "Røver",
+      "image": "roever.webp",
+      "position": 6
+    },
+    {
+      "id": "heks",
+      "name": "Witch",
+      "norwegianName": "Heks",
+      "image": "heks.webp",
+      "position": 6
+    },
+    {
+      "id": "braakmaker",
+      "name": "Troublemaker",
+      "norwegianName": "Bråkmaker",
+      "image": "braakmaker.webp",
+      "position": 7
+    },
+    {
+      "id": "landsbyidiiot",
+      "name": "Village Idiot",
+      "norwegianName": "Landsbyidiiot",
+      "image": "landsbyidiiot.webp",
+      "position": 7
+    },
+    {
+      "id": "landsbyboer_1",
+      "name": "Villager",
+      "norwegianName": "Landsbyboer",
+      "image": "landsbyboer.webp",
+      "position": null,
+      "noNightAction": true
+    },
+    {
+      "id": "landsbyboer_2",
+      "name": "Villager",
+      "norwegianName": "Landsbyboer",
+      "image": "landsbyboer.webp",
+      "position": null,
+      "noNightAction": true
+    },
+    {
+      "id": "landsbyboer_3",
+      "name": "Villager",
+      "norwegianName": "Landsbyboer",
+      "image": "landsbyboer.webp",
+      "position": null,
+      "noNightAction": true
+    },
+    {
+      "id": "dranker",
+      "name": "Drunk",
+      "norwegianName": "Dranker",
+      "image": "dranker.webp",
+      "position": 8
+    },
+    {
+      "id": "soevnloes",
+      "name": "Insomniac",
+      "norwegianName": "Søvnløs",
+      "image": "soevnloes.webp",
+      "position": 9
+    },
+    {
+      "id": "avsloerer",
+      "name": "Revealer",
+      "norwegianName": "Trollmann",
+      "image": "avsloerer.webp",
+      "position": 10
+    },
+    {
+      "id": "kurator",
+      "name": "Curator",
+      "norwegianName": "Kurator",
+      "image": "kurator.webp",
+      "position": 11
+    },
+    {
+      "id": "livvakt",
+      "name": "Bodyguard",
+      "norwegianName": "Livvakt",
+      "image": "livvakt.webp",
+      "position": null,
+      "noNightAction": true
+    },
+    {
+      "id": "garver_1",
+      "name": "Tanner",
+      "norwegianName": "Garveren",
+      "image": "garver_1.webp",
+      "position": null,
+      "noNightAction": true
+    },
+    {
+      "id": "garver_2",
+      "name": "Tanner",
+      "norwegianName": "Garveren",
+      "image": "garver_2.webp",
+      "position": null,
+      "noNightAction": true
+    },
+    {
+      "id": "garver_laerling",
+      "name": "Apprentice Tanner",
+      "norwegianName": "Garvens Lærling",
+      "image": "garver_laerling.webp",
+      "position": null
+    },
+    {
+      "id": "jeger",
+      "name": "Hunter",
+      "norwegianName": "Jeger",
+      "image": "jeger.webp",
+      "position": null
+    },
+    {
+      "id": "klarsynt_laerling",
+      "name": "Apprentice Seer",
+      "norwegianName": "Klarsynt Lærling",
+      "image": "klarsynt_laerling.webp",
+      "position": null
+    },
+    {
+      "id": "paranormal_etterforsker",
+      "name": "Paranormal Investigator",
+      "norwegianName": "Paranormal Etterforsker",
+      "image": "paranormal_etterforsker.webp",
+      "position": null
+    },
+    {
+      "id": "prins",
+      "name": "Prince",
+      "norwegianName": "Prins",
+      "image": "prins.webp",
+      "position": null
+    },
+    {
+      "id": "forbannet",
+      "name": "Cursed",
+      "norwegianName": "Forbannet",
+      "image": "forbannet.webp",
+      "position": null
+    },
+    {
+      "id": "droemme_ulv",
+      "name": "Dream Wolf",
+      "norwegianName": "Drømmeulv",
+      "image": "droemme_ulv.webp",
+      "position": null
+    },
+    {
+      "id": "aura_klarsynt",
+      "name": "Aura Seer",
+      "norwegianName": "Aura Klarsynt",
+      "image": "aura_klarsynt.webp",
+      "position": null
+    }
+  ],
+  "playOrder": [
+    {
+      "position": 0,
+      "characterId": "vakt"
+    },
+    {
+      "position": 1,
+      "characterId": "dobbeltgjenger"
+    },
+    {
+      "position": 2,
+      "characterIds": [
+        "varulv_1",
+        "varulv_2",
+        "alfa_ulv",
+        "mystisk_ulv"
+      ]
+    },
+    {
+      "position": 3,
+      "characterId": "undersaatt"
+    },
+    {
+      "position": 4,
+      "characterIds": [
+        "frimurer_1",
+        "frimurer_2"
+      ]
+    },
+    {
+      "position": 5,
+      "characterId": "klarsynt"
+    },
+    {
+      "position": 6,
+      "characterIds": [
+        "roever",
+        "heks"
+      ]
+    },
+    {
+      "position": 7,
+      "characterIds": [
+        "braakmaker",
+        "landsbyidiiot"
+      ]
+    },
+    {
+      "position": 8,
+      "characterIds": [
+        "dranker"
+      ]
+    },
+    {
+      "position": 9,
+      "characterId": "soevnloes",
+      "conditionalNext": "dobbeltgjenger"
+    },
+    {
+      "position": 10,
+      "characterId": "avsloerer",
+      "conditionalNext": "dobbeltgjenger"
+    },
+    {
+      "position": 11,
+      "characterId": "kurator",
+      "conditionalNext": "dobbeltgjenger"
+    }
+  ]
+}

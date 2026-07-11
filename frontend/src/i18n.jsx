@@ -1,0 +1,241 @@
+import { createContext, useContext, useState } from 'react';
+
+const translations = {
+  no: {
+    // App
+    appTitle: 'One Night Ultimate Werewolf',
+    adminButton: '⚙️ Admin',
+
+    // HomeScreen
+    loadingCharacters: 'Laster karakterer...',
+    failedLoadCharacters: 'Kunne ikke laste karakterer',
+    gameSettings: 'Spillinnstillinger',
+    durationPerCharacter: 'Tid per karakter:',
+    discussionDurationLabel: 'Diskusjonstid:',
+    maxFiveMin: '(maks 5 min)',
+    startGame: 'Start spill',
+    playersCount: '{count} spillere',
+    selectMoreRoles: 'Velg minst 4 roller',
+    selectedLabel: 'Valgt:',
+    rolesSuffix: 'roller',
+    presetsTitle: 'Forhåndsvalgte sett',
+    presetsPlayerCount: '{count} spillere',
+    presetButtonLabel: 'Sett {n}',
+    presetApplied: 'Sett {n} for {count} spillere er valgt',
+    totalPlayers: 'Antall spillere:',
+    selectRoles: 'Velg roller',
+    doubleTime: '2x tid',
+
+    // GameScreen
+    initializingGame: 'Initialiserer spill...',
+    failedPlayOrder: 'Kunne ikke hente spillrekkefølgen',
+    noCharactersSelected: 'Ingen karakterer valgt',
+    gameStarting: '🎭 Spillet starter...',
+    preparingNightPhase: 'Forbereder nattfasen',
+    seconds: 'sekunder',
+    stepOf: 'Steg {current} av {total}',
+    next: 'Neste',
+    playersStat: 'Spillere',
+    durationStat: 'Tid',
+    nightPhaseEnded: '🌙 Nattfasen er over',
+    preparingDiscussion: 'Forbereder diskusjonsfasen...',
+    discussionInstructions: '💬 Diskusjonsinstruksjoner',
+    listenCarefully: 'Hør nøye etter på instruksjonene',
+    discussionPhase: '💬 Diskusjonsfase',
+    discussAndVote: 'Diskuter og stem!',
+    discussionEnded: '⏹️ Diskusjonen er over',
+    finalizingGame: 'Avslutter spillet...',
+    gameComplete: '🎉 Spillet er ferdig!',
+    tallyVotes: 'Natten er over. Tell opp stemmene!',
+    backToHome: 'Tilbake til start',
+
+    // AdminPanel
+    audioManagement: '🎙️ Lydadministrasjon',
+    recordOrUpload: 'Ta opp eller last opp lyd',
+    audioCategory: 'Lydkategori:',
+    characterAudioOption: 'Karakterlyd (aktivering/slutt)',
+    gamePhaseAudioOption: 'Spillfaselyd',
+    randomNoisesOption: 'Tilfeldige lyder',
+    backgroundMusicOption: 'Bakgrunnsmusikk',
+    selectCharacterLabel: 'Velg karakter:',
+    selectCharacterPlaceholder: '-- Velg en karakter --',
+    audioTypeLabel: 'Lydtype:',
+    activationOption: 'Aktivering (karakteren starter)',
+    endOption: 'Slutt (turen er ferdig)',
+    complexCharacterOption: 'Kompleks karakter (2x tid)',
+    gamePhaseLabel: 'Spillfase:',
+    gameStartOption: '🎬 Start av spillet',
+    nightEndOption: '🌙 Slutt på nattfasen',
+    discussionInstructionOption: '💬 Diskusjonsinstruksjoner',
+    discussionEndOption: '⏹️ Slutt på diskusjonen',
+    randomNoiseInfo: 'Last opp tilfeldige lydeffekter som spilles av i løpet av spillet.',
+    backgroundMusicInfo: 'Last opp musikkspor som spilles i løpet under hele spillet. Ved flere spor spilles de av etter hverandre i tilfeldig rekkefølge.',
+    startRecording: '🎤 Start opptak',
+    stopRecording: '⏹️ Stopp opptak',
+    previewButton: '🔊 Forhåndsvis',
+    uploadRecording: '✓ Last opp opptak',
+    uploadingButton: 'Laster opp...',
+    newRecording: '🔄 Nytt opptak',
+    chooseFile: '📁 Eller velg en fil å laste opp',
+    uploadedAudioFiles: 'Opplastede lydfiler',
+    noAudioUploaded: 'Ingen lydfiler lastet opp ennå',
+    gamePhaseAudioHeader: '🎮 Spillfaselyd',
+    characterAudioHeader: '🎭 Karakterlyd',
+    randomNoisesHeader: '🎲 Tilfeldige lyder',
+    backgroundMusicHeader: '🎵 Bakgrunnsmusikk',
+    notUploaded: 'Ikke lastet opp',
+    complexBadge: 'Kompleks (2x)',
+    previewAudioTitle: 'Forhåndsvis lyd',
+    deleteAudioTitle: 'Slett lyd',
+    recordingMessage: 'Tar opp...',
+    recordingCompleted: 'Opptak fullført. Du kan forhåndsvise eller laste opp.',
+    micError: 'Feil: Fikk ikke tilgang til mikrofonen. ',
+    selectCharacterFirst: 'Velg en karakter først',
+    uploadingMessage: 'Laster opp...',
+    noAudioToUpload: 'Ingen lyd å laste opp',
+    audioUploadedFor: '✓ Lyd ({type}) lastet opp for {name}',
+    uploadFailed: 'Opplasting feilet: ',
+    deleteConfirm: 'Slette lyd for {name}?',
+    deleteSuccess: '✓ Lyd slettet for {name}',
+    deleteFailed: 'Sletting feilet: ',
+    randomNoiseName: 'Tilfeldig lyd',
+    backgroundMusicName: 'Bakgrunnsmusikk',
+    musicPlay: 'Spill av musikk',
+    musicPause: 'Sett musikk på pause',
+    musicVolume: 'Musikkvolum',
+  },
+  en: {
+    // App
+    appTitle: 'One Night Ultimate Werewolf',
+    adminButton: '⚙️ Admin',
+
+    // HomeScreen
+    loadingCharacters: 'Loading characters...',
+    failedLoadCharacters: 'Failed to load characters',
+    gameSettings: 'Game Settings',
+    durationPerCharacter: 'Duration per character:',
+    discussionDurationLabel: 'Discussion duration:',
+    maxFiveMin: '(max 5 min)',
+    startGame: 'Start Game',
+    playersCount: '{count} Players',
+    selectMoreRoles: 'Select at least 4 roles',
+    selectedLabel: 'Selected:',
+    rolesSuffix: 'roles',
+    presetsTitle: 'Role presets',
+    presetsPlayerCount: '{count} players',
+    presetButtonLabel: 'Preset {n}',
+    presetApplied: 'Preset {n} for {count} players selected',
+    totalPlayers: 'Total Players:',
+    selectRoles: 'Select Roles',
+    doubleTime: '2x time',
+
+    // GameScreen
+    initializingGame: 'Initializing game...',
+    failedPlayOrder: 'Failed to fetch play order',
+    noCharactersSelected: 'No characters selected',
+    gameStarting: '🎭 Game Starting...',
+    preparingNightPhase: 'Preparing the night phase',
+    seconds: 'seconds',
+    stepOf: 'Step {current} of {total}',
+    next: 'Next',
+    playersStat: 'Players',
+    durationStat: 'Duration',
+    nightPhaseEnded: '🌙 Night Phase Ended',
+    preparingDiscussion: 'Preparing discussion phase...',
+    discussionInstructions: '💬 Discussion Instructions',
+    listenCarefully: 'Listen carefully to the instructions',
+    discussionPhase: '💬 Discussion Phase',
+    discussAndVote: 'Discuss and vote!',
+    discussionEnded: '⏹️ Discussion Ended',
+    finalizingGame: 'Finalizing game...',
+    gameComplete: '🎉 Game Complete!',
+    tallyVotes: 'The night phase is over. Tally the votes!',
+    backToHome: 'Back to Home',
+
+    // AdminPanel
+    audioManagement: '🎙️ Audio Management',
+    recordOrUpload: 'Record or Upload Audio',
+    audioCategory: 'Audio Category:',
+    characterAudioOption: 'Character Audio (activation/end)',
+    gamePhaseAudioOption: 'Game Phase Audio',
+    randomNoisesOption: 'Random Noises',
+    backgroundMusicOption: 'Background Music',
+    selectCharacterLabel: 'Select Character:',
+    selectCharacterPlaceholder: '-- Select a character --',
+    audioTypeLabel: 'Audio Type:',
+    activationOption: 'Activation (character starts)',
+    endOption: 'End (turn finishes)',
+    complexCharacterOption: 'Complex character (2x duration)',
+    gamePhaseLabel: 'Game Phase:',
+    gameStartOption: '🎬 Start of Game',
+    nightEndOption: '🌙 End of Night Phase',
+    discussionInstructionOption: '💬 Discussion Instructions',
+    discussionEndOption: '⏹️ End of Discussion',
+    randomNoiseInfo: 'Upload random sound effects to be played throughout the game.',
+    backgroundMusicInfo: 'Upload music tracks to play throughout the entire game. With multiple tracks, they play one after another in random order.',
+    startRecording: '🎤 Start Recording',
+    stopRecording: '⏹️ Stop Recording',
+    previewButton: '🔊 Preview',
+    uploadRecording: '✓ Upload Recording',
+    uploadingButton: 'Uploading...',
+    newRecording: '🔄 New Recording',
+    chooseFile: '📁 Or choose file to upload',
+    uploadedAudioFiles: 'Uploaded Audio Files',
+    noAudioUploaded: 'No audio files uploaded yet',
+    gamePhaseAudioHeader: '🎮 Game Phase Audio',
+    characterAudioHeader: '🎭 Character Audio',
+    randomNoisesHeader: '🎲 Random Noises',
+    backgroundMusicHeader: '🎵 Background Music',
+    notUploaded: 'Not uploaded',
+    complexBadge: 'Complex (2x)',
+    previewAudioTitle: 'Preview audio',
+    deleteAudioTitle: 'Delete audio',
+    recordingMessage: 'Recording...',
+    recordingCompleted: 'Recording completed. You can preview or upload.',
+    micError: 'Error: Unable to access microphone. ',
+    selectCharacterFirst: 'Please select a character',
+    uploadingMessage: 'Uploading...',
+    noAudioToUpload: 'No audio to upload',
+    audioUploadedFor: '✓ {type} audio uploaded for {name}',
+    uploadFailed: 'Upload failed: ',
+    deleteConfirm: 'Delete audio for {name}?',
+    deleteSuccess: '✓ Audio deleted for {name}',
+    deleteFailed: 'Delete failed: ',
+    randomNoiseName: 'Random Noise',
+    backgroundMusicName: 'Background Music',
+    musicPlay: 'Play music',
+    musicPause: 'Pause music',
+    musicVolume: 'Music volume',
+  }
+};
+
+const LanguageContext = createContext(null);
+
+export function LanguageProvider({ children }) {
+  const [language, setLanguage] = useState(() => localStorage.getItem('language') || 'no');
+
+  const changeLanguage = (lang) => {
+    setLanguage(lang);
+    localStorage.setItem('language', lang);
+  };
+
+  const t = (key, vars) => {
+    let text = translations[language]?.[key] ?? translations.no[key] ?? key;
+    if (vars) {
+      Object.entries(vars).forEach(([name, value]) => {
+        text = text.replace(`{${name}}`, value);
+      });
+    }
+    return text;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, changeLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export function useTranslation() {
+  return useContext(LanguageContext);
+}

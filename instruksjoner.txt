@@ -1,0 +1,71 @@
+Vakt, våkn opp. Du kan legge en skjoldbrikke på en annen spillers kort.
+Vakt, lukk øynene.
+
+Alfa ulv, våkne opp. Du skal bytte Varulv-kortet i midten med en annen spillers kort.
+Alfa ulv. Lukk øynene.
+
+Mystisk ulv, våkn opp. Du kan se på en annen spillers kort.
+Mystisk ulv, lukk øynene.
+
+Klarsynt, våkn opp. Du kan se på en annen spillers kort, eller to av kortene i midten.
+Klarsynt, lukk øynene.
+
+Røver, våkn opp. Du kan bytte ditt eget kort med en annen spillers kort. Hvis du gjorde det, se på ditt nye kort.
+Røver, lukk øynene.
+
+Bråkmaker, våkn opp. Du kan bytte om kortene til to andre spillere.
+Bråkmater, lukk øynene.
+
+Dranker, våkn opp og byttet kortet ditt med ett i midten, uten å se på det.
+Dranker, lukk øynene.
+
+Søvnløs, gjesp, våkn opp. Se på kortet ditt.
+Søvnløs, lukk øynene.
+
+
+Klarsynt lærling, våkn opp. Du kan se på et av kortene i midten.
+Klarsynt lærling, lukk øynene.
+
+Paranormal etterforsker, våkn opp. Du kan se på opp til to kort til andre spillere. Hvis du ser en varulv eller garver, må du stoppe, og du er nå blitt det du så, en varulv eller garver.
+Paranormal etterforsker, lukk øynene.
+
+Heks, våkn opp. Du kan se på et av kortene i midten. Hvis du gjør det, må du bytte det kortet med en annen spillers kort.
+Heks, lukk øynene.
+
+Landsbyidiot, våkn opp. Du kan flytt på alle spillers kort enn ditt eget, alle til venstre eller alle til høyre.
+Landsbyidiot, lukk øynene.
+
+Trollmann, våkn opp. Du kan flipp over en annen spillers kort. Hvis det var en Varulv eller garver, flip det tilbake igjen.
+Trollmann, lukk øynene.
+
+Kurator, våkn opp. Du kan legge en skatt-brikke skjult ned på en annen spillers kort.
+Kurator, lukk øynene.
+
+Varulver, unntatt drømmeulv, våkn opp. Se etter andre varulver. Drømmeulv, stikk ut tommelen så de andre varulvene kan se den.
+Drømmeulv, bort med tommelen. Varulver, lukke øynene.
+
+Varulver, våkn opp. Se etter andre varulver. Hvis du er alene, kikk i stedet på et av kortene i mditen.
+Varulver, lukk øynene.
+
+Undersått, våkn opp. Varulver, hold frem tommelen deres, så undersåtten kan se hvem dere er.
+Varulver, fjern tomlene. Undersått, lukk øynene.
+
+Det er natt og tid for nattens herjinger. Alle sammen. Lukk øynene deres.
+Hold øynene igjen, alle sammen. Strekk ut hånden deres og finn kortet deres, og beveg litt på det.
+Alle sammen. Det er morning. Våkn opp.
+Alle sammen: 3, 2, 1, Stem!
+
+Dobbeltgjenger, våkn opp. Se på en annen spillers kort. Du er nå også den rollen. Hvis den rollen har en handling på natten, gjør den nå.
+Dobbeltjgenger, lukk øynnee.
+
+Dobbeltgjenger, hvis du nå er en Undersått, fortsett å ha øynene åpne. Ellers, lukk dem. Varulver, stikk ut tomlene deres så Dobbeltgjenger-undersåtten kan se den.
+Varulver, bort med pelstomlene deres. Dobbeltgjenger, lukk øynene.
+
+Dobbeltgjenger, hvis du så på Søvnløs sitt kort, våkn opp nå og se på kortet ditt.
+Dobbeltgjenger, lukk øynene.
+
+Dobbeltgjenger, hvis du så på Trollmann-kortet, våkn opp, og flipp et kort. Hvis det kortet er en varulv eller garver, flipp det tilbake. Du er fortsatt Dobbeltgjenger-trollmann.
+Dobbeltgjenger, lukk øynene.
+
+Dobbeltgjenger, hvis du så på Kurator-kortet, våkn opp og legg en skatt-brikke skjult på et hvlket som helst kort.
+Dobbeltgjenger, lukk øynene.
