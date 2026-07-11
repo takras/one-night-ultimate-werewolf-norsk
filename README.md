@@ -4,13 +4,13 @@ A web-based companion app for the board game "One Night Ultimate Werewolf" that 
 
 ## Features
 
-- 🎭 **Character Selection Grid** - Select from ~30 available characters with multi-copy support
-- ⏱️ **Automatic Game Playback** - Fully automatic sequencing with configurable duration per character
-- 🎙️ **Audio Management** - Record or upload character audio via admin panel
-- 🌙 **Mystical Atmosphere** - Background music and ambient sound effects
-- 📱 **Responsive Design** - Works on desktop, tablet, and mobile
-- 🔒 **Device Wake Lock** - Prevents device from sleeping during gameplay
-- 🔌 **Web Audio API** - In-browser recording support
+- **Character Selection Grid** - Select from ~30 available characters with multi-copy support
+- **Automatic Game Playback** - Fully automatic sequencing with configurable duration per character
+- **Audio Management** - Record or upload character audio via admin panel
+- **Mystical Atmosphere** - Background music and ambient sound effects
+- **Responsive Design** - Works on desktop, tablet, and mobile
+- **Device Wake Lock** - Prevents device from sleeping during gameplay
+- **Web Audio API** - In-browser recording support
 
 ## Project Structure
 
@@ -91,7 +91,7 @@ The backend API runs on `http://localhost:5000`
 
 ### Admin Panel
 
-1. Click **⚙️ Admin** in the header
+1. Click **Admin** in the header
 2. **Record Audio:**
    - Select a character
    - Mark as complex if needed
@@ -106,8 +106,8 @@ The backend API runs on `http://localhost:5000`
 
 4. **View Uploaded Files:**
    - See all uploaded audio with metadata
-   - Preview audio with 🔊 button
-   - Delete audio with 🗑️ button
+   - Preview audio with the preview button
+   - Delete audio with the delete button
 
 ## Character Configuration
 
@@ -161,10 +161,10 @@ The play order is defined in `backend/config/characters.json`:
 
 | Browser | Support | Notes |
 |---------|---------|-------|
-| Chrome/Edge | ✅ | Full support including Wake Lock |
-| Firefox | ✅ | Full support |
-| Safari | ✅ | Limited Wake Lock (iOS 16.4+) |
-| Mobile Chrome | ✅ | Recommended for device wake lock |
+| Chrome/Edge | Yes | Full support including Wake Lock |
+| Firefox | Yes | Full support |
+| Safari | Yes | Limited Wake Lock (iOS 16.4+) |
+| Mobile Chrome | Yes | Recommended for device wake lock |
 
 ## Future Enhancements
 
