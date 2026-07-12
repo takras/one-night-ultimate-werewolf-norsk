@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import characterRoutes from "./routes/characters.js";
 import audioRoutes from "./routes/audio.js";
+import voiceRoutes from "./routes/voices.js";
 import gameRoutes from "./routes/game.js";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 // API Routes
 app.use("/api/characters", characterRoutes);
 app.use("/api/audio", audioRoutes);
+app.use("/api/voices", voiceRoutes);
 app.use("/api/game", gameRoutes);
 
 // Health check

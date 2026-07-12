@@ -44,6 +44,18 @@ const knownAudioTypes = [
   "end",
 ];
 
+// Character/game-phase narration belongs to a voice (a subfolder of
+// audioDir); random noises and background music are shared across voices
+// and live at the root of audioDir
+const VOICE_SCOPED_TYPES = [
+  "activation",
+  "end",
+  "game_start",
+  "night_end",
+  "discussion_instruction",
+  "discussion_end",
+];
+
 // Browsers can only decode PCM (1) and IEEE float (3) WAV data - reject
 // anything else (e.g. ADPCM) at upload time instead of silently storing a
 // file that will fail to play in the game
@@ -76,45 +88,70 @@ function parseAudioFilename(file) {
   return { characterId, audioType };
 }
 
+function isAudioFile(name) {
+  return name.endsWith(".mp3") || name.endsWith(".wav") || name.endsWith(".m4a") || name.endsWith(".webm");
+}
+
+// Lists one directory's audio files (non-recursive); voiceId is null for
+// the shared root (random noise / background music)
+function listDir(dir, voiceId) {
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && isAudioFile(entry.name))
+    .map((entry) => {
+      const file = entry.name;
+      const { characterId, audioType } = parseAudioFilename(file);
+
+      const metadataPath = join(dir, `${characterId}.json`);
+      let metadata = {};
+      if (fs.existsSync(metadataPath)) {
+        metadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
+      }
+
+      return {
+        characterId,
+        audioType,
+        voiceId: voiceId || null,
+        filename: file,
+        url: voiceId ? `/audio/${voiceId}/${file}` : `/audio/${file}`,
+        ...metadata,
+        // Per-type details (nested under the type key in metadata) flattened;
+        // older metadata stored uploadedAt at the top level
+        uploadedAt: metadata[audioType]?.uploadedAt || metadata.uploadedAt || null,
+        originalName: metadata[audioType]?.originalName || null,
+      };
+    });
+}
+
 function listAudioFiles() {
-  const files = fs.readdirSync(audioDir);
-  const audioFiles = files.filter(
-    (f) => f.endsWith(".mp3") || f.endsWith(".wav") || f.endsWith(".m4a") || f.endsWith(".webm"),
-  );
+  const results = listDir(audioDir, null);
 
-  return audioFiles.map((file) => {
-    const { characterId, audioType } = parseAudioFilename(file);
+  const topLevel = fs.readdirSync(audioDir, { withFileTypes: true });
+  topLevel
+    .filter((entry) => entry.isDirectory())
+    .forEach((entry) => {
+      results.push(...listDir(join(audioDir, entry.name), entry.name));
+    });
 
-    const metadataPath = join(audioDir, `${characterId}.json`);
-    let metadata = {};
-    if (fs.existsSync(metadataPath)) {
-      metadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
-    }
-
-    return {
-      characterId,
-      audioType,
-      filename: file,
-      url: `/audio/${file}`,
-      ...metadata,
-      // Per-type details (nested under the type key in metadata) flattened;
-      // older metadata stored uploadedAt at the top level
-      uploadedAt: metadata[audioType]?.uploadedAt || metadata.uploadedAt || null,
-      originalName: metadata[audioType]?.originalName || null,
-    };
-  });
+  return results;
 }
 
 // POST upload or record audio for a character
 router.post("/upload", upload.single("audio"), (req, res) => {
   try {
-    const { characterId, isComplex, audioType } = req.body;
+    const { characterId, isComplex, audioType, voiceId } = req.body;
     const type = audioType || "activation"; // Default to activation for backward compatibility
 
     if (!characterId || !req.file) {
       return res
         .status(400)
         .json({ error: "characterId and audio file required" });
+    }
+
+    if (VOICE_SCOPED_TYPES.includes(type) && !voiceId) {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: "voiceId is required for character/game-phase audio" });
     }
 
     const unsupportedFormat = findUnsupportedWavFormat(req.file.path);
@@ -125,15 +162,20 @@ router.post("/upload", upload.single("audio"), (req, res) => {
       });
     }
 
+    const targetDir = voiceId ? join(audioDir, voiceId) : audioDir;
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+
     // Rename file to characterId with type suffix
     const fileExt = path.extname(req.file.originalname) || ".mp3";
     const newFilename = `${characterId}_${type}${fileExt}`;
-    const newPath = join(audioDir, newFilename);
+    const newPath = join(targetDir, newFilename);
 
     fs.renameSync(req.file.path, newPath);
 
     // Store metadata
-    const metadataPath = join(audioDir, `${characterId}.json`);
+    const metadataPath = join(targetDir, `${characterId}.json`);
     let metadata = {};
     if (fs.existsSync(metadataPath)) {
       metadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
@@ -152,25 +194,10 @@ router.post("/upload", upload.single("audio"), (req, res) => {
       message: "Audio uploaded successfully",
       characterId,
       audioType: type,
+      voiceId: voiceId || null,
       filename: newFilename,
       metadata,
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// GET audio metadata for a character
-router.get("/:characterId/metadata", (req, res) => {
-  try {
-    const metadataPath = join(audioDir, `${req.params.characterId}.json`);
-
-    if (!fs.existsSync(metadataPath)) {
-      return res.status(404).json({ error: "Audio metadata not found" });
-    }
-
-    const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
-    res.json(metadata);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -185,21 +212,23 @@ router.get("/", (req, res) => {
   }
 });
 
-// DELETE a specific audio clip (one characterId + audioType combination)
+// DELETE a specific audio clip (characterId + audioType [+ voiceId] combination)
 router.delete("/:characterId/:audioType", (req, res) => {
   try {
     const { characterId, audioType } = req.params;
+    const voiceId = req.query.voiceId || null;
     const match = listAudioFiles().find(
-      (a) => a.characterId === characterId && a.audioType === audioType,
+      (a) => a.characterId === characterId && a.audioType === audioType && a.voiceId === voiceId,
     );
 
     if (!match) {
       return res.status(404).json({ error: "Audio file not found" });
     }
 
-    fs.unlinkSync(join(audioDir, match.filename));
+    const dir = voiceId ? join(audioDir, voiceId) : audioDir;
+    fs.unlinkSync(join(dir, match.filename));
 
-    const metadataPath = join(audioDir, `${characterId}.json`);
+    const metadataPath = join(dir, `${characterId}.json`);
     if (fs.existsSync(metadataPath)) {
       const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf-8"));
       delete metadata[audioType];
@@ -213,7 +242,7 @@ router.delete("/:characterId/:audioType", (req, res) => {
       }
     }
 
-    res.json({ success: true, characterId, audioType });
+    res.json({ success: true, characterId, audioType, voiceId });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

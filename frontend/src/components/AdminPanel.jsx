@@ -19,6 +19,14 @@ export default function AdminPanel({ onClose }) {
   const [message, setMessage] = useState('');
   const [recordingState, setRecordingState] = useState('idle'); // idle, recording, stopped
   const [recordedBlob, setRecordedBlob] = useState(null);
+  const [voices, setVoices] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState('');
+  const [newVoiceName, setNewVoiceName] = useState('');
+  const [addingVoice, setAddingVoice] = useState(false);
+
+  // Character/game-phase audio belongs to a voice; random noise and
+  // background music are shared across voices
+  const isVoiceScoped = audioTypeCategory === 'character' || audioTypeCategory === 'game';
 
   const mediaRecorderRef = useRef(null);
   const streamRef = useRef(null);
@@ -28,6 +36,7 @@ export default function AdminPanel({ onClose }) {
   useEffect(() => {
     fetchCharacters();
     fetchUploadedAudio();
+    fetchVoices();
   }, []);
 
   const fetchCharacters = async () => {
@@ -48,6 +57,35 @@ export default function AdminPanel({ onClose }) {
       setUploadedAudio(response.data);
     } catch (err) {
       console.warn('Failed to fetch uploaded audio:', err);
+    }
+  };
+
+  const fetchVoices = async () => {
+    try {
+      const response = await axios.get('/api/voices');
+      setVoices(response.data);
+      if (response.data.length > 0) {
+        setSelectedVoice(prev => prev || response.data[0].id);
+      }
+    } catch (err) {
+      console.warn('Failed to fetch voices:', err);
+    }
+  };
+
+  const addVoice = async () => {
+    if (!newVoiceName.trim()) return;
+    try {
+      setAddingVoice(true);
+      const response = await axios.post('/api/voices', { name: newVoiceName.trim() });
+      setNewVoiceName('');
+      await fetchVoices();
+      setSelectedVoice(response.data.id);
+      setMessage(t('voiceAdded', { name: response.data.name }));
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setMessage(t('voiceAddFailed') + (err.response?.data?.error || err.message));
+    } finally {
+      setAddingVoice(false);
     }
   };
 
@@ -96,6 +134,11 @@ export default function AdminPanel({ onClose }) {
       let characterId;
       let audioType;
 
+      if (isVoiceScoped && !selectedVoice) {
+        setMessage(t('selectVoiceFirst'));
+        return;
+      }
+
       if (audioTypeCategory === 'character') {
         if (!selectedCharacter) {
           setMessage(t('selectCharacterFirst'));
@@ -122,6 +165,9 @@ export default function AdminPanel({ onClose }) {
       const formData = new FormData();
       formData.append('characterId', characterId);
       formData.append('audioType', audioType);
+      if (isVoiceScoped) {
+        formData.append('voiceId', selectedVoice);
+      }
       if (audioTypeCategory === 'character') {
         formData.append('isComplex', isComplex);
       }
@@ -168,10 +214,11 @@ export default function AdminPanel({ onClose }) {
     }
   };
 
-  const deleteAudio = async (characterId, audioType) => {
+  const deleteAudio = async (characterId, audioType, voiceId = null) => {
     if (!confirm(t('deleteConfirm', { name: getCharacterName(characterId) }))) return;
     try {
-      await axios.delete(`/api/audio/${encodeURIComponent(characterId)}/${encodeURIComponent(audioType)}`);
+      const query = voiceId ? `?voiceId=${encodeURIComponent(voiceId)}` : '';
+      await axios.delete(`/api/audio/${encodeURIComponent(characterId)}/${encodeURIComponent(audioType)}${query}`);
       setMessage(t('deleteSuccess', { name: getCharacterName(characterId) }));
       fetchUploadedAudio();
       setTimeout(() => setMessage(''), 3000);
@@ -192,10 +239,10 @@ export default function AdminPanel({ onClose }) {
     return char ? displayName(char) : id;
   };
 
-  // ✅ when both activation and end audio exist, ⚠️ when at least one is missing
+  // ✅ when both activation and end audio exist for the selected voice, ⚠️ otherwise
   const characterAudioStatus = (groupId) => {
-    const hasActivation = uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'activation');
-    const hasEnd = uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'end');
+    const hasActivation = uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'activation' && a.voiceId === selectedVoice);
+    const hasEnd = uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'end' && a.voiceId === selectedVoice);
     return hasActivation && hasEnd ? '✅' : '⚠️';
   };
 
@@ -249,6 +296,39 @@ export default function AdminPanel({ onClose }) {
                 <option value="background_music">{t('backgroundMusicOption')}</option>
               </select>
             </div>
+
+            {isVoiceScoped && (
+              <div className="form-group">
+                <label>{t('selectVoiceLabel')}</label>
+                <select
+                  value={selectedVoice}
+                  onChange={(e) => setSelectedVoice(e.target.value)}
+                  disabled={recordingState === 'recording' || uploading}
+                >
+                  {voices.length === 0 && <option value="">{t('noVoicesYet')}</option>}
+                  {voices.map(voice => (
+                    <option key={voice.id} value={voice.id}>{voice.name}</option>
+                  ))}
+                </select>
+                <div className="add-voice-row">
+                  <input
+                    type="text"
+                    value={newVoiceName}
+                    onChange={(e) => setNewVoiceName(e.target.value)}
+                    placeholder={t('newVoiceNamePlaceholder')}
+                    disabled={addingVoice}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={addVoice}
+                    disabled={addingVoice || !newVoiceName.trim()}
+                  >
+                    {t('addVoiceButton')}
+                  </button>
+                </div>
+              </div>
+            )}
 
             {audioTypeCategory === 'character' && (
               <>
@@ -399,30 +479,33 @@ export default function AdminPanel({ onClose }) {
             {uploadedAudio.length > 0 ? (
               <div className="audio-list">
                 {(() => {
-                  // Separate audio by category
+                  // Separate audio by category; character/game audio is
+                  // further scoped to whichever voice is currently selected
                   const characterAudio = {};
                   const gameAudio = {};
                   const randomNoise = [];
                   const backgroundMusic = [];
 
-                  uploadedAudio.forEach(audio => {
-                    if (audio.audioType === 'random_noise') {
-                      randomNoise.push(audio);
-                    } else if (audio.audioType === 'background_music') {
-                      backgroundMusic.push(audio);
-                    } else if (['game_start', 'night_end', 'discussion_instruction', 'discussion_end'].includes(audio.audioType)) {
-                      if (!gameAudio[audio.audioType]) {
-                        gameAudio[audio.audioType] = [];
+                  uploadedAudio
+                    .filter(audio => !isVoiceScoped || audio.voiceId === selectedVoice)
+                    .forEach(audio => {
+                      if (audio.audioType === 'random_noise') {
+                        randomNoise.push(audio);
+                      } else if (audio.audioType === 'background_music') {
+                        backgroundMusic.push(audio);
+                      } else if (['game_start', 'night_end', 'discussion_instruction', 'discussion_end'].includes(audio.audioType)) {
+                        if (!gameAudio[audio.audioType]) {
+                          gameAudio[audio.audioType] = [];
+                        }
+                        gameAudio[audio.audioType].push(audio);
+                      } else {
+                        // Character audio
+                        if (!characterAudio[audio.characterId]) {
+                          characterAudio[audio.characterId] = [];
+                        }
+                        characterAudio[audio.characterId].push(audio);
                       }
-                      gameAudio[audio.audioType].push(audio);
-                    } else {
-                      // Character audio
-                      if (!characterAudio[audio.characterId]) {
-                        characterAudio[audio.characterId] = [];
-                      }
-                      characterAudio[audio.characterId].push(audio);
-                    }
-                  });
+                    });
 
                   // Only show the category selected in the form above
                   const visibleCount = audioTypeCategory === 'character'
@@ -468,7 +551,7 @@ export default function AdminPanel({ onClose }) {
                                     </button>
                                     <button
                                       className="btn-small btn-delete"
-                                      onClick={() => deleteAudio(audio.characterId, audio.audioType)}
+                                      onClick={() => deleteAudio(audio.characterId, audio.audioType, selectedVoice)}
                                       title={t('deleteAudioTitle')}
                                     >
                                       🗑️
@@ -517,7 +600,7 @@ export default function AdminPanel({ onClose }) {
                                           </button>
                                           <button
                                             className="btn-small btn-delete"
-                                            onClick={() => deleteAudio(audio.characterId, type)}
+                                            onClick={() => deleteAudio(audio.characterId, type, selectedVoice)}
                                             title={t('deleteAudioTitle')}
                                           >
                                             🗑️

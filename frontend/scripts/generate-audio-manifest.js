@@ -39,6 +39,40 @@ function parseAudioFilename(file) {
   return { characterId, audioType };
 }
 
+function isAudioFile(name) {
+  return name.endsWith('.mp3') || name.endsWith('.wav') || name.endsWith('.m4a') || name.endsWith('.webm');
+}
+
+// Lists one directory's audio files (non-recursive); voiceId is null for
+// the shared root (random noise / background music)
+function listDir(dir, voiceId) {
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && isAudioFile(entry.name))
+    .map((entry) => {
+      const file = entry.name;
+      const { characterId, audioType } = parseAudioFilename(file);
+
+      const metadataPath = join(dir, `${characterId}.json`);
+      let metadata = {};
+      if (fs.existsSync(metadataPath)) {
+        metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
+      }
+
+      return {
+        characterId,
+        audioType,
+        voiceId: voiceId || null,
+        filename: file,
+        url: voiceId ? `/audio/${voiceId}/${file}` : `/audio/${file}`,
+        ...metadata,
+        uploadedAt: metadata[audioType]?.uploadedAt || metadata.uploadedAt || null,
+        originalName: metadata[audioType]?.originalName || null,
+      };
+    });
+}
+
 function generateManifest() {
   if (!fs.existsSync(audioDir)) {
     fs.writeFileSync(outputPath, '[]\n');
@@ -46,30 +80,13 @@ function generateManifest() {
     return;
   }
 
-  const files = fs.readdirSync(audioDir);
-  const audioFiles = files.filter(
-    (f) => f.endsWith('.mp3') || f.endsWith('.wav') || f.endsWith('.m4a') || f.endsWith('.webm'),
-  );
+  const manifest = listDir(audioDir, null);
 
-  const manifest = audioFiles.map((file) => {
-    const { characterId, audioType } = parseAudioFilename(file);
-
-    const metadataPath = join(audioDir, `${characterId}.json`);
-    let metadata = {};
-    if (fs.existsSync(metadataPath)) {
-      metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
-    }
-
-    return {
-      characterId,
-      audioType,
-      filename: file,
-      url: `/audio/${file}`,
-      ...metadata,
-      uploadedAt: metadata[audioType]?.uploadedAt || metadata.uploadedAt || null,
-      originalName: metadata[audioType]?.originalName || null,
-    };
-  });
+  fs.readdirSync(audioDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .forEach((entry) => {
+      manifest.push(...listDir(join(audioDir, entry.name), entry.name));
+    });
 
   fs.writeFileSync(outputPath, JSON.stringify(manifest, null, 2) + '\n');
   console.log(`Wrote ${manifest.length} audio entries to src/data/audioManifest.json`);

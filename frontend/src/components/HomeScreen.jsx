@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './HomeScreen.css';
 import { useTranslation } from '../i18n.jsx';
 import { rolePresets } from '../data/rolePresets';
 import { getCharacters } from '../utils/playOrder';
 import { assetUrl } from '../utils/assetUrl';
+import { getVoices } from '../data/voicesCatalog';
 
 // Static bundle data - no backend needed, works on GitHub Pages
 const allCharacters = getCharacters();
@@ -25,6 +26,15 @@ export default function HomeScreen({ onStartGame }) {
   const [discussionDuration, setDiscussionDuration] = useState(120);
   const [complexCharacters, setComplexCharacters] = useState([]);
   const [presetPlayerCount, setPresetPlayerCount] = useState(presetPlayerCounts[0]);
+  const [voices, setVoices] = useState([]);
+  const [selectedVoiceId, setSelectedVoiceId] = useState('');
+
+  useEffect(() => {
+    getVoices().then(list => {
+      setVoices(list);
+      setSelectedVoiceId(prev => prev || list[0]?.id || '');
+    });
+  }, []);
 
   const toggleCharacter = (characterId) => {
     setSelectedCharacters(prev => {
@@ -57,7 +67,7 @@ export default function HomeScreen({ onStartGame }) {
 
   const handleStartGame = () => {
     if (canStart) {
-      onStartGame(selectedCharacters, duration, complexCharacters, discussionDuration);
+      onStartGame(selectedCharacters, duration, complexCharacters, discussionDuration, selectedVoiceId);
     }
   };
 
@@ -118,6 +128,21 @@ export default function HomeScreen({ onStartGame }) {
               className="slider"
             />
           </div>
+
+          {voices.length > 0 && (
+            <div className="setting-group">
+              <label>{t('chooseVoiceTitle')}</label>
+              <select
+                className="voice-select"
+                value={selectedVoiceId}
+                onChange={(e) => setSelectedVoiceId(e.target.value)}
+              >
+                {voices.map(voice => (
+                  <option key={voice.id} value={voice.id}>{voice.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="start-button-container">
             <button

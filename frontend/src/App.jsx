@@ -15,12 +15,13 @@ function App() {
   const [gameConfig, setGameConfig] = useState(null);
   const { language, changeLanguage, t } = useTranslation();
 
-  const handleStartGame = (selectedCharacters, duration, complexCharacters, discussionDuration) => {
+  const handleStartGame = (selectedCharacters, duration, complexCharacters, discussionDuration, voiceId) => {
     setGameConfig({
       selectedCharacters,
       duration,
       complexCharacters,
-      discussionDuration
+      discussionDuration,
+      voiceId
     });
     setCurrentScreen('game');
   };

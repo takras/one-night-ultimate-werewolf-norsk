@@ -22,6 +22,7 @@ export default function GameScreen({ config, onGameEnd }) {
   const [musicTracks, setMusicTracks] = useState([]);
   const [musicEnabled, setMusicEnabled] = useState(true);
   const [musicVolume, setMusicVolume] = useState(0.4);
+  const [narrationVolume, setNarrationVolume] = useState(1);
 
   // Game phases: 'start', 'night', 'night_end', 'discussion_instructions', 'discussion', 'discussion_end', 'complete'
   const [gamePhase, setGamePhase] = useState('start');
@@ -38,6 +39,8 @@ export default function GameScreen({ config, onGameEnd }) {
   const musicIndexRef = useRef(0);
   const musicEnabledRef = useRef(true);
   const musicVolumeRef = useRef(0.4);
+  const narrationVolumeRef = useRef(1);
+  const lastNoiseIdRef = useRef(null);
   const audioCatalogRef = useRef([]);
   const preloadedAudioRef = useRef([]);
 
@@ -107,20 +110,23 @@ export default function GameScreen({ config, onGameEnd }) {
 
   // Kicks off background downloads for every clip this game could need, so
   // the browser already has them cached by the time playback reaches them.
-  // Fire-and-forget: doesn't block the game from starting.
+  // Fire-and-forget: doesn't block the game from starting. Noise/music are
+  // shared across voices; narration only needs the selected voice's clips.
   const preloadGameAudio = (order, catalog) => {
     const gamePhaseTypes = ['game_start', 'night_end', 'discussion_instruction', 'discussion_end'];
     const urls = new Set();
 
     catalog.forEach(a => {
-      if (gamePhaseTypes.includes(a.audioType) || a.audioType === 'random_noise' || a.audioType === 'background_music') {
+      if (a.audioType === 'random_noise' || a.audioType === 'background_music') {
+        urls.add(a.url);
+      } else if (gamePhaseTypes.includes(a.audioType) && a.voiceId === config.voiceId) {
         urls.add(a.url);
       }
     });
 
     order.forEach(entry => {
       catalog.forEach(a => {
-        if (a.characterId === entry.characterId && (a.audioType === 'activation' || a.audioType === 'end')) {
+        if (a.characterId === entry.characterId && (a.audioType === 'activation' || a.audioType === 'end') && a.voiceId === config.voiceId) {
           urls.add(a.url);
         }
       });
@@ -144,6 +150,7 @@ export default function GameScreen({ config, onGameEnd }) {
       audio.pause();
       audio.onended = null;
       audio.onerror = null;
+      audio.volume = narrationVolumeRef.current;
       audio.src = assetUrl(url);
 
       let settled = false;
@@ -179,14 +186,14 @@ export default function GameScreen({ config, onGameEnd }) {
 
   const playCharacterAudio = async (characterId, audioType) => {
     const audioFile = getAudioUrl(
-      a => a.characterId === characterId && a.audioType === audioType
+      a => a.characterId === characterId && a.audioType === audioType && a.voiceId === config.voiceId
     );
     if (!audioFile) return;
     await playAudioToEnd(audioFile.url);
   };
 
   const playGameAudio = async (audioType) => {
-    const audioFile = getAudioUrl(a => a.audioType === audioType);
+    const audioFile = getAudioUrl(a => a.audioType === audioType && a.voiceId === config.voiceId);
     if (!audioFile) return;
     await playAudioToEnd(audioFile.url);
   };
@@ -243,11 +250,24 @@ export default function GameScreen({ config, onGameEnd }) {
     backgroundMusicRef.current.volume = vol;
   };
 
+  const handleNarrationVolumeChange = (e) => {
+    const vol = parseFloat(e.target.value);
+    setNarrationVolume(vol);
+    narrationVolumeRef.current = vol;
+    audioRef.current.volume = vol;
+  };
+
+  // Picks a noise other than whichever one just played, so the same clip
+  // never plays twice in a row (when more than one noise is available)
   const maybePlayRandomNoise = async () => {
     if (Math.random() > NOISE_CHANCE) return;
     const noises = audioCatalogRef.current.filter(a => a.audioType === 'random_noise');
     if (noises.length === 0) return;
-    const noise = noises[Math.floor(Math.random() * noises.length)];
+    const candidates = noises.length > 1
+      ? noises.filter(n => n.characterId !== lastNoiseIdRef.current)
+      : noises;
+    const noise = candidates[Math.floor(Math.random() * candidates.length)];
+    lastNoiseIdRef.current = noise.characterId;
     await playAudioToEnd(noise.url);
   };
 
@@ -272,6 +292,21 @@ export default function GameScreen({ config, onGameEnd }) {
         }
       }, 1000);
     });
+  };
+
+  // Lets the discussion timer be cut short (e.g. "Go to voting" button) by
+  // resolving whatever countdown promise is currently pending, same as if
+  // it had reached zero naturally
+  const skipCountdown = () => {
+    if (!pendingCountdownResolveRef.current) return;
+    const resolve = pendingCountdownResolveRef.current;
+    pendingCountdownResolveRef.current = null;
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+    setTimeRemaining(0);
+    resolve();
   };
 
   const runGameSequence = async () => {
@@ -353,6 +388,16 @@ export default function GameScreen({ config, onGameEnd }) {
     releaseWakeLock();
     audioRef.current.pause();
     backgroundMusicRef.current.pause();
+  };
+
+  // Unmounting (which onGameEnd triggers, by switching screens in App.jsx)
+  // runs the mount effect's cleanup automatically - that already pauses all
+  // audio, releases the wake lock, and unblocks the in-flight sequence via
+  // cancelledRef, so this just needs the confirmation gate.
+  const handleBackToHome = () => {
+    if (confirm(t('confirmEndGame'))) {
+      onGameEnd();
+    }
   };
 
   if (loading) {
@@ -465,6 +510,9 @@ export default function GameScreen({ config, onGameEnd }) {
               </div>
             </div>
             <p>{t('discussAndVote')}</p>
+            <button className="skip-to-voting-button" onClick={skipCountdown}>
+              {t('goToVoting')}
+            </button>
           </div>
         );
 
@@ -499,25 +547,53 @@ export default function GameScreen({ config, onGameEnd }) {
     <div className="game-screen">
       {renderPhaseContent()}
 
-      {musicTracks.length > 0 && (
-        <div className="music-controls">
-          <button
-            className={`music-toggle ${musicEnabled ? 'on' : 'off'}`}
-            onClick={toggleMusic}
-            title={musicEnabled ? t('musicPause') : t('musicPlay')}
-          >
-            {musicEnabled ? '🔊' : '🔇'}
-          </button>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            value={musicVolume}
-            onChange={handleMusicVolumeChange}
-            className="music-volume-slider"
-            title={t('musicVolume')}
-          />
+      {gamePhase !== 'complete' && (
+        <button
+          className="back-to-home-button"
+          onClick={handleBackToHome}
+          title={t('backToHome')}
+        >
+          {t('backToHome')}
+        </button>
+      )}
+
+      {gamePhase !== 'complete' && (
+        <div className="playback-controls">
+          <div className="volume-control">
+            <span className="volume-icon" title={t('narrationVolume')}>🗣️</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={narrationVolume}
+              onChange={handleNarrationVolumeChange}
+              className="volume-slider"
+              title={t('narrationVolume')}
+            />
+          </div>
+
+          {musicTracks.length > 0 && (
+            <div className="volume-control">
+              <button
+                className={`music-toggle ${musicEnabled ? 'on' : 'off'}`}
+                onClick={toggleMusic}
+                title={musicEnabled ? t('musicPause') : t('musicPlay')}
+              >
+                {musicEnabled ? '🔊' : '🔇'}
+              </button>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={musicVolume}
+                onChange={handleMusicVolumeChange}
+                className="volume-slider"
+                title={t('musicVolume')}
+              />
+            </div>
+          )}
         </div>
       )}
 

@@ -112,6 +112,27 @@
   align-items: center;
 }
 
+.add-voice-row {
+  display: flex;
+  gap: 8px;
+}
+
+.add-voice-row input {
+  flex: 1;
+  padding: 8px 10px;
+  background: rgba(15, 20, 32, 0.9);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.5);
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.85rem;
+}
+
+.add-voice-row .btn {
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
 .form-group.checkbox input {
   width: 18px;
   height: 18px;
