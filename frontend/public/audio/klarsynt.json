@@ -1,0 +1,14 @@
+{
+  "characterId": "klarsynt",
+  "isComplex": false,
+  "activation": {
+    "filename": "klarsynt_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:18:13.260Z"
+  },
+  "end": {
+    "filename": "klarsynt_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:18:25.537Z"
+  }
+}

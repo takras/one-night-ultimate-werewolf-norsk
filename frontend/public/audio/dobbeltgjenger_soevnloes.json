@@ -1,0 +1,14 @@
+{
+  "characterId": "dobbeltgjenger_soevnloes",
+  "isComplex": false,
+  "activation": {
+    "filename": "dobbeltgjenger_soevnloes_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:40:25.375Z"
+  },
+  "end": {
+    "filename": "dobbeltgjenger_soevnloes_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:40:34.660Z"
+  }
+}

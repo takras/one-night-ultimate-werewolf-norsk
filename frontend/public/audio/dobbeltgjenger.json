@@ -1,0 +1,14 @@
+{
+  "characterId": "dobbeltgjenger",
+  "isComplex": false,
+  "activation": {
+    "filename": "dobbeltgjenger_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:39:03.863Z"
+  },
+  "end": {
+    "filename": "dobbeltgjenger_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:39:11.036Z"
+  }
+}

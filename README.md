@@ -16,25 +16,30 @@ A web-based companion app for the board game "One Night Ultimate Werewolf" that 
 
 ```
 one-night-werewolf/
-├── frontend/              # React/Vite frontend app
+├── frontend/                    # React/Vite frontend app - fully static, deployable on its own
 │   ├── src/
-│   │   ├── components/    # React components
+│   │   ├── components/          # React components (AdminPanel is dev-only, excluded from prod builds)
+│   │   ├── data/
+│   │   │   ├── characters.json  # Single source of truth for character/play-order config
+│   │   │   └── audioManifest.json  # Generated at build time from public/audio/
+│   │   ├── utils/
+│   │   │   ├── playOrder.js     # Client-side play-order algorithm (no backend needed)
+│   │   │   └── assetUrl.js      # GitHub Pages base-path-aware asset URLs
 │   │   ├── App.jsx
 │   │   └── index.css
-│   ├── public/            # Static assets
+│   ├── public/
+│   │   ├── audio/                # Character/game/noise/music audio files (committed to git)
+│   │   └── karakterer/           # Character images
+│   ├── scripts/generate-audio-manifest.js  # Scans public/audio/, writes src/data/audioManifest.json
 │   ├── index.html
 │   ├── vite.config.js
 │   └── package.json
-├── backend/               # Express.js API server
-│   ├── routes/            # API route handlers
-│   ├── config/            # Character metadata
+├── backend/                # Express API - local dev only, powers the admin panel
+│   ├── routes/              # Character listing + audio record/upload/delete
 │   ├── server.js
 │   └── package.json
-├── public/                # Server-side audio storage
-│   ├── audio/             # Character audio files
-│   └── music/             # Background music & effects
-├── karakterer/            # Character images
-└── package.json           # Root package.json
+├── .github/workflows/deploy-pages.yml  # Builds and deploys frontend/ to GitHub Pages
+└── package.json             # Root package.json (runs both dev servers together)
 ```
 
 ## Getting Started
@@ -69,8 +74,30 @@ npm run dev:backend
 npm run dev:frontend
 ```
 
-The frontend will be available at `http://localhost:3000`
+The frontend will be available at `http://localhost:3001`
 The backend API runs on `http://localhost:5000`
+
+## Deployment (GitHub Pages)
+
+The frontend is a fully static site - it doesn't call the backend at all once
+built. Character data and the play order are bundled at build time, and the
+audio catalog is pre-generated as `src/data/audioManifest.json`. The **Admin
+button and panel only exist in dev builds** (recording/uploading needs the
+backend), so the deployed site is just the character selection and game
+screens.
+
+Pushing to `main` triggers `.github/workflows/deploy-pages.yml`, which builds
+`frontend/` and publishes it via GitHub Pages. One-time setup: in the repo's
+**Settings → Pages**, set **Source** to **GitHub Actions**.
+
+To add/change audio without deploying from an admin session elsewhere, run
+the backend + admin panel locally (`npm run dev`), record/upload as normal -
+files land directly in `frontend/public/audio/` - then commit and push. The
+build step regenerates the manifest automatically from whatever's committed.
+
+The GitHub Pages base path is set in `frontend/vite.config.js` (currently
+`/one-night-ultimate-werewolf-norsk/`, matching the repo name); update it if
+the repo is ever renamed or moved.
 
 ## Usage
 
@@ -111,35 +138,38 @@ The backend API runs on `http://localhost:5000`
 
 ## Character Configuration
 
-The play order is defined in `backend/config/characters.json`:
+The play order is defined in `frontend/src/data/characters.json` (the
+backend reads the same file for the admin panel, so there's one source of
+truth):
 
 - **Positions 0-11**: Main game sequence
 - **Multi-copy Roles**: Frimurer (2x), Landsbyboer (3x), Varulv (2x)
 - **Independent Selections**: Alfaulv, Mystisk ulv (position 2)
 - **Conditional Entries**: Dobbeltgjenger activates at positions 1, 9, 10, 11 when respective characters are selected
 
-## API Endpoints
+## API Endpoints (backend, local dev only)
+
+The play order is computed client-side in the frontend
+(`frontend/src/utils/playOrder.js`) - there's no play-order API anymore.
 
 ### Characters
 - `GET /api/characters` - Get all characters
 - `GET /api/characters/:id` - Get single character
-- `POST /api/characters/play-order` - Calculate play order from selections
 
 ### Audio
 - `GET /api/audio` - List uploaded audio files
 - `GET /api/audio/:characterId/metadata` - Get audio metadata
 - `POST /api/audio/upload` - Upload new audio (multipart form-data)
-
-### Game
-- `GET /api/game/status` - Check service status
-- `POST /api/game/initialize` - Initialize new game
+- `DELETE /api/audio/:characterId/:audioType` - Delete a specific clip
 
 ## Audio File Storage
 
-- Audio files uploaded via admin panel are stored in `public/audio/`
-- Metadata stored as `{characterId}.json` in same directory
-- Files are served at `/public/audio/{filename}`
-- Supported formats: MP3, WAV, WebM, M4A
+- Audio files uploaded via admin panel are stored directly in
+  `frontend/public/audio/` - Vite serves them at `/audio/{filename}` in dev
+  and bundles them into the static build for production
+- Metadata stored as `{characterId}.json` in the same directory
+- Supported formats: MP3, WAV, WebM, M4A (WAV must be PCM - ADPCM-encoded
+  WAV files are rejected on upload since browsers can't decode them)
 
 ## Technology Stack
 
@@ -168,13 +198,10 @@ The play order is defined in `backend/config/characters.json`:
 
 ## Future Enhancements
 
-- [ ] Background music integration
-- [ ] Random farm sound effects
 - [ ] Game history/statistics
 - [ ] Custom game rules
 - [ ] Export/import configurations
-- [ ] Docker containerization
-- [ ] Production deployment guide
+- [ ] Docker containerization for the backend
 
 ## Troubleshooting
 

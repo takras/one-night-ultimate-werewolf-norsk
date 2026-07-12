@@ -1,0 +1,14 @@
+{
+  "characterId": "roever",
+  "isComplex": false,
+  "activation": {
+    "filename": "roever_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:18:50.587Z"
+  },
+  "end": {
+    "filename": "roever_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:18:59.767Z"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "characterId": "dobbeltgjenger_undersaatt",
+  "isComplex": false,
+  "activation": {
+    "filename": "dobbeltgjenger_undersaatt_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:39:44.253Z"
+  },
+  "end": {
+    "filename": "dobbeltgjenger_undersaatt_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:40:04.008Z"
+  }
+}

@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import './HomeScreen.css';
 import { useTranslation } from '../i18n.jsx';
 import { rolePresets } from '../data/rolePresets';
+import { getCharacters } from '../utils/playOrder';
+import { assetUrl } from '../utils/assetUrl';
+
+// Static bundle data - no backend needed, works on GitHub Pages
+const allCharacters = getCharacters();
 
 // Group presets by the player count they produce (cards - 3 center cards)
 const presetsByPlayerCount = rolePresets.reduce((acc, preset) => {
@@ -16,31 +20,11 @@ export default function HomeScreen({ onStartGame }) {
 
   const displayName = (char) =>
     language === 'no' ? char.norwegianName : (char.name || char.norwegianName);
-  const [characters, setCharacters] = useState([]);
   const [selectedCharacters, setSelectedCharacters] = useState([]);
   const [duration, setDuration] = useState(5);
   const [discussionDuration, setDiscussionDuration] = useState(120);
   const [complexCharacters, setComplexCharacters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [presetPlayerCount, setPresetPlayerCount] = useState(presetPlayerCounts[0]);
-
-  useEffect(() => {
-    fetchCharacters();
-  }, []);
-
-  const fetchCharacters = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get('/api/characters');
-      setCharacters(response.data);
-    } catch (err) {
-      setError(t('failedLoadCharacters'));
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const toggleCharacter = (characterId) => {
     setSelectedCharacters(prev => {
@@ -76,14 +60,6 @@ export default function HomeScreen({ onStartGame }) {
       onStartGame(selectedCharacters, duration, complexCharacters, discussionDuration);
     }
   };
-
-  if (loading) {
-    return <div className="home-screen loading">{t('loadingCharacters')}</div>;
-  }
-
-  if (error) {
-    return <div className="home-screen error">{error}</div>;
-  }
 
   return (
     <div className="home-screen">
@@ -165,18 +141,18 @@ export default function HomeScreen({ onStartGame }) {
         <section className="character-grid">
           <h2>{t('selectRoles')} ({selectedCharacters.length})</h2>
           <div className="grid">
-            {characters.map(character => (
-              <div 
+            {allCharacters.map(character => (
+              <div
                 key={character.id}
                 className={`character-card ${selectedCharacters.includes(character.id) ? 'selected' : ''}`}
                 onClick={() => toggleCharacter(character.id)}
               >
                 <div className="character-image">
                   <img
-                    src={`/karakterer/${character.image}`}
+                    src={assetUrl(`karakterer/${character.image}`)}
                     alt={displayName(character)}
                     onError={(e) => {
-                      e.target.src = '/karakterer/livvakt.webp';
+                      e.target.src = assetUrl('karakterer/livvakt.webp');
                     }}
                   />
                 </div>

@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import './App.css';
 import HomeScreen from './components/HomeScreen';
 import GameScreen from './components/GameScreen';
-import AdminPanel from './components/AdminPanel';
 import { useTranslation } from './i18n.jsx';
+import { assetUrl } from './utils/assetUrl';
+
+// Recording/uploading needs the local backend, so the admin panel only
+// exists in dev builds - this keeps it (and its whole dependency chain)
+// out of the static production bundle entirely, not just hidden from view.
+const AdminPanel = import.meta.env.DEV ? lazy(() => import('./components/AdminPanel')) : null;
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
@@ -33,7 +38,7 @@ function App() {
     <div className="app">
       <div className="app-header">
         <div className="app-title">
-          <img src="/logo-alfa.png" alt="" className="app-logo" />
+          <img src={assetUrl('logo-alfa.png')} alt="" className="app-logo" />
           <h1>{t('appTitle')}</h1>
         </div>
         <div className="header-controls">
@@ -53,28 +58,32 @@ function App() {
               🇬🇧
             </button>
           </div>
-          <button
-            className="admin-toggle"
-            onClick={handleAdminToggle}
-            title="Admin"
-          >
-            {t('adminButton')}
-          </button>
+          {AdminPanel && (
+            <button
+              className="admin-toggle"
+              onClick={handleAdminToggle}
+              title="Admin"
+            >
+              {t('adminButton')}
+            </button>
+          )}
         </div>
       </div>
-      
+
       <div className="app-content">
         {currentScreen === 'home' && (
           <HomeScreen onStartGame={handleStartGame} />
         )}
         {currentScreen === 'game' && gameConfig && (
-          <GameScreen 
+          <GameScreen
             config={gameConfig}
             onGameEnd={handleBackToHome}
           />
         )}
-        {currentScreen === 'admin' && (
-          <AdminPanel onClose={() => setCurrentScreen('home')} />
+        {currentScreen === 'admin' && AdminPanel && (
+          <Suspense fallback={null}>
+            <AdminPanel onClose={() => setCurrentScreen('home')} />
+          </Suspense>
         )}
       </div>
     </div>

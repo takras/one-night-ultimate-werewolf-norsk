@@ -1,0 +1,12 @@
+{
+  "characterId": "alfa_ulv",
+  "isComplex": false,
+  "activation": {
+    "filename": "alfa_ulv_activation.webm",
+    "uploadedAt": "2026-07-11T18:08:57.887Z"
+  },
+  "end": {
+    "filename": "alfa_ulv_end.webm",
+    "uploadedAt": "2026-07-11T18:59:27.761Z"
+  }
+}

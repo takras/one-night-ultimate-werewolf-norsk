@@ -1,0 +1,14 @@
+{
+  "characterId": "dobbeltgjenger_kurator",
+  "isComplex": false,
+  "activation": {
+    "filename": "dobbeltgjenger_kurator_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:41:42.092Z"
+  },
+  "end": {
+    "filename": "dobbeltgjenger_kurator_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:41:53.222Z"
+  }
+}

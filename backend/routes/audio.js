@@ -9,7 +9,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const router = express.Router();
-const audioDir = join(__dirname, "../../public/audio");
+// Lives inside the frontend's public/ dir so Vite serves it directly (dev
+// and the static production build both get it for free, no proxy needed)
+const audioDir = join(__dirname, "../../frontend/public/audio");
 
 // Ensure audio directory exists
 if (!fs.existsSync(audioDir)) {
@@ -93,7 +95,7 @@ function listAudioFiles() {
       characterId,
       audioType,
       filename: file,
-      url: `/public/audio/${file}`,
+      url: `/audio/${file}`,
       ...metadata,
       // Per-type details (nested under the type key in metadata) flattened;
       // older metadata stored uploadedAt at the top level

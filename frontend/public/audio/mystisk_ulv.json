@@ -1,0 +1,12 @@
+{
+  "characterId": "mystisk_ulv",
+  "isComplex": false,
+  "activation": {
+    "filename": "mystisk_ulv_activation.webm",
+    "uploadedAt": "2026-07-11T18:19:44.782Z"
+  },
+  "end": {
+    "filename": "mystisk_ulv_end.webm",
+    "uploadedAt": "2026-07-11T18:19:55.845Z"
+  }
+}

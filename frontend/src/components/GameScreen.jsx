@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import './GameScreen.css';
 import { useTranslation } from '../i18n.jsx';
+import { buildPlayOrder } from '../utils/playOrder';
+import { getAudioCatalog } from '../data/audioCatalog';
+import { assetUrl } from '../utils/assetUrl';
 
 // Chance a random noise plays before/after any given step in the night phase
 const NOISE_CHANCE = 0.3;
@@ -82,21 +84,19 @@ export default function GameScreen({ config, onGameEnd }) {
   const fetchPlayOrder = async () => {
     try {
       setLoading(true);
-      // Fetch the play order and the full audio catalog together, so the
-      // catalog is guaranteed ready before the game sequence starts reading
-      // from it (playback below no longer hits the network per clip).
-      const [playOrderRes, audioRes] = await Promise.all([
-        axios.post('/api/characters/play-order', {
-          selectedCharacterIds: config.selectedCharacters,
-          durationSeconds: config.duration,
-          complexCharacters: config.complexCharacters
-        }),
-        axios.get('/api/audio'),
-      ]);
-      setPlayOrder(playOrderRes.data.order);
-      setTimeRemaining(playOrderRes.data.order[0]?.duration || config.duration);
-      audioCatalogRef.current = audioRes.data;
-      preloadGameAudio(playOrderRes.data.order, audioRes.data);
+      // Play order is computed locally (no backend needed); the audio
+      // catalog still needs a fetch (live in dev, static manifest on a
+      // GitHub Pages build with no backend) before the sequence can start.
+      const order = buildPlayOrder(
+        config.selectedCharacters,
+        config.duration,
+        config.complexCharacters
+      );
+      const catalog = await getAudioCatalog();
+      setPlayOrder(order);
+      setTimeRemaining(order[0]?.duration || config.duration);
+      audioCatalogRef.current = catalog;
+      preloadGameAudio(order, catalog);
     } catch (err) {
       setError(t('failedPlayOrder'));
       console.error(err);
@@ -129,7 +129,7 @@ export default function GameScreen({ config, onGameEnd }) {
     preloadedAudioRef.current = [...urls].map(url => {
       const audio = new Audio();
       audio.preload = 'auto';
-      audio.src = url;
+      audio.src = assetUrl(url);
       audio.load();
       return audio;
     });
@@ -144,7 +144,7 @@ export default function GameScreen({ config, onGameEnd }) {
       audio.pause();
       audio.onended = null;
       audio.onerror = null;
-      audio.src = url;
+      audio.src = assetUrl(url);
 
       let settled = false;
       let safetyTimeout;
@@ -199,7 +199,7 @@ export default function GameScreen({ config, onGameEnd }) {
     if (playlist.length === 0) return;
     const track = playlist[musicIndexRef.current % playlist.length];
     const audio = backgroundMusicRef.current;
-    audio.src = track.url;
+    audio.src = assetUrl(track.url);
     audio.volume = musicVolumeRef.current;
     audio.loop = playlist.length === 1;
     audio.onended = playlist.length > 1
@@ -395,10 +395,10 @@ export default function GameScreen({ config, onGameEnd }) {
                     {currentCharacter.image && (
                       <div className="active-character-image">
                         <img
-                          src={`/karakterer/${currentCharacter.image}`}
+                          src={assetUrl(`karakterer/${currentCharacter.image}`)}
                           alt={characterName(currentCharacter)}
                           onError={(e) => {
-                            e.target.src = '/karakterer/livvakt.webp';
+                            e.target.src = assetUrl('karakterer/livvakt.webp');
                           }}
                         />
                       </div>

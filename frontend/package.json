@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "generate-audio-manifest": "node scripts/generate-audio-manifest.js",
+    "dev": "npm run generate-audio-manifest && vite",
+    "build": "npm run generate-audio-manifest && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

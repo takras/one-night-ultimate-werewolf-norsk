@@ -18,14 +18,9 @@ yarn-error.log*
 .parcel-cache/
 .next/
 out/
-public/audio/*.mp3
-public/audio/*.wav
-public/audio/*.webm
-public/audio/*.m4a
-public/audio/*.json
-public/music/
-!public/audio/.gitkeep
-!public/music/.gitkeep
+# Audio now lives in frontend/public/audio (bundled into the static build)
+# and is tracked in git; this old root-level location is retired
+/public/
 
 # Unused duplicate of frontend/public/karakterer/ and raw design source files
 /karakterer/

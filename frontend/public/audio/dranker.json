@@ -1,0 +1,14 @@
+{
+  "characterId": "dranker",
+  "isComplex": false,
+  "end": {
+    "filename": "dranker_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:22:20.385Z"
+  },
+  "activation": {
+    "filename": "dranker_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:22:45.638Z"
+  }
+}

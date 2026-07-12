@@ -1,0 +1,14 @@
+{
+  "characterId": "dobbeltgjenger_avsloerer",
+  "isComplex": false,
+  "activation": {
+    "filename": "dobbeltgjenger_avsloerer_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:41:08.163Z"
+  },
+  "end": {
+    "filename": "dobbeltgjenger_avsloerer_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-11T19:41:18.655Z"
+  }
+}

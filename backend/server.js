@@ -1,13 +1,8 @@
 import express from "express";
 import cors from "cors";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
 import characterRoutes from "./routes/characters.js";
 import audioRoutes from "./routes/audio.js";
 import gameRoutes from "./routes/game.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,10 +11,6 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-
-// Serve public audio files
-app.use("/public/audio", express.static(join(__dirname, "../public/audio")));
-app.use("/public/music", express.static(join(__dirname, "../public/music")));
 
 // API Routes
 app.use("/api/characters", characterRoutes);
@@ -41,6 +32,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(
-    `🎭 One Night Werewolf backend running on http://localhost:${PORT}`,
+    `One Night Werewolf backend running on http://localhost:${PORT}`,
   );
 });
