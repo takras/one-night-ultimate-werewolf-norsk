@@ -5,7 +5,8 @@
       "name": "Sentinel",
       "norwegianName": "Vakt",
       "image": "vakt.webp",
-      "position": 0
+      "position": 0,
+      "games": ["daybreak"]
     },
     {
       "id": "dobbeltgjenger",
@@ -13,6 +14,7 @@
       "norwegianName": "Dobbeltgjenger",
       "image": "dobbeltgjenger.webp",
       "position": 1,
+      "games": ["werewolf"],
       "activatesAt": [
         1,
         9,
@@ -40,7 +42,7 @@
         {
           "id": "dobbeltgjenger_avsloerer",
           "norwegianName": "Dobbeltgjenger: etter Trollmann",
-          "name": "Doppelgänger: after Exposer",
+          "name": "Doppelgänger: after Revealer",
           "requires": "avsloerer"
         },
         {
@@ -56,84 +58,96 @@
       "name": "Werewolf",
       "norwegianName": "Varulv",
       "image": "varulv_1.webp",
-      "position": 2
+      "position": 2,
+      "games": ["werewolf", "daybreak"]
     },
     {
       "id": "varulv_2",
       "name": "Werewolf",
       "norwegianName": "Varulv",
       "image": "varulv_2.webp",
-      "position": 2
+      "position": 2,
+      "games": ["werewolf", "daybreak"]
     },
     {
       "id": "alfa_ulv",
       "name": "Alpha Wolf",
       "norwegianName": "Alfaulv",
       "image": "alfa_ulv.webp",
-      "position": 2
+      "position": 2,
+      "games": ["daybreak"]
     },
     {
       "id": "mystisk_ulv",
       "name": "Mystic Wolf",
       "norwegianName": "Mystisk ulv",
       "image": "mystisk_ulv.webp",
-      "position": 2
+      "position": 2,
+      "games": ["daybreak"]
     },
     {
       "id": "undersaatt",
       "name": "Minion",
       "norwegianName": "Undersått",
       "image": "undersaatt.webp",
-      "position": 3
+      "position": 3,
+      "games": ["werewolf"]
     },
     {
       "id": "frimurer_1",
       "name": "Mason",
       "norwegianName": "Frimurer",
       "image": "frimurer.webp",
-      "position": 4
+      "position": 4,
+      "games": ["werewolf"]
     },
     {
       "id": "frimurer_2",
       "name": "Mason",
       "norwegianName": "Frimurer",
       "image": "frimurer.webp",
-      "position": 4
+      "position": 4,
+      "games": ["werewolf"]
     },
     {
       "id": "klarsynt",
       "name": "Seer",
       "norwegianName": "Klarsynt",
       "image": "klarsynt.webp",
-      "position": 5
+      "position": 5,
+      "games": ["werewolf"]
     },
     {
       "id": "roever",
       "name": "Robber",
       "norwegianName": "Røver",
       "image": "roever.webp",
-      "position": 6
+      "position": 6,
+      "games": ["werewolf"]
     },
     {
       "id": "heks",
       "name": "Witch",
       "norwegianName": "Heks",
       "image": "heks.webp",
-      "position": 6
+      "position": 6,
+      "games": ["daybreak"]
     },
     {
       "id": "braakmaker",
       "name": "Troublemaker",
       "norwegianName": "Bråkmaker",
       "image": "braakmaker.webp",
-      "position": 7
+      "position": 7,
+      "games": ["werewolf"]
     },
     {
       "id": "landsbyidiiot",
       "name": "Village Idiot",
       "norwegianName": "Landsbyidiiot",
       "image": "landsbyidiiot.webp",
-      "position": 7
+      "position": 7,
+      "games": ["daybreak"]
     },
     {
       "id": "landsbyboer_1",
@@ -141,7 +155,8 @@
       "norwegianName": "Landsbyboer",
       "image": "landsbyboer.webp",
       "position": null,
-      "noNightAction": true
+      "noNightAction": true,
+      "games": ["werewolf", "daybreak"]
     },
     {
       "id": "landsbyboer_2",
@@ -149,7 +164,8 @@
       "norwegianName": "Landsbyboer",
       "image": "landsbyboer.webp",
       "position": null,
-      "noNightAction": true
+      "noNightAction": true,
+      "games": ["werewolf", "daybreak"]
     },
     {
       "id": "landsbyboer_3",
@@ -157,35 +173,40 @@
       "norwegianName": "Landsbyboer",
       "image": "landsbyboer.webp",
       "position": null,
-      "noNightAction": true
+      "noNightAction": true,
+      "games": ["werewolf", "daybreak"]
     },
     {
       "id": "dranker",
       "name": "Drunk",
       "norwegianName": "Dranker",
       "image": "dranker.webp",
-      "position": 8
+      "position": 8,
+      "games": ["werewolf"]
     },
     {
       "id": "soevnloes",
       "name": "Insomniac",
       "norwegianName": "Søvnløs",
       "image": "soevnloes.webp",
-      "position": 9
+      "position": 9,
+      "games": ["werewolf"]
     },
     {
       "id": "avsloerer",
       "name": "Revealer",
       "norwegianName": "Trollmann",
       "image": "avsloerer.webp",
-      "position": 10
+      "position": 10,
+      "games": ["daybreak"]
     },
     {
       "id": "kurator",
       "name": "Curator",
       "norwegianName": "Kurator",
       "image": "kurator.webp",
-      "position": 11
+      "position": 11,
+      "games": ["daybreak"]
     },
     {
       "id": "livvakt",
@@ -193,7 +214,8 @@
       "norwegianName": "Livvakt",
       "image": "livvakt.webp",
       "position": null,
-      "noNightAction": true
+      "noNightAction": true,
+      "games": ["daybreak"]
     },
     {
       "id": "garver_1",
@@ -201,7 +223,8 @@
       "norwegianName": "Garveren",
       "image": "garver_1.webp",
       "position": null,
-      "noNightAction": true
+      "noNightAction": true,
+      "games": ["werewolf"]
     },
     {
       "id": "garver_2",
@@ -209,132 +232,250 @@
       "norwegianName": "Garveren",
       "image": "garver_2.webp",
       "position": null,
-      "noNightAction": true
+      "noNightAction": true,
+      "games": ["werewolf"]
     },
     {
       "id": "garver_laerling",
       "name": "Apprentice Tanner",
       "norwegianName": "Garvens Lærling",
       "image": "garver_laerling.webp",
-      "position": null
+      "position": null,
+      "games": ["daybreak"]
     },
     {
       "id": "jeger",
       "name": "Hunter",
       "norwegianName": "Jeger",
       "image": "jeger.webp",
-      "position": null
+      "position": null,
+      "noNightAction": true,
+      "games": ["werewolf"]
     },
     {
       "id": "klarsynt_laerling",
       "name": "Apprentice Seer",
       "norwegianName": "Klarsynt Lærling",
       "image": "klarsynt_laerling.webp",
-      "position": null
+      "position": null,
+      "games": ["daybreak"]
     },
     {
       "id": "paranormal_etterforsker",
       "name": "Paranormal Investigator",
       "norwegianName": "Paranormal Etterforsker",
       "image": "paranormal_etterforsker.webp",
-      "position": null
+      "position": null,
+      "games": ["daybreak"]
     },
     {
       "id": "prins",
       "name": "Prince",
       "norwegianName": "Prins",
       "image": "prins.webp",
-      "position": null
+      "position": null,
+      "noNightAction": true,
+      "games": ["werewolf"]
     },
     {
       "id": "forbannet",
       "name": "Cursed",
       "norwegianName": "Forbannet",
       "image": "forbannet.webp",
-      "position": null
+      "position": null,
+      "noNightAction": true,
+      "games": ["werewolf"]
     },
     {
       "id": "droemme_ulv",
       "name": "Dream Wolf",
       "norwegianName": "Drømmeulv",
       "image": "droemme_ulv.webp",
-      "position": null
+      "position": null,
+      "games": ["daybreak"]
     },
     {
       "id": "aura_klarsynt",
       "name": "Aura Seer",
       "norwegianName": "Aura Klarsynt",
       "image": "aura_klarsynt.webp",
-      "position": null
+      "position": null,
+      "games": ["daybreak"]
+    },
+    {
+      "id": "alien_1",
+      "name": "Alien",
+      "norwegianName": "Romvesen",
+      "image": "alien.webp",
+      "position": null,
+      "games": ["alien"],
+      "narrationVariants": [
+        { "id": "alien_view_secretly", "norwegianName": "Romvesner (én ser hemmelig)", "name": "Alien (one views secretly)", "weight": 30 },
+        { "id": "alien_all_view", "norwegianName": "Romvesner (alle ser hemmelig)", "name": "Alien (all view secretly)", "weight": 30 },
+        { "id": "alien_stare", "norwegianName": "Romvesner (bare stirr)", "name": "Alien (just stare)", "weight": 15 },
+        { "id": "alien_show_cards", "norwegianName": "Romvesner (vis kort)", "name": "Alien (show cards)", "weight": 10 },
+        { "id": "alien_look_left", "norwegianName": "Romvesner (se til venstre)", "name": "Alien (look left)", "weight": 5, "targetType": "left" },
+        { "id": "alien_look_right", "norwegianName": "Romvesner (se til høyre)", "name": "Alien (look right)", "weight": 5, "targetType": "right" }
+      ]
+    },
+    {
+      "id": "alien_2",
+      "name": "Alien",
+      "norwegianName": "Romvesen",
+      "image": "alien.webp",
+      "position": null,
+      "games": ["alien"]
+    },
+    {
+      "id": "synthetic_alien",
+      "name": "Synthetic Alien",
+      "norwegianName": "Syntetisk Romvesen",
+      "image": "synthetic_alien.webp",
+      "position": null,
+      "games": ["alien"]
+    },
+    {
+      "id": "blob",
+      "name": "Blob",
+      "norwegianName": "Blobb",
+      "image": "blob.webp",
+      "position": null,
+      "games": ["alien"]
+    },
+    {
+      "id": "cow",
+      "name": "Cow",
+      "norwegianName": "Ku",
+      "image": "cow.webp",
+      "position": null,
+      "games": ["alien"]
+    },
+    {
+      "id": "exposer",
+      "name": "Exposer",
+      "norwegianName": "Avslører",
+      "image": "exposer.webp",
+      "position": null,
+      "games": ["alien"],
+      "narrationVariants": [
+        { "id": "exposer_one_card", "norwegianName": "Avslører (ett kort)", "name": "Exposer (one card)", "weight": 75 },
+        { "id": "exposer_two_cards", "norwegianName": "Avslører (to kort)", "name": "Exposer (two cards)", "weight": 20 },
+        { "id": "exposer_three_cards", "norwegianName": "Avslører (tre kort)", "name": "Exposer (three cards)", "weight": 5 }
+      ]
+    },
+    {
+      "id": "groob_alien",
+      "name": "Groob",
+      "norwegianName": "Groob (Romvesen)",
+      "image": "groob_alien.webp",
+      "position": null,
+      "games": ["alien"]
+    },
+    {
+      "id": "leader",
+      "name": "Leader",
+      "norwegianName": "Leder",
+      "image": "leader.webp",
+      "position": null,
+      "games": ["alien"]
+    },
+    {
+      "id": "mortician",
+      "name": "Mortician",
+      "norwegianName": "Begravelsesagent",
+      "image": "mortician.webp",
+      "position": null,
+      "games": ["alien"],
+      "narrationVariants": [
+        { "id": "mortician_one_card", "norwegianName": "Begravelsesagent (ett kort)", "name": "Mortician (one card)", "weight": 70 },
+        { "id": "mortician_two_cards", "norwegianName": "Begravelsesagent (to kort)", "name": "Mortician (two cards)", "weight": 25 },
+        { "id": "mortician_pretend", "norwegianName": "Begravelsesagent (later som)", "name": "Mortician (pretend)", "weight": 5 }
+      ]
+    },
+    {
+      "id": "oracle",
+      "name": "Oracle",
+      "norwegianName": "Orakel",
+      "image": "oracle.webp",
+      "position": null,
+      "games": ["alien"]
+    },
+    {
+      "id": "psychic",
+      "name": "Psychic",
+      "norwegianName": "Psykisk",
+      "image": "psychic.webp",
+      "position": null,
+      "games": ["alien"],
+      "targetType": "single"
+    },
+    {
+      "id": "rascal",
+      "name": "Rascal",
+      "norwegianName": "Rakker",
+      "image": "rascal.webp",
+      "position": null,
+      "games": ["alien"],
+      "narrationVariants": [
+        { "id": "rascal_troublemaker", "norwegianName": "Rakker (Bråkmaker-variant)", "name": "Rascal (Troublemaker variant)", "weight": 40 },
+        { "id": "rascal_robber", "norwegianName": "Rakker (Røver-variant)", "name": "Rascal (Robber variant)", "weight": 30, "targetType": "single" },
+        { "id": "rascal_witch", "norwegianName": "Rakker (Heks-variant)", "name": "Rascal (Witch variant)", "weight": 30, "targetType": "single" }
+      ]
+    },
+    {
+      "id": "zerb",
+      "name": "Zerb",
+      "norwegianName": "Zerb (Romvesen)",
+      "image": "zerb.webp",
+      "position": null,
+      "games": ["alien"]
     }
   ],
   "playOrder": [
-    {
-      "position": 0,
-      "characterId": "vakt"
-    },
-    {
-      "position": 1,
-      "characterId": "dobbeltgjenger"
-    },
-    {
-      "position": 2,
-      "characterIds": [
-        "varulv_1",
-        "varulv_2",
-        "alfa_ulv",
-        "mystisk_ulv"
-      ]
-    },
-    {
-      "position": 3,
-      "characterId": "undersaatt"
-    },
-    {
-      "position": 4,
-      "characterIds": [
-        "frimurer_1",
-        "frimurer_2"
-      ]
-    },
-    {
-      "position": 5,
-      "characterId": "klarsynt"
-    },
-    {
-      "position": 6,
-      "characterIds": [
-        "roever",
-        "heks"
-      ]
-    },
-    {
-      "position": 7,
-      "characterIds": [
-        "braakmaker",
-        "landsbyidiiot"
-      ]
-    },
-    {
-      "position": 8,
-      "characterIds": [
-        "dranker"
-      ]
-    },
+    { "position": 1, "characterId": "oracle" },
+    { "position": 2, "characterId": "dobbeltgjenger" },
+    { "position": 3, "characterId": "vakt" },
+    { "position": 4, "characterIds": ["alien_1", "alien_2"] },
+    { "position": 5, "characterId": "synthetic_alien" },
+    { "position": 6, "characterId": "cow" },
+    { "position": 7, "characterId": "groob_alien" },
+    { "position": 8, "characterId": "zerb" },
     {
       "position": 9,
+      "characterIds": ["varulv_1", "varulv_2", "alfa_ulv", "mystisk_ulv"]
+    },
+    { "position": 10, "characterId": "undersaatt" },
+    { "position": 11, "characterId": "garver_laerling" },
+    { "position": 12, "characterId": "leader" },
+    { "position": 13, "characterIds": ["frimurer_1", "frimurer_2"] },
+    { "position": 14, "characterId": "klarsynt" },
+    { "position": 15, "characterId": "klarsynt_laerling" },
+    { "position": 16, "characterId": "paranormal_etterforsker" },
+    { "position": 17, "characterId": "psychic" },
+    { "position": 18, "characterId": "roever" },
+    { "position": 19, "characterId": "heks" },
+    { "position": 20, "characterId": "braakmaker" },
+    { "position": 21, "characterId": "landsbyidiiot" },
+    { "position": 22, "characterId": "aura_klarsynt" },
+    { "position": 23, "characterId": "rascal" },
+    { "position": 24, "characterId": "dranker" },
+    {
+      "position": 25,
       "characterId": "soevnloes",
       "conditionalNext": "dobbeltgjenger"
     },
     {
-      "position": 10,
+      "position": 26,
       "characterId": "avsloerer",
       "conditionalNext": "dobbeltgjenger"
     },
+    { "position": 27, "characterId": "exposer" },
     {
-      "position": 11,
+      "position": 28,
       "characterId": "kurator",
       "conditionalNext": "dobbeltgjenger"
-    }
+    },
+    { "position": 29, "characterId": "blob" },
+    { "position": 30, "characterId": "mortician" }
   ]
 }

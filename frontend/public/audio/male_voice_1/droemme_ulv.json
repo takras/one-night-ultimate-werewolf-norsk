@@ -1,0 +1,14 @@
+{
+  "characterId": "droemme_ulv",
+  "isComplex": false,
+  "activation": {
+    "filename": "droemme_ulv_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-12T21:13:06.846Z"
+  },
+  "end": {
+    "filename": "droemme_ulv_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-12T21:13:16.910Z"
+  }
+}

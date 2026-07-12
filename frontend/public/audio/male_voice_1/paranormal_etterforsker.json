@@ -1,0 +1,14 @@
+{
+  "characterId": "paranormal_etterforsker",
+  "isComplex": false,
+  "activation": {
+    "filename": "paranormal_etterforsker_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-12T21:12:36.809Z"
+  },
+  "end": {
+    "filename": "paranormal_etterforsker_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-12T21:12:44.973Z"
+  }
+}

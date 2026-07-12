@@ -40,6 +40,7 @@ const knownAudioTypes = [
   "random_noise",
   "game_start",
   "night_end",
+  "fragment",
   "activation",
   "end",
 ];
@@ -54,6 +55,7 @@ const VOICE_SCOPED_TYPES = [
   "night_end",
   "discussion_instruction",
   "discussion_end",
+  "fragment",
 ];
 
 // Browsers can only decode PCM (1) and IEEE float (3) WAV data - reject
@@ -67,7 +69,10 @@ function findUnsupportedWavFormat(filePath) {
   } finally {
     fs.closeSync(fd);
   }
-  if (header.toString("ascii", 0, 4) !== "RIFF" || header.toString("ascii", 8, 12) !== "WAVE") {
+  if (
+    header.toString("ascii", 0, 4) !== "RIFF" ||
+    header.toString("ascii", 8, 12) !== "WAVE"
+  ) {
     return null; // not a WAV file, nothing to check
   }
   const formatTag = header.readUInt16LE(20);
@@ -89,7 +94,12 @@ function parseAudioFilename(file) {
 }
 
 function isAudioFile(name) {
-  return name.endsWith(".mp3") || name.endsWith(".wav") || name.endsWith(".m4a") || name.endsWith(".webm");
+  return (
+    name.endsWith(".mp3") ||
+    name.endsWith(".wav") ||
+    name.endsWith(".m4a") ||
+    name.endsWith(".webm")
+  );
 }
 
 // Lists one directory's audio files (non-recursive); voiceId is null for
@@ -118,7 +128,8 @@ function listDir(dir, voiceId) {
         ...metadata,
         // Per-type details (nested under the type key in metadata) flattened;
         // older metadata stored uploadedAt at the top level
-        uploadedAt: metadata[audioType]?.uploadedAt || metadata.uploadedAt || null,
+        uploadedAt:
+          metadata[audioType]?.uploadedAt || metadata.uploadedAt || null,
         originalName: metadata[audioType]?.originalName || null,
       };
     });
@@ -151,7 +162,9 @@ router.post("/upload", upload.single("audio"), (req, res) => {
 
     if (VOICE_SCOPED_TYPES.includes(type) && !voiceId) {
       fs.unlinkSync(req.file.path);
-      return res.status(400).json({ error: "voiceId is required for character/game-phase audio" });
+      return res
+        .status(400)
+        .json({ error: "voiceId is required for character/game-phase audio" });
     }
 
     const unsupportedFormat = findUnsupportedWavFormat(req.file.path);
@@ -218,7 +231,10 @@ router.delete("/:characterId/:audioType", (req, res) => {
     const { characterId, audioType } = req.params;
     const voiceId = req.query.voiceId || null;
     const match = listAudioFiles().find(
-      (a) => a.characterId === characterId && a.audioType === audioType && a.voiceId === voiceId,
+      (a) =>
+        a.characterId === characterId &&
+        a.audioType === audioType &&
+        a.voiceId === voiceId,
     );
 
     if (!match) {

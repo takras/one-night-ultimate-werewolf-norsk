@@ -9,12 +9,12 @@ import { getVoices } from '../data/voicesCatalog';
 // Static bundle data - no backend needed, works on GitHub Pages
 const allCharacters = getCharacters();
 
-// Group presets by the player count they produce (cards - 3 center cards)
-const presetsByPlayerCount = rolePresets.reduce((acc, preset) => {
-  (acc[preset.playerCount] ||= []).push(preset);
-  return acc;
-}, {});
-const presetPlayerCounts = Object.keys(presetsByPlayerCount).map(Number).sort((a, b) => a - b);
+const GAMES = [
+  { id: 'werewolf', image: 'games/werewolf.png' },
+  { id: 'daybreak', image: 'games/daybreak.png' },
+  { id: 'alien', image: 'games/alien.png' },
+];
+const ALL_GAME_IDS = GAMES.map(g => g.id);
 
 export default function HomeScreen({ onStartGame }) {
   const { t, language } = useTranslation();
@@ -25,9 +25,25 @@ export default function HomeScreen({ onStartGame }) {
   const [duration, setDuration] = useState(5);
   const [discussionDuration, setDiscussionDuration] = useState(120);
   const [complexCharacters, setComplexCharacters] = useState([]);
-  const [presetPlayerCount, setPresetPlayerCount] = useState(presetPlayerCounts[0]);
   const [voices, setVoices] = useState([]);
   const [selectedVoiceId, setSelectedVoiceId] = useState('');
+  const [selectedGames, setSelectedGames] = useState(ALL_GAME_IDS);
+
+  // Only offer presets whose every character belongs to a currently active
+  // game - a preset with even one role from a deselected game is dropped
+  const availablePresets = rolePresets.filter(preset =>
+    preset.characterIds.every(id => {
+      const character = allCharacters.find(c => c.id === id);
+      return character && (character.games || []).some(g => selectedGames.includes(g));
+    })
+  );
+  const presetsByPlayerCount = availablePresets.reduce((acc, preset) => {
+    (acc[preset.playerCount] ||= []).push(preset);
+    return acc;
+  }, {});
+  const presetPlayerCounts = Object.keys(presetsByPlayerCount).map(Number).sort((a, b) => a - b);
+
+  const [presetPlayerCount, setPresetPlayerCount] = useState(presetPlayerCounts[0]);
 
   useEffect(() => {
     getVoices().then(list => {
@@ -35,6 +51,15 @@ export default function HomeScreen({ onStartGame }) {
       setSelectedVoiceId(prev => prev || list[0]?.id || '');
     });
   }, []);
+
+  // Keep the active preset tab valid as the game filter changes the
+  // available presets (e.g. switch to another tab, or none if empty)
+  useEffect(() => {
+    if (presetPlayerCounts.length > 0 && !presetPlayerCounts.includes(presetPlayerCount)) {
+      setPresetPlayerCount(presetPlayerCounts[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGames]);
 
   const toggleCharacter = (characterId) => {
     setSelectedCharacters(prev => {
@@ -61,6 +86,29 @@ export default function HomeScreen({ onStartGame }) {
     setComplexCharacters([]);
   };
 
+  const toggleGame = (gameId) => {
+    const next = selectedGames.includes(gameId)
+      ? selectedGames.filter(g => g !== gameId)
+      : [...selectedGames, gameId];
+    setSelectedGames(next);
+
+    // Deselecting a game also drops any selected characters that no longer
+    // belong to any active game (crossovers like Varulv stay selected as
+    // long as one of their games - e.g. Daybreak - is still active)
+    const stillVisible = (id) => {
+      const character = allCharacters.find(c => c.id === id);
+      return character && (character.games || []).some(g => next.includes(g));
+    };
+    setSelectedCharacters(prev => prev.filter(stillVisible));
+    setComplexCharacters(prev => prev.filter(stillVisible));
+  };
+
+  // A character shows up if it belongs to any currently-selected game -
+  // this is what makes Werewolf/Landsbyboer crossovers appear under either
+  const filteredCharacters = allCharacters.filter(character =>
+    (character.games || []).some(g => selectedGames.includes(g))
+  );
+
   // 3 cards go to the center, so players = selected characters - 3
   const playerCount = Math.max(0, selectedCharacters.length - 3);
   const canStart = selectedCharacters.length >= 4;
@@ -79,30 +127,36 @@ export default function HomeScreen({ onStartGame }) {
 
           <div className="setting-group">
             <label>{t('presetsTitle')}</label>
-            <div className="preset-player-tabs">
-              {presetPlayerCounts.map(count => (
-                <button
-                  key={count}
-                  type="button"
-                  className={`preset-tab ${presetPlayerCount === count ? 'active' : ''}`}
-                  onClick={() => setPresetPlayerCount(count)}
-                >
-                  {t('presetsPlayerCount', { count })}
-                </button>
-              ))}
-            </div>
-            <div className="preset-variant-buttons">
-              {presetsByPlayerCount[presetPlayerCount].map((preset, idx) => (
-                <button
-                  key={preset.id}
-                  type="button"
-                  className="preset-variant-button"
-                  onClick={() => applyPreset(preset)}
-                >
-                  {t('presetButtonLabel', { n: idx + 1 })}
-                </button>
-              ))}
-            </div>
+            {presetPlayerCounts.length === 0 ? (
+              <p className="no-presets-match">{t('noPresetsMatchFilter')}</p>
+            ) : (
+              <>
+                <div className="preset-player-tabs">
+                  {presetPlayerCounts.map(count => (
+                    <button
+                      key={count}
+                      type="button"
+                      className={`preset-tab ${presetPlayerCount === count ? 'active' : ''}`}
+                      onClick={() => setPresetPlayerCount(count)}
+                    >
+                      {t('presetsPlayerCount', { count })}
+                    </button>
+                  ))}
+                </div>
+                <div className="preset-variant-buttons">
+                  {(presetsByPlayerCount[presetPlayerCount] || []).map((preset, idx) => (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      className="preset-variant-button"
+                      onClick={() => applyPreset(preset)}
+                    >
+                      {t('presetButtonLabel', { n: idx + 1 })}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           <div className="setting-group">
@@ -165,8 +219,27 @@ export default function HomeScreen({ onStartGame }) {
 
         <section className="character-grid">
           <h2>{t('selectRoles')} ({selectedCharacters.length})</h2>
+
+          <div className="game-filter">
+            {GAMES.map(game => (
+              <button
+                key={game.id}
+                type="button"
+                className={`game-filter-button ${selectedGames.includes(game.id) ? 'active' : ''}`}
+                onClick={() => toggleGame(game.id)}
+                title={t(`game_${game.id}`)}
+              >
+                <img src={assetUrl(game.image)} alt={t(`game_${game.id}`)} />
+              </button>
+            ))}
+          </div>
+
+          {filteredCharacters.length === 0 && (
+            <p className="no-roles-match">{t('noRolesMatchFilter')}</p>
+          )}
+
           <div className="grid">
-            {allCharacters.map(character => (
+            {filteredCharacters.map(character => (
               <div
                 key={character.id}
                 className={`character-card ${selectedCharacters.includes(character.id) ? 'selected' : ''}`}

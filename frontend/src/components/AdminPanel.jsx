@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './AdminPanel.css';
 import { useTranslation } from '../i18n.jsx';
+import { SINGLE_TARGET_FRAGMENTS, MAX_PLAYER_NUMBER_FRAGMENTS, playerNumberFragmentId } from '../data/targetFragments';
+import { getCharacterScript, getFragmentScript, GAME_PHASE_SCRIPTS, NO_FIXED_SCRIPT } from '../data/narrationScripts';
 
 // Duplicate roles (varulv_1/varulv_2, ...) share one audio entry
 const baseCharacterId = (id) => id.replace(/_\d+$/, '');
@@ -23,10 +25,11 @@ export default function AdminPanel({ onClose }) {
   const [selectedVoice, setSelectedVoice] = useState('');
   const [newVoiceName, setNewVoiceName] = useState('');
   const [addingVoice, setAddingVoice] = useState(false);
+  const [selectedFragment, setSelectedFragment] = useState('');
 
-  // Character/game-phase audio belongs to a voice; random noise and
-  // background music are shared across voices
-  const isVoiceScoped = audioTypeCategory === 'character' || audioTypeCategory === 'game';
+  // Character/game-phase/fragment audio belongs to a voice; random noise
+  // and background music are shared across voices
+  const isVoiceScoped = audioTypeCategory === 'character' || audioTypeCategory === 'game' || audioTypeCategory === 'fragment';
 
   const mediaRecorderRef = useRef(null);
   const streamRef = useRef(null);
@@ -149,6 +152,13 @@ export default function AdminPanel({ onClose }) {
       } else if (audioTypeCategory === 'game') {
         characterId = gameAudioType; // game_start, night_end, discussion_instruction, discussion_end
         audioType = gameAudioType;
+      } else if (audioTypeCategory === 'fragment') {
+        if (!selectedFragment) {
+          setMessage(t('selectFragmentFirst'));
+          return;
+        }
+        characterId = selectedFragment;
+        audioType = 'fragment';
       } else if (audioTypeCategory === 'random') {
         // For random noises, use random_noise_{timestamp}
         characterId = `random_noise_${Date.now()}`;
@@ -189,6 +199,7 @@ export default function AdminPanel({ onClose }) {
       const uploadedName = audioTypeCategory === 'random' ? t('randomNoiseName') :
                           audioTypeCategory === 'background_music' ? t('backgroundMusicName') :
                           audioTypeCategory === 'game' ? gameAudioType :
+                          audioTypeCategory === 'fragment' ? selectedFragment :
                           getCharacterName(selectedCharacter);
       setMessage(t('audioUploadedFor', { type: selectedAudioType, name: uploadedName }));
       setRecordedBlob(null);
@@ -246,6 +257,40 @@ export default function AdminPanel({ onClose }) {
     return hasActivation && hasEnd ? '✅' : '⚠️';
   };
 
+  // ✅ when a fragment clip exists for the selected voice, ⚠️ otherwise
+  const fragmentAudioStatus = (fragmentId) => {
+    const hasFragment = uploadedAudio.some(a => a.characterId === fragmentId && a.audioType === 'fragment' && a.voiceId === selectedVoice);
+    return hasFragment ? '✅' : '⚠️';
+  };
+
+  const fragmentLabel = (fragmentId) => {
+    const target = SINGLE_TARGET_FRAGMENTS.find(f => f.id === fragmentId);
+    if (target) return target.norwegianLabel;
+    const playerMatch = fragmentId.match(/^player_(\d+)$/);
+    if (playerMatch) return `${t('playerNumbersGroupLabel')} ${playerMatch[1]}`;
+    return fragmentId;
+  };
+
+  // Script text for whatever is currently selected in the form above, so
+  // the narrator knows what to say before hitting record
+  const currentScript = () => {
+    if (audioTypeCategory === 'character') {
+      if (!selectedCharacter) return null;
+      return getCharacterScript(selectedCharacter, selectedAudioType);
+    }
+    if (audioTypeCategory === 'game') {
+      return GAME_PHASE_SCRIPTS[gameAudioType] || null;
+    }
+    if (audioTypeCategory === 'fragment') {
+      if (!selectedFragment) return null;
+      return getFragmentScript(selectedFragment);
+    }
+    if (audioTypeCategory === 'random' || audioTypeCategory === 'background_music') {
+      return NO_FIXED_SCRIPT;
+    }
+    return null;
+  };
+
   const trackTitle = (audio, idx) => {
     if (audio.originalName) return audio.originalName.replace(/\.[^.]+$/, '');
     if (audio.filename) return audio.filename.replace(/\.[^.]+$/, '');
@@ -255,7 +300,10 @@ export default function AdminPanel({ onClose }) {
   // One dropdown entry per role: duplicates like varulv_1/varulv_2 collapse
   // into a single group that shares audio and plays once during the night.
   // Roles without a night action (Villager, Tanner, Bodyguard) need no audio.
-  // Audio variants (Doppelgänger's situational clips) get their own entries.
+  // Audio variants (Doppelgänger's situational clips, conditional on other
+  // selected roles) and narration variants (Rascal/Alien/etc's randomly
+  // weighted-picked alternatives) each get their own entries, inheriting
+  // the parent character's games since neither has its own.
   const groupedCharacters = [];
   const seenGroups = new Set();
   characters.forEach(char => {
@@ -266,8 +314,21 @@ export default function AdminPanel({ onClose }) {
     groupedCharacters.push({ ...char, id: groupId });
     (char.audioVariants || []).forEach(variant => {
       seenGroups.add(variant.id);
-      groupedCharacters.push({ ...variant });
+      groupedCharacters.push({ ...variant, games: char.games });
     });
+    (char.narrationVariants || []).forEach(variant => {
+      seenGroups.add(variant.id);
+      groupedCharacters.push({ ...variant, games: char.games });
+    });
+  });
+
+  // Crossover characters (e.g. Varulv, in both Werewolf and Daybreak) are
+  // grouped under their first-listed game so they only appear once
+  const GAME_ORDER = ['werewolf', 'daybreak', 'alien'];
+  const charactersByGame = { werewolf: [], daybreak: [], alien: [] };
+  groupedCharacters.forEach(char => {
+    const primaryGame = (char.games && char.games[0]) || 'werewolf';
+    (charactersByGame[primaryGame] || (charactersByGame[primaryGame] = [])).push(char);
   });
 
   return (
@@ -292,6 +353,7 @@ export default function AdminPanel({ onClose }) {
               >
                 <option value="character">{t('characterAudioOption')}</option>
                 <option value="game">{t('gamePhaseAudioOption')}</option>
+                <option value="fragment">{t('fragmentAudioOption')}</option>
                 <option value="random">{t('randomNoisesOption')}</option>
                 <option value="background_music">{t('backgroundMusicOption')}</option>
               </select>
@@ -334,16 +396,26 @@ export default function AdminPanel({ onClose }) {
               <>
                 <div className="form-group">
                   <label>{t('selectCharacterLabel')}</label>
-                  <select 
+                  <select
                     value={selectedCharacter}
-                    onChange={(e) => setSelectedCharacter(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedCharacter(e.target.value);
+                      // Always start from Activation for the newly picked
+                      // role, rather than keeping whatever type was
+                      // selected for the previous role
+                      setSelectedAudioType('activation');
+                    }}
                     disabled={recordingState === 'recording' || uploading}
                   >
                     <option value="">{t('selectCharacterPlaceholder')}</option>
-                    {groupedCharacters.map(char => (
-                      <option key={char.id} value={char.id}>
-                        {characterAudioStatus(char.id)} {displayName(char)}
-                      </option>
+                    {GAME_ORDER.map(gameId => charactersByGame[gameId].length > 0 && (
+                      <optgroup key={gameId} label={t(`game_${gameId}`)}>
+                        {charactersByGame[gameId].map(char => (
+                          <option key={char.id} value={char.id}>
+                            {characterAudioStatus(char.id)} {displayName(char)}
+                          </option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
                 </div>
@@ -390,6 +462,41 @@ export default function AdminPanel({ onClose }) {
               </div>
             )}
 
+            {audioTypeCategory === 'fragment' && (
+              <>
+                <div className="form-group">
+                  <label>{t('selectFragmentLabel')}</label>
+                  <select
+                    value={selectedFragment}
+                    onChange={(e) => setSelectedFragment(e.target.value)}
+                    disabled={recordingState === 'recording' || uploading}
+                  >
+                    <option value="">{t('selectFragmentPlaceholder')}</option>
+                    <optgroup label={t('targetPhrasesGroupLabel')}>
+                      {SINGLE_TARGET_FRAGMENTS.map(fragment => (
+                        <option key={fragment.id} value={fragment.id}>
+                          {fragmentAudioStatus(fragment.id)} {fragment.norwegianLabel}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label={t('playerNumbersGroupLabel')}>
+                      {Array.from({ length: MAX_PLAYER_NUMBER_FRAGMENTS }, (_, i) => i + 1).map(n => {
+                        const fragmentId = playerNumberFragmentId(n);
+                        return (
+                          <option key={fragmentId} value={fragmentId}>
+                            {fragmentAudioStatus(fragmentId)} {n}
+                          </option>
+                        );
+                      })}
+                    </optgroup>
+                  </select>
+                </div>
+                <div className="info-box">
+                  <p>{t('fragmentInfo')}</p>
+                </div>
+              </>
+            )}
+
             {audioTypeCategory === 'random' && (
               <div className="info-box">
                 <p>{t('randomNoiseInfo')}</p>
@@ -399,6 +506,13 @@ export default function AdminPanel({ onClose }) {
             {audioTypeCategory === 'background_music' && (
               <div className="info-box">
                 <p>{t('backgroundMusicInfo')}</p>
+              </div>
+            )}
+
+            {currentScript() && (
+              <div className="form-group">
+                <label>{t('scriptLabel')}</label>
+                <div className="script-box">{currentScript()}</div>
               </div>
             )}
 
@@ -483,6 +597,7 @@ export default function AdminPanel({ onClose }) {
                   // further scoped to whichever voice is currently selected
                   const characterAudio = {};
                   const gameAudio = {};
+                  const fragmentAudio = [];
                   const randomNoise = [];
                   const backgroundMusic = [];
 
@@ -493,6 +608,8 @@ export default function AdminPanel({ onClose }) {
                         randomNoise.push(audio);
                       } else if (audio.audioType === 'background_music') {
                         backgroundMusic.push(audio);
+                      } else if (audio.audioType === 'fragment') {
+                        fragmentAudio.push(audio);
                       } else if (['game_start', 'night_end', 'discussion_instruction', 'discussion_end'].includes(audio.audioType)) {
                         if (!gameAudio[audio.audioType]) {
                           gameAudio[audio.audioType] = [];
@@ -512,9 +629,11 @@ export default function AdminPanel({ onClose }) {
                     ? Object.keys(characterAudio).length
                     : audioTypeCategory === 'game'
                       ? Object.keys(gameAudio).length
-                      : audioTypeCategory === 'background_music'
-                        ? backgroundMusic.length
-                        : randomNoise.length;
+                      : audioTypeCategory === 'fragment'
+                        ? fragmentAudio.length
+                        : audioTypeCategory === 'background_music'
+                          ? backgroundMusic.length
+                          : randomNoise.length;
 
                   return (
                     <>
@@ -618,6 +737,44 @@ export default function AdminPanel({ onClose }) {
                               </div>
                             </div>
                           ))}
+                        </div>
+                      )}
+
+                      {/* Target Fragments */}
+                      {audioTypeCategory === 'fragment' && fragmentAudio.length > 0 && (
+                        <div className="audio-category">
+                          <h4>{t('fragmentsHeader')} ({fragmentAudio.length})</h4>
+                          <div className="audio-item">
+                            <div className="audio-list-inline">
+                              {fragmentAudio.map((audio, idx) => (
+                                <div key={idx} className="audio-item-inline">
+                                  <span
+                                    className="noise-title"
+                                    title={audio.uploadedAt ? new Date(audio.uploadedAt).toLocaleString() : undefined}
+                                  >
+                                    {fragmentLabel(audio.characterId)}
+                                  </span>
+                                  <button
+                                    className="btn-small btn-preview"
+                                    onClick={() => {
+                                      previewRef.current.src = audio.url;
+                                      previewRef.current.play();
+                                    }}
+                                    title={t('previewAudioTitle')}
+                                  >
+                                    🔊
+                                  </button>
+                                  <button
+                                    className="btn-small btn-delete"
+                                    onClick={() => deleteAudio(audio.characterId, audio.audioType, selectedVoice)}
+                                    title={t('deleteAudioTitle')}
+                                  >
+                                    🗑️
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       )}
 

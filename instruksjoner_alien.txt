@@ -1,0 +1,278 @@
+ONE NIGHT ULTIMATE ALIEN - fortellerskript (norsk)
+Oversatt fra egne notater tatt ved å kjøre den offisielle appen, supplert
+med sannsynlighetstall funnet i appens variabler. Varianter er merket med
+bokstaver (A, B, C...) eller prosent der sannsynligheten er kjent.
+Kommentarer i [hakeparentes] er mine notater til deg, ikke tekst som skal
+leses opp.
+
+MERK: Prosenttallene er hentet fra appens konfigurasjon, ikke fra egen
+telling, og de kan endres i appens innstillinger - de er altså ikke faste
+sannheter, bare et utgangspunkt. Noen effekter krever at en bestemt rolle
+fra et annet spill (f.eks. Bråkmaker, Heks) faktisk er valgt i den
+pågående runden - hvis rollen ikke er med, kan den effekten trolig ikke
+inntreffe.
+
+Nostradamus, Empatisk og Bortfører er fjernet - disse rollene er ikke
+del av dette spillet.
+
+====================================================================
+ORAKEL
+====================================================================
+[Generell observasjon: uansett hvilket spørsmål og svar det gjelder, ser
+det ut til at appen ca. 30% av tiden gir en respons som avviser/motsier
+svaret spilleren faktisk ga (en slags upålitelig forteller-effekt), og de
+resterende ca. 70% av tiden bekrefter appen svaret normalt. Nøyaktig
+ordlyd for "avvis"-varianten er ikke fanget opp ennå - lytt etter dette
+på neste testrunde.]
+
+Orakel, våkn opp og svar på følgende spørsmål. [vent 5 sekunder, selv om
+spilleren svarer før den tid]
+
+Hvert spørsmål under stilles uavhengig av de andre (flere kan stilles i
+samme Orakel-tur). Sannsynlighet for at spørsmålet stilles denne runden:
+
+"Se på kortene i midten?" (10%)
+  Ja: "Hva er så ille med å være et orakel? Behold kortet ditt."
+  Nei: "Selvfølgelig ikke. Behold kortet ditt."
+  [Uansett svar beholder Orakelet sitt eget kort - dette virker mest som
+  en avledning/vits enn en reell handling.]
+
+"Hvilket tall tenker jeg på?" (75%) [Vis tallene 1-10 som knapper. Når
+spilleren trykker et tall, avgjør appen tilfeldig om det er riktig eller
+galt.]
+  Feil: "Feil! Du vinner bare hvis du ikke dør. Alle andre: dere vinner
+  hvis Orakelet dør."
+  Riktig: [ikke observert ennå]
+
+"Vil du garantere en ripple?" (5%)
+  Ja: "OK, det blir en ripple." [ripple-typen bestemmes og vises i appen]
+  Nei: "Seriøst, hvorfor ikke? OK, greit." [det kan likevel bli en ripple]
+
+"Vil du bli med på romvesen-laget?" (15%)
+  Ja: [ikke observert ennå]
+  Nei: "Bra for deg. Bli værende på menneske-laget."
+
+"Vil du bli med på varulv-laget?" (15%)
+  Ja: [ikke observert ennå]
+  Nei: [ikke observert ennå]
+
+Orakel, lukk øynene.
+
+====================================================================
+ROMVESNER (Alien)
+====================================================================
+[Synthetic Alien våkner sammen med romvesnene i denne fasen - ingen egen
+replikk for ham utover dette.]
+
+Romvesner, våkn opp.
+
+Én av følgende, tilfeldig valgt av appen:
+  Én romvesen ser i hemmelighet på et kort (30%)
+  Alle romvesner ser i hemmelighet på et kort (30%)
+  Bare stirr på hverandre (15%)
+  Vis kortene til hverandre (10%)
+  Se på spilleren til venstre for deg (5%)
+  Se på spilleren til høyre for deg (5%)
+
+--- Ku (mens romvesnene fortsatt er våkne) ---
+[Merk: Ku lukker øynene på et annet tidspunkt enn de andre rollene - hun
+gjør det HER, mens Romvesnene ennå ikke har lukket sine.]
+
+Ku, våkn opp og hold frem knyttneven.
+[Hvis en romvesen sitter ved siden av Ku, må en av dem tippe kua ved å
+trykke på knyttneven hennes.]
+Ku, legg ned neven. Ku, lukk øynene.
+
+Romvesner, lukk øynene.
+
+====================================================================
+GROOB OG ZERB
+====================================================================
+
+Groob og Zerb, våkn opp. Se på hverandre.
+Groob og Zerb, lukk øynene.
+
+====================================================================
+LEDER
+====================================================================
+
+Leder, våkn opp.
+Romvesner, stikk ut tommelen. Romvesner, legg ned tommelen.
+Zerb og Groob, hvis dere så hverandre, stikk ut tommelen igjen.
+Leder, hvis du ser Zerb og Groob: du kan bare vinne hvis [én av dem /
+begge to] (tilfeldig valgt av appen) forblir i live.
+Legg ned tomlene. Leder, lukk øynene.
+
+====================================================================
+PSYKISK
+====================================================================
+
+Psykisk, våkn opp. Se på ett kort fra en tilfeldig valgt spiller med
+[partall/oddetall]-nummer.
+Psykisk, lukk øynene.
+
+====================================================================
+RAKKER
+====================================================================
+[Oppdatert forståelse: Rakkeren låner en av tre eksisterende rolle-
+mekanikker, men uten at spilleren selv velger målet - målet velges
+tilfeldig av appen (se gjenbrukbare målfraser nederst). Ved Røver-
+varianten blir ikke Rakkeren rollen slik den ordinære Røveren gjør -
+ingen "se på det nye kortet ditt"-effekt.]
+
+Rakker, våkn opp. Én av følgende, tilfeldig valgt av appen:
+
+  Bråkmaker-variant (40%): Bytt om kortene til to spillere.
+    [Målet velges av appen, ikke av spilleren - bruk en av de
+    gjenbrukbare målfrasene.]
+
+  Røver-variant (30%): Du kan stjele en spillers kort.
+    [Målet velges av appen. I motsetning til den ordinære Røveren ser
+    ikke Rakkeren på det stjålne kortet og blir ikke den rollen.]
+
+  Heks-variant (30%): Gi et kort fra midten til en annen spiller.
+    [Målet velges av appen.]
+
+Rakker, lukk øynene.
+
+====================================================================
+AVSLØRER (Exposer)
+====================================================================
+[Ikke samme rolle som Trollmann, som også har det norske navnet knyttet
+til å avsløre - denne rollen er unik for Alien-utvidelsen.]
+
+Avslører, våkn opp. Snu [ett / to / tre] kort i midten:
+  1 kort (75%)
+  2 kort (20%)
+  3 kort (5%)
+Avslører, lukk øynene.
+
+====================================================================
+BLOBB
+====================================================================
+[Blobb våkner ikke - ingen "våkn opp"/"lukk øynene" trengs.]
+
+Én av følgende, avhengig av antall spillere:
+
+  A (ved 8+ spillere): Spilleren på hver side av deg er nå del av
+     blobben. Hold deg selv og dem i live for å vinne.
+
+  B (ved 10 spillere): De fire spillerne til [høyre/venstre] for deg
+     (tilfeldig valgt) er nå blobben. Hold deg selv og dem i live for
+     å vinne.
+
+  C (ved 5 spillere): Spilleren til høyre for deg er nå blobben. Hold
+     deg selv og dem i live for å vinne.
+
+====================================================================
+BEGRAVELSESAGENT (Mortician)
+====================================================================
+
+Begravelsesagent, våkn opp. Du kan se på kortet til:
+
+  1 kort (70%): [hvem - en av naboene dine, naboen til høyre, eller
+     deg selv - virker som undervarianter av dette utfallet]
+  2 kort (25%): Begge naboene dine
+  "Late som" (5%): [ukjent hva dette faktisk innebærer - trolig later
+     Begravelsesagenten som om hen ser på et kort uten å faktisk gjøre
+     det. Sjekk på neste testrunde.]
+
+Begravelsesagent, lukk øynene.
+
+====================================================================
+RIPPLE-EFFEKTER
+====================================================================
+Sannsynlighetene under er hentet fra appens variabler og summerer ikke
+til 100% - sannsynligvis fordi enkelte ripple-typer (Bråkmaker, Heks)
+bare er mulige når den tilhørende rollen faktisk er valgt i den
+pågående runden, og resten fordeles på nytt blant de gyldige valgene.
+
+Når en ripple inntreffer: "Det har vært en ripple i tiden!"
+
+  Ingen ripple (20%)
+
+  Tidssløyfe (5%): "Det har vært en tidssløyfe. Rekkefølgen starter på
+  nytt, men ikke alle roller våkner, og det er igjen tilfeldig hva de
+  gjør."
+    Følgende våkner på nytt hvis de er valgt i spillet:
+      Romvesner og Ku våkner igjen.
+      Groob og Zerb våkner igjen.
+      Leder våkner igjen, inkludert Groob og Zerb.
+      Psykisk våkner igjen.
+      Rakker våkner igjen.
+      Avslører våkner igjen.
+      Begravelsesagent våkner igjen.
+
+  1 minutt igjen (5%): "Dere har bare 1 minutt igjen før dere må
+  stemme."
+
+  Ikke snakke (5%): "Alle sammen! Dere får ikke lov til å snakke før
+  etter avstemningen."
+
+  Snu deg bort (5%): [Én tilfeldig nummerert spiller blir bedt om å
+  snu seg bort før avstemningen.]
+  "Spiller [X], snu deg bort før avstemningen."
+
+  Bråkmaker våkner igjen (5%) [krever at Bråkmaker er valgt i runden]:
+  Bråkmaker får våkne opp igjen og gjøre handlingen sin en gang til.
+
+  Heks våkner igjen (5%) [krever at Heks er valgt i runden]:
+  Heks får våkne opp igjen og gjøre handlingen sin en gang til.
+
+  Se eget kort - 1 spiller (5%): "Spiller [X]. Du kan i hemmelighet se
+  på ditt eget kort."
+  [Spillernummeret må bygges opp av et eget, isolert klipp for hvert
+  tall (1, 2, 3, ...), ikke tas opp som fast tekst - se eget avsnitt
+  nedenfor.]
+
+  Se eget kort - 2 spillere (5%): "Spiller [X] og [Y]. Dere kan i
+  hemmelighet se på deres eget kort."
+  [Samme som over, men to spillernummer settes sammen.]
+
+  To-hånds stemme (5%): "Én spiller får stemme med begge hender."
+  [Trolig etterfulgt av hvilken spiller - ikke fanget opp ennå.]
+
+  "Du er et romvesen" (5%): Appen forteller ganske enkelt spilleren at
+  de er et romvesen. Ingenting skjer utover dette.
+  "Du er nå et romvesen."
+
+[Tidligere observert: "Spiller 1, 5, 7 kan se på sitt eget kort" fra en
+enkelt testrunde med 10 spillere - dette stemmer ikke helt med "1
+spiller" eller "2 spillere"-variantene over. Kan være en tredje,
+sjeldnere variant med 3 spillere, eller en feilobservasjon. Verifiser
+på neste testrunde.]
+
+====================================================================
+GENERELLE LYDER (alle spill)
+====================================================================
+
+1 minutt igjen: "1 minutt igjen."
+30 sekunder igjen: "Bare 30 sekunder igjen."
+Tiden er ute: "Tiden er ute! Alle sammen: 3, 2, 1, Stem!"
+
+["Alle sammen: 3, 2, 1, Stem!" finnes trolig allerede som opptak fra
+grunnspillet (se instruksjoner.txt) - sjekk om den kan gjenbrukes i
+stedet for å tas opp på nytt.]
+
+["Alle sammen, lukk øynene deres, strekk ut hånden og beveg litt på
+kortet deres" er allerede dekket av grunnspillets skript
+(instruksjoner.txt, linje 53-54) - ingen ny innspilling nødvendig.]
+
+====================================================================
+GJENBRUKBARE MÅLFRASER (for Rakker, Romvesner, Psykisk, Leder, Blobb)
+====================================================================
+Disse dukker opp igjen og igjen på tvers av flere roller. Ta opp som
+egne, korte klipp og sett sammen med hovedsetningen ved avspilling, i
+stedet for å spille inn hver fulle kombinasjon separat:
+
+  - "...en tilfeldig valgt spiller med partallsnummer."
+  - "...en tilfeldig valgt spiller med oddetallsnummer."
+  - "...spilleren til venstre for deg."
+  - "...spilleren til høyre for deg."
+  - "...en spiller med lavere nummer enn deg."
+  - "...en hvilken som helst spiller."
+
+For "se eget kort"-ripplene trengs i tillegg isolerte spillernummer-
+klipp (spiller 1, spiller 2, spiller 3, ...) som kan settes sammen til
+"Spiller [X] (og [Y])" ved avspilling, siden hvilke spillere som
+velges er tilfeldig og varierer fra spill til spill.

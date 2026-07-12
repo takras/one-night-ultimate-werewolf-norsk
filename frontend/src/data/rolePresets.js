@@ -11,6 +11,7 @@ export const rolePresets = [
 
   // 4 players
   { characterIds: ['varulv_1', 'klarsynt', 'jeger', 'mystisk_ulv', 'klarsynt_laerling', 'avsloerer', 'livvakt'] },
+  { characterIds: ['alien_1', 'alien_2', 'synthetic_alien', 'cow', 'psychic', 'rascal', 'exposer'] },
 
   // 5 players
   { characterIds: ['varulv_1', 'varulv_2', 'roever', 'garver_1', 'dobbeltgjenger', 'alfa_ulv', 'heks', 'kurator'] },

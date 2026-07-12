@@ -4,9 +4,26 @@ import { useTranslation } from '../i18n.jsx';
 import { buildPlayOrder } from '../utils/playOrder';
 import { getAudioCatalog } from '../data/audioCatalog';
 import { assetUrl } from '../utils/assetUrl';
+import charactersData from '../data/characters.json';
+import { weightedRandomPick } from '../utils/weightedRandom';
+import { pickTargetFragmentId } from '../data/targetFragments';
 
 // Chance a random noise plays before/after any given step in the night phase
 const NOISE_CHANCE = 0.3;
+
+const baseCharacterId = (id) => id.replace(/_\d+$/, '');
+
+// Roles whose narration branches (Rascal/Alien/Exposer/Mortician) or target
+// (Psychic) are picked at runtime rather than recorded as one fixed clip,
+// keyed by the same group id used in the play order (utils/playOrder.js)
+const narrationConfigByGroupId = {};
+charactersData.characters.forEach((char) => {
+  if (!char.narrationVariants && !char.targetType) return;
+  narrationConfigByGroupId[baseCharacterId(char.id)] = {
+    narrationVariants: char.narrationVariants || null,
+    targetType: char.targetType || null,
+  };
+});
 
 export default function GameScreen({ config, onGameEnd }) {
   const { t, language } = useTranslation();
@@ -43,6 +60,7 @@ export default function GameScreen({ config, onGameEnd }) {
   const lastNoiseIdRef = useRef(null);
   const audioCatalogRef = useRef([]);
   const preloadedAudioRef = useRef([]);
+  const variantChoiceRef = useRef({});
 
   // Fetch play order on mount
   useEffect(() => {
@@ -121,14 +139,25 @@ export default function GameScreen({ config, onGameEnd }) {
         urls.add(a.url);
       } else if (gamePhaseTypes.includes(a.audioType) && a.voiceId === config.voiceId) {
         urls.add(a.url);
+      } else if (a.audioType === 'fragment' && a.voiceId === config.voiceId) {
+        // Which fragment gets picked is decided at runtime, so preload the
+        // whole (small) fragment set rather than trying to predict it
+        urls.add(a.url);
       }
     });
 
     order.forEach(entry => {
-      catalog.forEach(a => {
-        if (a.characterId === entry.characterId && (a.audioType === 'activation' || a.audioType === 'end') && a.voiceId === config.voiceId) {
-          urls.add(a.url);
-        }
+      const narrationConfig = narrationConfigByGroupId[entry.characterId];
+      const clipIds = narrationConfig?.narrationVariants
+        ? [entry.characterId, ...narrationConfig.narrationVariants.map(v => v.id)]
+        : [entry.characterId];
+
+      clipIds.forEach(clipId => {
+        catalog.forEach(a => {
+          if (a.characterId === clipId && (a.audioType === 'activation' || a.audioType === 'end') && a.voiceId === config.voiceId) {
+            urls.add(a.url);
+          }
+        });
       });
     });
 
@@ -184,12 +213,52 @@ export default function GameScreen({ config, onGameEnd }) {
   // network round trip per clip
   const getAudioUrl = (predicate) => audioCatalogRef.current.find(predicate) || null;
 
-  const playCharacterAudio = async (characterId, audioType) => {
-    const audioFile = getAudioUrl(
-      a => a.characterId === characterId && a.audioType === audioType && a.voiceId === config.voiceId
+  // For roles with narrationVariants (Rascal/Alien/Exposer/Mortician), picks
+  // a weighted-random variant on 'activation' and remembers it for this play
+  // order step so 'end' reuses the same one, if a variant-specific end clip
+  // was ever recorded. targetType (fixed on the role, e.g. Psychic, or on
+  // the picked variant) says which fragment - if any - to splice on after
+  // activation plays.
+  const resolveActivationClip = (characterId, audioType, stepIndex) => {
+    const narrationConfig = narrationConfigByGroupId[characterId];
+    if (!narrationConfig) return { clipId: characterId, targetType: null };
+
+    if (narrationConfig.narrationVariants) {
+      let variant = variantChoiceRef.current[stepIndex];
+      if (audioType === 'activation' || !variant) {
+        variant = weightedRandomPick(narrationConfig.narrationVariants);
+        variantChoiceRef.current[stepIndex] = variant;
+      }
+      return { clipId: variant.id, targetType: audioType === 'activation' ? (variant.targetType || null) : null };
+    }
+
+    return { clipId: characterId, targetType: audioType === 'activation' ? narrationConfig.targetType : null };
+  };
+
+  const playCharacterAudio = async (characterId, audioType, stepIndex) => {
+    const { clipId, targetType } = resolveActivationClip(characterId, audioType, stepIndex);
+
+    let audioFile = getAudioUrl(
+      a => a.characterId === clipId && a.audioType === audioType && a.voiceId === config.voiceId
     );
+    // Fall back to the base role's clip if this variant has no recording
+    // for this audio type yet (e.g. no variant-specific "end" line - the
+    // base role's end plays instead)
+    if (!audioFile && clipId !== characterId) {
+      audioFile = getAudioUrl(
+        a => a.characterId === characterId && a.audioType === audioType && a.voiceId === config.voiceId
+      );
+    }
     if (!audioFile) return;
     await playAudioToEnd(audioFile.url);
+
+    if (audioType !== 'activation' || !targetType) return;
+    const fragmentId = pickTargetFragmentId(targetType);
+    const fragmentFile = getAudioUrl(
+      a => a.characterId === fragmentId && a.audioType === 'fragment' && a.voiceId === config.voiceId
+    );
+    if (!fragmentFile) return;
+    await playAudioToEnd(fragmentFile.url);
   };
 
   const playGameAudio = async (audioType) => {
@@ -325,14 +394,14 @@ export default function GameScreen({ config, onGameEnd }) {
       await maybePlayRandomNoise();
       if (cancelledRef.current) return;
 
-      await playCharacterAudio(entry.characterId, 'activation');
+      await playCharacterAudio(entry.characterId, 'activation', i);
       if (cancelledRef.current) return;
 
       await countdown(entry.duration);
       if (cancelledRef.current) return;
 
       if (!entry.skipEndAudio) {
-        await playCharacterAudio(entry.characterId, 'end');
+        await playCharacterAudio(entry.characterId, 'end', i);
         if (cancelledRef.current) return;
       }
 
