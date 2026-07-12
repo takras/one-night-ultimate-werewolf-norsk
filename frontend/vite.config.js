@@ -1,11 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// GitHub Pages project sites are served from /<repo-name>/, not the domain
-// root - only apply that prefix for the production build, dev stays at /
-export default defineConfig(({ command }) => ({
+// Served at the custom domain root (werewolf.takras.net/), not a GitHub
+// Pages project subpath - CNAME lives in public/ so the build bundles it
+export default defineConfig({
   plugins: [react()],
-  base: command === "build" ? "/one-night-ultimate-werewolf-norsk/" : "/",
+  base: "/",
   server: {
     port: 3001,
     proxy: {
@@ -15,4 +15,4 @@ export default defineConfig(({ command }) => ({
       },
     },
   },
-}));
+});

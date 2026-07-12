@@ -90,14 +90,19 @@ Pushing to `main` triggers `.github/workflows/deploy-pages.yml`, which builds
 `frontend/` and publishes it via GitHub Pages. One-time setup: in the repo's
 **Settings → Pages**, set **Source** to **GitHub Actions**.
 
+The site is served at the custom domain **werewolf.takras.net** (root path,
+`base: "/"` in `frontend/vite.config.js`), not a GitHub Pages project
+subpath. The domain is set up two places: `frontend/public/CNAME` (bundled
+into every build so GitHub Pages knows to serve it there) and the repo's
+**Settings → Pages → Custom domain**. If the domain ever changes, update
+both. If you ever drop the custom domain and go back to the default
+`<user>.github.io/<repo>/` URL, `base` needs to change back to the repo
+subpath and `public/CNAME` should be removed.
+
 To add/change audio without deploying from an admin session elsewhere, run
 the backend + admin panel locally (`npm run dev`), record/upload as normal -
 files land directly in `frontend/public/audio/` - then commit and push. The
 build step regenerates the manifest automatically from whatever's committed.
-
-The GitHub Pages base path is set in `frontend/vite.config.js` (currently
-`/one-night-ultimate-werewolf-norsk/`, matching the repo name); update it if
-the repo is ever renamed or moved.
 
 ## Usage
 
