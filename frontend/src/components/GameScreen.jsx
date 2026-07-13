@@ -7,8 +7,8 @@ import { assetUrl } from '../utils/assetUrl';
 import charactersData from '../data/characters.json';
 import { weightedRandomPick } from '../utils/weightedRandom';
 import { pickTargetFragmentId, playerNumberFragmentId, MAX_PLAYER_NUMBER_FRAGMENTS } from '../data/targetFragments';
-import { RIPPLE_CHANCE, eligibleRippleEvents } from '../data/rippleEvents';
-import { unlockAudioContext } from '../utils/audioContext';
+import { RIPPLE_TRIGGER_CHANCE_PER_TYPE, eligibleRippleEvents } from '../data/rippleEvents';
+import { unlockAudioContext, getAudioContext } from '../utils/audioContext';
 
 // Chance a random noise plays before/after any given step in the night phase
 const NOISE_CHANCE = 0.3;
@@ -79,6 +79,8 @@ export default function GameScreen({ config, onGameEnd }) {
   const oracleGuaranteedRippleRef = useRef(false);
   const narrationGainRef = useRef(null);
   const musicGainRef = useRef(null);
+  const audioBufferCacheRef = useRef(new Map());
+  const currentBufferSourceRef = useRef(null);
 
   // Fetch play order on mount
   useEffect(() => {
@@ -112,6 +114,10 @@ export default function GameScreen({ config, onGameEnd }) {
       if (backgroundMusicRef.current) {
         backgroundMusicRef.current.onended = null;
         backgroundMusicRef.current.pause();
+      }
+      if (currentBufferSourceRef.current) {
+        try { currentBufferSourceRef.current.stop(); } catch { /* already stopped */ }
+        currentBufferSourceRef.current = null;
       }
     };
   }, []);
@@ -193,22 +199,25 @@ export default function GameScreen({ config, onGameEnd }) {
     });
   };
 
-  // Routes both audio elements through a Web Audio GainNode so volume
-  // sliders actually work on iOS, where writing to <audio>.volume directly
-  // is silently ignored. Needs the real <audio> DOM elements (not the
-  // placeholder Audio() from useRef's initializer) to already be mounted,
-  // so this only runs once the loading gate has passed - see call site in
-  // runGameSequence. Falls back to plain audio.volume (works everywhere
-  // except iOS) if Web Audio isn't available or setup fails for any reason.
+  // Sets up the Web Audio graph so volume sliders actually work on iOS,
+  // where writing to <audio>.volume directly is silently ignored. Music
+  // still routes through its <audio> element (MediaElementSourceNode) since
+  // it rarely changes src. Narration does NOT: iOS has a known WebKit bug
+  // where repeatedly changing the src of an element already wrapped in
+  // MediaElementSourceNode silently drops it from the Web Audio graph after
+  // the first clip, so gain stops applying - and narration restarts a new
+  // clip constantly. Narration instead plays via a fresh
+  // AudioBufferSourceNode per clip (see playAudioToEnd), which sidesteps
+  // that bug entirely; the narration gain just needs to reach the
+  // destination, no element to wrap.
   const ensureAudioGraph = () => {
     if (narrationGainRef.current) return;
     const ctx = unlockAudioContext();
     if (!ctx) return;
     try {
-      const narrationSource = ctx.createMediaElementSource(audioRef.current);
       const narrationGain = ctx.createGain();
       narrationGain.gain.value = narrationVolumeRef.current;
-      narrationSource.connect(narrationGain).connect(ctx.destination);
+      narrationGain.connect(ctx.destination);
 
       const musicSource = ctx.createMediaElementSource(backgroundMusicRef.current);
       const musicGain = ctx.createGain();
@@ -222,18 +231,29 @@ export default function GameScreen({ config, onGameEnd }) {
     }
   };
 
-  // Plays a clip and resolves once it has actually finished playing (or
-  // immediately if there's nothing to play / it can't play), so the game
-  // never advances over the top of narration.
-  const playAudioToEnd = (url) => {
+  // Fetches + decodes a clip once and caches the AudioBuffer, since ripple
+  // fragments, random noise, and player-number clips get replayed often
+  const loadAudioBuffer = async (ctx, url) => {
+    const cache = audioBufferCacheRef.current;
+    const fullUrl = assetUrl(url);
+    if (cache.has(fullUrl)) return cache.get(fullUrl);
+    const response = await fetch(fullUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+    cache.set(fullUrl, audioBuffer);
+    return audioBuffer;
+  };
+
+  // Fallback narration playback via the plain <audio> element - used when
+  // Web Audio isn't available, or a clip fails to fetch/decode. Volume
+  // control is best-effort here (broken on iOS, fine everywhere else).
+  const playViaAudioElement = (url) => {
     return new Promise((resolve) => {
       const audio = audioRef.current;
       audio.pause();
       audio.onended = null;
       audio.onerror = null;
-      // When routed through the Web Audio gain node, the element's own
-      // volume must stay at 1 - the gain node is the sole volume control
-      audio.volume = narrationGainRef.current ? 1 : narrationVolumeRef.current;
+      audio.volume = narrationVolumeRef.current;
       audio.src = assetUrl(url);
 
       let settled = false;
@@ -260,6 +280,59 @@ export default function GameScreen({ config, onGameEnd }) {
         console.warn('Could not autoplay audio:', err);
         finish();
       });
+    });
+  };
+
+  // Plays a clip and resolves once it has actually finished playing (or
+  // immediately if there's nothing to play / it can't play), so the game
+  // never advances over the top of narration.
+  const playAudioToEnd = async (url) => {
+    const ctx = getAudioContext();
+    if (!ctx || !narrationGainRef.current) {
+      return playViaAudioElement(url);
+    }
+
+    let buffer;
+    try {
+      buffer = await loadAudioBuffer(ctx, url);
+    } catch (err) {
+      console.warn('Could not decode audio, falling back to <audio> element:', err);
+      return playViaAudioElement(url);
+    }
+    if (cancelledRef.current) return;
+
+    return new Promise((resolve) => {
+      if (currentBufferSourceRef.current) {
+        try { currentBufferSourceRef.current.stop(); } catch { /* already stopped */ }
+        currentBufferSourceRef.current = null;
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(narrationGainRef.current);
+
+      let settled = false;
+      let safetyTimeout;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(safetyTimeout);
+        if (currentBufferSourceRef.current === source) {
+          currentBufferSourceRef.current = null;
+        }
+        if (pendingAudioResolveRef.current === finish) {
+          pendingAudioResolveRef.current = null;
+        }
+        resolve();
+      };
+
+      pendingAudioResolveRef.current = finish;
+      source.onended = finish;
+      // Safety net in case 'ended' never fires for some reason
+      safetyTimeout = setTimeout(finish, (buffer.duration + 5) * 1000);
+
+      currentBufferSourceRef.current = source;
+      source.start(0);
     });
   };
 
@@ -399,16 +472,29 @@ export default function GameScreen({ config, onGameEnd }) {
   };
 
   // Ripples are never triggered by the narrator - the app rolls for one
-  // itself. Baseline odds are RIPPLE_CHANCE (20%), raised to 100% only if
-  // the Oracle player answered "yes" to the in-game "guarantee a ripple?"
-  // question (see the Oracle prompt rendered during their night turn).
-  const maybePlayRipple = async () => {
-    const chance = oracleGuaranteedRippleRef.current ? 1 : RIPPLE_CHANCE;
-    if (Math.random() >= chance) return;
+  // itself. Each eligible ripple gets an independent 5% roll, checked one
+  // at a time in random order; the first one that hits is the one that
+  // happens, and checking stops there - if none hit, no ripple this round.
+  // The Oracle player answering "yes" to the in-game "guarantee a ripple?"
+  // question (see the Oracle prompt rendered during their night turn) skips
+  // the rolls entirely and guarantees one, picked uniformly at random.
+  const pickTriggeredRipple = (eligible) => {
+    if (oracleGuaranteedRippleRef.current) {
+      return eligible[Math.floor(Math.random() * eligible.length)];
+    }
+    const shuffled = [...eligible].sort(() => Math.random() - 0.5);
+    for (const ripple of shuffled) {
+      if (Math.random() < RIPPLE_TRIGGER_CHANCE_PER_TYPE) return ripple;
+    }
+    return null;
+  };
 
+  const maybePlayRipple = async () => {
     const eligible = eligibleRippleEvents(config.selectedCharacters);
     if (eligible.length === 0) return;
-    const ripple = eligible[Math.floor(Math.random() * eligible.length)];
+
+    const ripple = pickTriggeredRipple(eligible);
+    if (!ripple) return;
 
     await playFragmentClip('ripple_intro');
     if (cancelledRef.current) return;
@@ -561,6 +647,10 @@ export default function GameScreen({ config, onGameEnd }) {
     releaseWakeLock();
     audioRef.current?.pause();
     backgroundMusicRef.current?.pause();
+    if (currentBufferSourceRef.current) {
+      try { currentBufferSourceRef.current.stop(); } catch { /* already stopped */ }
+      currentBufferSourceRef.current = null;
+    }
   };
 
   // Unmounting (which onGameEnd triggers, by switching screens in App.jsx)

@@ -22,13 +22,13 @@ export const RIPPLE_EVENTS = [
   { id: 'ripple_you_are_alien', norwegianLabel: 'Du er et romvesen' },
 ];
 
-// Baseline chance a ripple happens at all, overridden to 100% when the
-// Oracle player answered "yes" to "vil du garantere en ripple?"
-export const RIPPLE_CHANCE = 0.2;
+// Each eligible ripple gets its own independent 5% roll, checked one at a
+// time in random order; the first one that hits is the one that happens,
+// and checking stops there. If none hit, no ripple this round - overridden
+// to a guaranteed (skip the rolls, pick one) ripple only when the Oracle
+// player answered "yes" to "vil du garantere en ripple?"
+export const RIPPLE_TRIGGER_CHANCE_PER_TYPE = 0.05;
 
-// Every non-intro ripple was recorded at an equal 5% share in the source
-// material, so once the ineligible (missing-role) ones are filtered out,
-// picking uniformly among what's left reproduces the same proportions.
 export function eligibleRippleEvents(selectedCharacterIds) {
   return RIPPLE_EVENTS.filter(r => r.id !== 'ripple_intro').filter(
     r => !r.requiresCharacterId || selectedCharacterIds.includes(r.requiresCharacterId)
