@@ -275,7 +275,7 @@
       "image": "prins.webp",
       "position": null,
       "noNightAction": true,
-      "games": ["werewolf"]
+      "games": ["daybreak"]
     },
     {
       "id": "forbannet",
@@ -284,7 +284,7 @@
       "image": "forbannet.webp",
       "position": null,
       "noNightAction": true,
-      "games": ["werewolf"]
+      "games": ["daybreak"]
     },
     {
       "id": "droemme_ulv",
