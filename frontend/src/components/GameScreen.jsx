@@ -6,7 +6,9 @@ import { getAudioCatalog } from '../data/audioCatalog';
 import { assetUrl } from '../utils/assetUrl';
 import charactersData from '../data/characters.json';
 import { weightedRandomPick } from '../utils/weightedRandom';
-import { pickTargetFragmentId } from '../data/targetFragments';
+import { pickTargetFragmentId, playerNumberFragmentId, MAX_PLAYER_NUMBER_FRAGMENTS } from '../data/targetFragments';
+import { RIPPLE_CHANCE, eligibleRippleEvents } from '../data/rippleEvents';
+import { unlockAudioContext } from '../utils/audioContext';
 
 // Chance a random noise plays before/after any given step in the night phase
 const NOISE_CHANCE = 0.3;
@@ -25,6 +27,18 @@ charactersData.characters.forEach((char) => {
   };
 });
 
+// Picks `count` distinct player numbers from 1..maxN, for ripples that
+// call out specific seats (e.g. "Spiller 3 og 7, ...")
+function pickDistinctPlayerNumbers(maxN, count) {
+  const pool = Array.from({ length: maxN }, (_, i) => i + 1);
+  const picked = [];
+  for (let i = 0; i < count && pool.length > 0; i++) {
+    const idx = Math.floor(Math.random() * pool.length);
+    picked.push(pool.splice(idx, 1)[0]);
+  }
+  return picked;
+}
+
 export default function GameScreen({ config, onGameEnd }) {
   const { t, language } = useTranslation();
 
@@ -40,6 +54,7 @@ export default function GameScreen({ config, onGameEnd }) {
   const [musicEnabled, setMusicEnabled] = useState(true);
   const [musicVolume, setMusicVolume] = useState(0.4);
   const [narrationVolume, setNarrationVolume] = useState(1);
+  const [oracleGuaranteedRipple, setOracleGuaranteedRipple] = useState(false);
 
   // Game phases: 'start', 'night', 'night_end', 'discussion_instructions', 'discussion', 'discussion_end', 'complete'
   const [gamePhase, setGamePhase] = useState('start');
@@ -61,6 +76,9 @@ export default function GameScreen({ config, onGameEnd }) {
   const audioCatalogRef = useRef([]);
   const preloadedAudioRef = useRef([]);
   const variantChoiceRef = useRef({});
+  const oracleGuaranteedRippleRef = useRef(false);
+  const narrationGainRef = useRef(null);
+  const musicGainRef = useRef(null);
 
   // Fetch play order on mount
   useEffect(() => {
@@ -87,9 +105,14 @@ export default function GameScreen({ config, onGameEnd }) {
         pendingAudioResolveRef.current = null;
         resolve();
       }
-      audioRef.current.pause();
-      backgroundMusicRef.current.onended = null;
-      backgroundMusicRef.current.pause();
+      // React may have already detached these refs (set to null) by the
+      // time this cleanup runs, since ref detachment happens in the commit
+      // phase before passive-effect cleanup fires
+      audioRef.current?.pause();
+      if (backgroundMusicRef.current) {
+        backgroundMusicRef.current.onended = null;
+        backgroundMusicRef.current.pause();
+      }
     };
   }, []);
 
@@ -170,6 +193,35 @@ export default function GameScreen({ config, onGameEnd }) {
     });
   };
 
+  // Routes both audio elements through a Web Audio GainNode so volume
+  // sliders actually work on iOS, where writing to <audio>.volume directly
+  // is silently ignored. Needs the real <audio> DOM elements (not the
+  // placeholder Audio() from useRef's initializer) to already be mounted,
+  // so this only runs once the loading gate has passed - see call site in
+  // runGameSequence. Falls back to plain audio.volume (works everywhere
+  // except iOS) if Web Audio isn't available or setup fails for any reason.
+  const ensureAudioGraph = () => {
+    if (narrationGainRef.current) return;
+    const ctx = unlockAudioContext();
+    if (!ctx) return;
+    try {
+      const narrationSource = ctx.createMediaElementSource(audioRef.current);
+      const narrationGain = ctx.createGain();
+      narrationGain.gain.value = narrationVolumeRef.current;
+      narrationSource.connect(narrationGain).connect(ctx.destination);
+
+      const musicSource = ctx.createMediaElementSource(backgroundMusicRef.current);
+      const musicGain = ctx.createGain();
+      musicGain.gain.value = musicVolumeRef.current;
+      musicSource.connect(musicGain).connect(ctx.destination);
+
+      narrationGainRef.current = narrationGain;
+      musicGainRef.current = musicGain;
+    } catch (err) {
+      console.warn('Could not set up Web Audio volume control:', err);
+    }
+  };
+
   // Plays a clip and resolves once it has actually finished playing (or
   // immediately if there's nothing to play / it can't play), so the game
   // never advances over the top of narration.
@@ -179,7 +231,9 @@ export default function GameScreen({ config, onGameEnd }) {
       audio.pause();
       audio.onended = null;
       audio.onerror = null;
-      audio.volume = narrationVolumeRef.current;
+      // When routed through the Web Audio gain node, the element's own
+      // volume must stay at 1 - the gain node is the sole volume control
+      audio.volume = narrationGainRef.current ? 1 : narrationVolumeRef.current;
       audio.src = assetUrl(url);
 
       let settled = false;
@@ -212,6 +266,14 @@ export default function GameScreen({ config, onGameEnd }) {
   // Reads from the catalog fetched once in fetchPlayOrder, not a fresh
   // network round trip per clip
   const getAudioUrl = (predicate) => audioCatalogRef.current.find(predicate) || null;
+
+  const playFragmentClip = async (fragmentId) => {
+    const audioFile = getAudioUrl(
+      a => a.characterId === fragmentId && a.audioType === 'fragment' && a.voiceId === config.voiceId
+    );
+    if (!audioFile) return;
+    await playAudioToEnd(audioFile.url);
+  };
 
   // For roles with narrationVariants (Rascal/Alien/Exposer/Mortician), picks
   // a weighted-random variant on 'activation' and remembers it for this play
@@ -253,12 +315,7 @@ export default function GameScreen({ config, onGameEnd }) {
     await playAudioToEnd(audioFile.url);
 
     if (audioType !== 'activation' || !targetType) return;
-    const fragmentId = pickTargetFragmentId(targetType);
-    const fragmentFile = getAudioUrl(
-      a => a.characterId === fragmentId && a.audioType === 'fragment' && a.voiceId === config.voiceId
-    );
-    if (!fragmentFile) return;
-    await playAudioToEnd(fragmentFile.url);
+    await playFragmentClip(pickTargetFragmentId(targetType));
   };
 
   const playGameAudio = async (audioType) => {
@@ -276,7 +333,7 @@ export default function GameScreen({ config, onGameEnd }) {
     const track = playlist[musicIndexRef.current % playlist.length];
     const audio = backgroundMusicRef.current;
     audio.src = assetUrl(track.url);
-    audio.volume = musicVolumeRef.current;
+    audio.volume = musicGainRef.current ? 1 : musicVolumeRef.current;
     audio.loop = playlist.length === 1;
     audio.onended = playlist.length > 1
       ? () => {
@@ -316,14 +373,57 @@ export default function GameScreen({ config, onGameEnd }) {
     const vol = parseFloat(e.target.value);
     setMusicVolume(vol);
     musicVolumeRef.current = vol;
-    backgroundMusicRef.current.volume = vol;
+    unlockAudioContext();
+    if (musicGainRef.current) {
+      musicGainRef.current.gain.value = vol;
+    } else {
+      backgroundMusicRef.current.volume = vol;
+    }
   };
 
   const handleNarrationVolumeChange = (e) => {
     const vol = parseFloat(e.target.value);
     setNarrationVolume(vol);
     narrationVolumeRef.current = vol;
-    audioRef.current.volume = vol;
+    unlockAudioContext();
+    if (narrationGainRef.current) {
+      narrationGainRef.current.gain.value = vol;
+    } else {
+      audioRef.current.volume = vol;
+    }
+  };
+
+  const setOracleGuarantee = (value) => {
+    setOracleGuaranteedRipple(value);
+    oracleGuaranteedRippleRef.current = value;
+  };
+
+  // Ripples are never triggered by the narrator - the app rolls for one
+  // itself. Baseline odds are RIPPLE_CHANCE (20%), raised to 100% only if
+  // the Oracle player answered "yes" to the in-game "guarantee a ripple?"
+  // question (see the Oracle prompt rendered during their night turn).
+  const maybePlayRipple = async () => {
+    const chance = oracleGuaranteedRippleRef.current ? 1 : RIPPLE_CHANCE;
+    if (Math.random() >= chance) return;
+
+    const eligible = eligibleRippleEvents(config.selectedCharacters);
+    if (eligible.length === 0) return;
+    const ripple = eligible[Math.floor(Math.random() * eligible.length)];
+
+    await playFragmentClip('ripple_intro');
+    if (cancelledRef.current) return;
+    await playFragmentClip(ripple.id);
+    if (cancelledRef.current) return;
+
+    if (ripple.playerNumbersNeeded) {
+      const playerCount = Math.max(0, config.selectedCharacters.length - 3);
+      const maxN = Math.min(playerCount, MAX_PLAYER_NUMBER_FRAGMENTS);
+      const numbers = pickDistinctPlayerNumbers(maxN, ripple.playerNumbersNeeded);
+      for (const n of numbers) {
+        if (cancelledRef.current) return;
+        await playFragmentClip(playerNumberFragmentId(n));
+      }
+    }
   };
 
   // Picks a noise other than whichever one just played, so the same clip
@@ -379,6 +479,7 @@ export default function GameScreen({ config, onGameEnd }) {
   };
 
   const runGameSequence = async () => {
+    ensureAudioGraph();
     startBackgroundMusic();
 
     setGamePhase('start');
@@ -411,6 +512,9 @@ export default function GameScreen({ config, onGameEnd }) {
 
     setGamePhase('night_end');
     await playGameAudio('night_end');
+    if (cancelledRef.current) return;
+
+    await maybePlayRipple();
     if (cancelledRef.current) return;
 
     setGamePhase('discussion_instructions');
@@ -455,8 +559,8 @@ export default function GameScreen({ config, onGameEnd }) {
 
   const endGame = () => {
     releaseWakeLock();
-    audioRef.current.pause();
-    backgroundMusicRef.current.pause();
+    audioRef.current?.pause();
+    backgroundMusicRef.current?.pause();
   };
 
   // Unmounting (which onGameEnd triggers, by switching screens in App.jsx)
@@ -482,7 +586,6 @@ export default function GameScreen({ config, onGameEnd }) {
   }
 
   const currentCharacter = playOrder[currentIndex];
-  const nextCharacter = playOrder[currentIndex + 1];
   const gameProgress = gamePhase === 'night' ? ((currentIndex + 1) / playOrder.length) * 100 : 100;
 
   const renderPhaseContent = () => {
@@ -524,27 +627,29 @@ export default function GameScreen({ config, onGameEnd }) {
                     <div className="character-name">
                       {characterName(currentCharacter)}
                     </div>
-                    <div className="position-info">
-                      {t('stepOf', { current: currentIndex + 1, total: playOrder.length })}
-                    </div>
+                    {currentCharacter.characterId === 'oracle' && (
+                      <div className="oracle-ripple-prompt">
+                        <p>{t('oracleRipplePrompt')}</p>
+                        <div className="oracle-ripple-buttons">
+                          <button
+                            type="button"
+                            className={`oracle-ripple-button ${oracleGuaranteedRipple ? 'active' : ''}`}
+                            onClick={() => setOracleGuarantee(true)}
+                          >
+                            {t('yesLabel')}
+                          </button>
+                          <button
+                            type="button"
+                            className={`oracle-ripple-button ${!oracleGuaranteedRipple ? 'active' : ''}`}
+                            onClick={() => setOracleGuarantee(false)}
+                          >
+                            {t('noLabel')}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </>
                 )}
-              </div>
-              {nextCharacter && (
-                <div className="next-preview">
-                  <h3>{t('next')}</h3>
-                  <p>{characterName(nextCharacter)}</p>
-                </div>
-              )}
-              <div className="game-stats">
-                <div className="stat">
-                  <span className="stat-label">{t('playersStat')}</span>
-                  <span className="stat-value">{Math.max(0, config.selectedCharacters.length - 3)}</span>
-                </div>
-                <div className="stat">
-                  <span className="stat-label">{t('durationStat')}</span>
-                  <span className="stat-value">{config.duration}s</span>
-                </div>
               </div>
             </div>
           </>

@@ -242,6 +242,24 @@ export const FRAGMENT_SCRIPTS = {
   target_any: '...en hvilken som helst spiller.',
 };
 
+// Ripple ("Forstyrrelse i tiden") announcements - see instruksjoner_alien.txt,
+// "RIPPLE-EFFEKTER". Percentages are the app's observed weights, not
+// something this app rolls automatically yet.
+export const RIPPLE_SCRIPTS = {
+  ripple_intro: 'Det har vært en ripple i tiden!',
+  ripple_time_loop: 'Det har vært en tidssløyfe. Rekkefølgen starter på nytt, men ikke alle roller våkner, og det er igjen tilfeldig hva de gjør.\n\n'
+    + '[Følgende våkner på nytt hvis de er valgt i spillet: Romvesner og Ku, Groob og Zerb, Leder (inkl. Groob og Zerb), Psykisk, Rakker, Avslører, Begravelsesagent.]',
+  ripple_one_minute_left: 'Dere har bare 1 minutt igjen før dere må stemme.',
+  ripple_no_talking: 'Alle sammen! Dere får ikke lov til å snakke før etter avstemningen.',
+  ripple_turn_away: 'Spiller [X], snu deg bort før avstemningen. [Spillernummeret spleises inn fra et isolert spillernummer-klipp.]',
+  ripple_troublemaker_again: 'Bråkmaker får våkne opp igjen og gjøre handlingen sin en gang til. [Krever at Bråkmaker er valgt i runden.]',
+  ripple_witch_again: 'Heks får våkne opp igjen og gjøre handlingen sin en gang til. [Krever at Heks er valgt i runden.]',
+  ripple_view_own_card_one: 'Spiller [X]. Du kan i hemmelighet se på ditt eget kort. [Spillernummeret spleises inn fra et isolert spillernummer-klipp.]',
+  ripple_view_own_card_two: 'Spiller [X] og [Y]. Dere kan i hemmelighet se på deres eget kort. [To spillernummer spleises inn.]',
+  ripple_two_handed_vote: 'Én spiller får stemme med begge hender. [Hvilken spiller er ikke bekreftet ennå - trolig etterfulgt av et spillernummer.]',
+  ripple_you_are_alien: 'Du er nå et romvesen.',
+};
+
 export function getCharacterScript(characterId, audioType) {
   const entry = CHARACTER_SCRIPTS[characterId] || VARIANT_SCRIPTS[characterId];
   if (!entry) return NO_SCRIPT_FOUND;
@@ -250,6 +268,7 @@ export function getCharacterScript(characterId, audioType) {
 
 export function getFragmentScript(fragmentId) {
   if (FRAGMENT_SCRIPTS[fragmentId]) return FRAGMENT_SCRIPTS[fragmentId];
+  if (RIPPLE_SCRIPTS[fragmentId]) return RIPPLE_SCRIPTS[fragmentId];
   const playerMatch = /^player_(\d+)$/.exec(fragmentId || '');
   if (playerMatch) return `Spiller ${playerMatch[1]}.`;
   return NO_SCRIPT_FOUND;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import './AdminPanel.css';
 import { useTranslation } from '../i18n.jsx';
 import { SINGLE_TARGET_FRAGMENTS, MAX_PLAYER_NUMBER_FRAGMENTS, playerNumberFragmentId } from '../data/targetFragments';
+import { RIPPLE_EVENTS } from '../data/rippleEvents';
 import { getCharacterScript, getFragmentScript, GAME_PHASE_SCRIPTS, NO_FIXED_SCRIPT } from '../data/narrationScripts';
 
 // Duplicate roles (varulv_1/varulv_2, ...) share one audio entry
@@ -266,6 +267,8 @@ export default function AdminPanel({ onClose }) {
   const fragmentLabel = (fragmentId) => {
     const target = SINGLE_TARGET_FRAGMENTS.find(f => f.id === fragmentId);
     if (target) return target.norwegianLabel;
+    const ripple = RIPPLE_EVENTS.find(r => r.id === fragmentId);
+    if (ripple) return ripple.norwegianLabel;
     const playerMatch = fragmentId.match(/^player_(\d+)$/);
     if (playerMatch) return `${t('playerNumbersGroupLabel')} ${playerMatch[1]}`;
     return fragmentId;
@@ -488,6 +491,13 @@ export default function AdminPanel({ onClose }) {
                           </option>
                         );
                       })}
+                    </optgroup>
+                    <optgroup label={t('rippleEventsGroupLabel')}>
+                      {RIPPLE_EVENTS.map(ripple => (
+                        <option key={ripple.id} value={ripple.id}>
+                          {fragmentAudioStatus(ripple.id)} {ripple.norwegianLabel}
+                        </option>
+                      ))}
                     </optgroup>
                   </select>
                 </div>

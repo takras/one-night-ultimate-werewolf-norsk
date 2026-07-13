@@ -455,6 +455,46 @@
     "originalName": "recording.webm"
   },
   {
+    "characterId": "droemme_ulv",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "droemme_ulv_activation.webm",
+    "url": "/audio/male_voice_1/droemme_ulv_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "droemme_ulv_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:13:06.846Z"
+    },
+    "end": {
+      "filename": "droemme_ulv_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:13:16.910Z"
+    },
+    "uploadedAt": "2026-07-12T21:13:06.846Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "droemme_ulv",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "droemme_ulv_end.webm",
+    "url": "/audio/male_voice_1/droemme_ulv_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "droemme_ulv_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:13:06.846Z"
+    },
+    "end": {
+      "filename": "droemme_ulv_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:13:16.910Z"
+    },
+    "uploadedAt": "2026-07-12T21:13:16.910Z",
+    "originalName": "recording.webm"
+  },
+  {
     "characterId": "frimurer",
     "audioType": "activation",
     "voiceId": "male_voice_1",
@@ -719,6 +759,151 @@
     "originalName": null
   },
   {
+    "characterId": "paranormal_etterforsker",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "paranormal_etterforsker_activation.webm",
+    "url": "/audio/male_voice_1/paranormal_etterforsker_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "paranormal_etterforsker_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:12:36.809Z"
+    },
+    "end": {
+      "filename": "paranormal_etterforsker_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:12:44.973Z"
+    },
+    "uploadedAt": "2026-07-12T21:12:36.809Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "paranormal_etterforsker",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "paranormal_etterforsker_end.webm",
+    "url": "/audio/male_voice_1/paranormal_etterforsker_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "paranormal_etterforsker_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:12:36.809Z"
+    },
+    "end": {
+      "filename": "paranormal_etterforsker_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:12:44.973Z"
+    },
+    "uploadedAt": "2026-07-12T21:12:44.973Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "player_10_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_10_fragment.webm",
+    "url": "/audio/male_voice_1/player_10_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_1_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_1_fragment.webm",
+    "url": "/audio/male_voice_1/player_1_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_2_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_2_fragment.webm",
+    "url": "/audio/male_voice_1/player_2_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_3_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_3_fragment.webm",
+    "url": "/audio/male_voice_1/player_3_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_4_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_4_fragment.webm",
+    "url": "/audio/male_voice_1/player_4_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_5_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_5_fragment.webm",
+    "url": "/audio/male_voice_1/player_5_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_6_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_6_fragment.webm",
+    "url": "/audio/male_voice_1/player_6_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_7_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_7_fragment.webm",
+    "url": "/audio/male_voice_1/player_7_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_8_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_8_fragment.webm",
+    "url": "/audio/male_voice_1/player_8_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_9_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_9_fragment.webm",
+    "url": "/audio/male_voice_1/player_9_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "rascal_troublemaker",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "rascal_troublemaker_activation.webm",
+    "url": "/audio/male_voice_1/rascal_troublemaker_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "rascal_troublemaker_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-07-12T21:09:24.816Z"
+    },
+    "uploadedAt": "2026-07-12T21:09:24.816Z",
+    "originalName": "recording.webm"
+  },
+  {
     "characterId": "roever",
     "audioType": "activation",
     "voiceId": "male_voice_1",
@@ -797,6 +982,60 @@
     },
     "uploadedAt": "2026-07-11T19:23:22.387Z",
     "originalName": "recording.webm"
+  },
+  {
+    "characterId": "target_any_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_any_fragment.webm",
+    "url": "/audio/male_voice_1/target_any_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_even_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_even_fragment.webm",
+    "url": "/audio/male_voice_1/target_even_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_left_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_left_fragment.webm",
+    "url": "/audio/male_voice_1/target_left_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_lower_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_lower_fragment.webm",
+    "url": "/audio/male_voice_1/target_lower_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_odd_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_odd_fragment.webm",
+    "url": "/audio/male_voice_1/target_odd_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_right_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_right_fragment.webm",
+    "url": "/audio/male_voice_1/target_right_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
   },
   {
     "characterId": "undersaatt",

@@ -5,6 +5,7 @@ import { rolePresets } from '../data/rolePresets';
 import { getCharacters } from '../utils/playOrder';
 import { assetUrl } from '../utils/assetUrl';
 import { getVoices } from '../data/voicesCatalog';
+import { unlockAudioContext } from '../utils/audioContext';
 
 // Static bundle data - no backend needed, works on GitHub Pages
 const allCharacters = getCharacters();
@@ -14,7 +15,6 @@ const GAMES = [
   { id: 'daybreak', image: 'games/daybreak.png' },
   { id: 'alien', image: 'games/alien.png' },
 ];
-const ALL_GAME_IDS = GAMES.map(g => g.id);
 
 export default function HomeScreen({ onStartGame }) {
   const { t, language } = useTranslation();
@@ -27,7 +27,7 @@ export default function HomeScreen({ onStartGame }) {
   const [complexCharacters, setComplexCharacters] = useState([]);
   const [voices, setVoices] = useState([]);
   const [selectedVoiceId, setSelectedVoiceId] = useState('');
-  const [selectedGames, setSelectedGames] = useState(ALL_GAME_IDS);
+  const [selectedGames, setSelectedGames] = useState(['werewolf']);
 
   // Only offer presets whose every character belongs to a currently active
   // game - a preset with even one role from a deselected game is dropped
@@ -115,6 +115,9 @@ export default function HomeScreen({ onStartGame }) {
 
   const handleStartGame = () => {
     if (canStart) {
+      // Must happen synchronously inside this click handler - iOS only
+      // allows unlocking audio playback/volume control from a real gesture
+      unlockAudioContext();
       onStartGame(selectedCharacters, duration, complexCharacters, discussionDuration, selectedVoiceId);
     }
   };
