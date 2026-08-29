@@ -16,18 +16,23 @@ const GAMES = [
   { id: 'alien', image: 'games/alien.png' },
 ];
 
-export default function HomeScreen({ onStartGame }) {
+export default function HomeScreen({
+  onStartGame,
+  selectedCharacters,
+  onSelectedCharactersChange: setSelectedCharacters,
+  complexCharacters,
+  onComplexCharactersChange: setComplexCharacters,
+  selectedGames,
+  onSelectedGamesChange: setSelectedGames,
+}) {
   const { t, language } = useTranslation();
 
   const displayName = (char) =>
     language === 'no' ? char.norwegianName : (char.name || char.norwegianName);
-  const [selectedCharacters, setSelectedCharacters] = useState([]);
   const [duration, setDuration] = useState(5);
   const [discussionDuration, setDiscussionDuration] = useState(120);
-  const [complexCharacters, setComplexCharacters] = useState([]);
   const [voices, setVoices] = useState([]);
   const [selectedVoiceId, setSelectedVoiceId] = useState('');
-  const [selectedGames, setSelectedGames] = useState(['werewolf']);
 
   // Only offer presets whose every character belongs to a currently active
   // game - a preset with even one role from a deselected game is dropped
@@ -104,10 +109,12 @@ export default function HomeScreen({ onStartGame }) {
   };
 
   // A character shows up if it belongs to any currently-selected game -
-  // this is what makes Werewolf/Landsbyboer crossovers appear under either
-  const filteredCharacters = allCharacters.filter(character =>
-    (character.games || []).some(g => selectedGames.includes(g))
-  );
+  // this is what makes Werewolf/Landsbyboer crossovers appear under either.
+  // Sorted by translated (display) name so the grid order follows whichever
+  // language is active.
+  const filteredCharacters = allCharacters
+    .filter(character => (character.games || []).some(g => selectedGames.includes(g)))
+    .sort((a, b) => displayName(a).localeCompare(displayName(b), language === 'no' ? 'nb' : 'en'));
 
   // 3 cards go to the center, so players = selected characters - 3
   const playerCount = Math.max(0, selectedCharacters.length - 3);

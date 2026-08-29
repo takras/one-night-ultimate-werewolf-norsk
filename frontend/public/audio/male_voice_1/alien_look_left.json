@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_look_left",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_look_left_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:36:36.495Z"
+  },
+  "end": {
+    "filename": "alien_look_left_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:36:26.895Z"
+  }
+}

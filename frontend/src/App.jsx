@@ -13,6 +13,11 @@ const AdminPanel = import.meta.env.DEV ? lazy(() => import('./components/AdminPa
 function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
   const [gameConfig, setGameConfig] = useState(null);
+  // Lifted out of HomeScreen so the role selection survives the screen
+  // unmounting/remounting when a game ends and the app returns home.
+  const [selectedCharacters, setSelectedCharacters] = useState([]);
+  const [complexCharacters, setComplexCharacters] = useState([]);
+  const [selectedGames, setSelectedGames] = useState(['werewolf']);
   const { language, changeLanguage, t } = useTranslation();
 
   const handleStartGame = (selectedCharacters, duration, complexCharacters, discussionDuration, voiceId) => {
@@ -73,7 +78,15 @@ function App() {
 
       <div className="app-content">
         {currentScreen === 'home' && (
-          <HomeScreen onStartGame={handleStartGame} />
+          <HomeScreen
+            onStartGame={handleStartGame}
+            selectedCharacters={selectedCharacters}
+            onSelectedCharactersChange={setSelectedCharacters}
+            complexCharacters={complexCharacters}
+            onComplexCharactersChange={setComplexCharacters}
+            selectedGames={selectedGames}
+            onSelectedGamesChange={setSelectedGames}
+          />
         )}
         {currentScreen === 'game' && gameConfig && (
           <GameScreen

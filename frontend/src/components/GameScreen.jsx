@@ -391,6 +391,30 @@ export default function GameScreen({ config, onGameEnd }) {
     await playFragmentClip(pickTargetFragmentId(targetType));
   };
 
+  // Blob has no single fixed target line - who joins the blob depends on
+  // player count (see instruksjoner_alien.txt, "BLOBB"), so it's composed
+  // from the base activation clip + a player-count-specific "who" fragment
+  // + a shared ending, instead of one fixed recording. 5 players reuses the
+  // existing target_right fragment (always the same single player to the
+  // right); 6-7/9 player counts aren't documented, so they fall back to the
+  // "each side" phrasing as the closest match.
+  const playBlobSequence = async () => {
+    await playCharacterAudio('blob', 'activation', 0);
+    if (cancelledRef.current) return;
+
+    const playerCount = Math.max(0, config.selectedCharacters.length - 3);
+    if (playerCount === 5) {
+      await playFragmentClip('target_right');
+    } else if (playerCount === 10) {
+      await playFragmentClip(Math.random() < 0.5 ? 'blob_target_10p_left' : 'blob_target_10p_right');
+    } else {
+      await playFragmentClip('blob_target_8p');
+    }
+    if (cancelledRef.current) return;
+
+    await playFragmentClip('blob_ending');
+  };
+
   const playGameAudio = async (audioType) => {
     const audioFile = getAudioUrl(a => a.audioType === audioType && a.voiceId === config.voiceId);
     if (!audioFile) return;
@@ -581,7 +605,11 @@ export default function GameScreen({ config, onGameEnd }) {
       await maybePlayRandomNoise();
       if (cancelledRef.current) return;
 
-      await playCharacterAudio(entry.characterId, 'activation', i);
+      if (entry.characterId === 'blob') {
+        await playBlobSequence();
+      } else {
+        await playCharacterAudio(entry.characterId, 'activation', i);
+      }
       if (cancelledRef.current) return;
 
       await countdown(entry.duration);

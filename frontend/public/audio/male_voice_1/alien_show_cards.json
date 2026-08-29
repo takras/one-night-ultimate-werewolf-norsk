@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_show_cards",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_show_cards_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:35:43.964Z"
+  },
+  "end": {
+    "filename": "alien_show_cards_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:35:50.536Z"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "characterId": "mortician_one_card",
+  "isComplex": false,
+  "activation": {
+    "filename": "mortician_one_card_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:32:42.747Z"
+  },
+  "end": {
+    "filename": "mortician_one_card_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:33:02.564Z"
+  }
+}

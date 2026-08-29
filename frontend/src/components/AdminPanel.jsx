@@ -4,6 +4,7 @@ import './AdminPanel.css';
 import { useTranslation } from '../i18n.jsx';
 import { SINGLE_TARGET_FRAGMENTS, MAX_PLAYER_NUMBER_FRAGMENTS, playerNumberFragmentId } from '../data/targetFragments';
 import { RIPPLE_EVENTS } from '../data/rippleEvents';
+import { BLOB_FRAGMENTS } from '../data/blobFragments';
 import { getCharacterScript, getFragmentScript, GAME_PHASE_SCRIPTS, NO_FIXED_SCRIPT } from '../data/narrationScripts';
 
 // Duplicate roles (varulv_1/varulv_2, ...) share one audio entry
@@ -254,7 +255,8 @@ export default function AdminPanel({ onClose }) {
   // ✅ when both activation and end audio exist for the selected voice, ⚠️ otherwise
   const characterAudioStatus = (groupId) => {
     const hasActivation = uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'activation' && a.voiceId === selectedVoice);
-    const hasEnd = uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'end' && a.voiceId === selectedVoice);
+    const needsEnd = !characters.find(c => baseCharacterId(c.id) === groupId)?.noEndAudio;
+    const hasEnd = !needsEnd || uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'end' && a.voiceId === selectedVoice);
     return hasActivation && hasEnd ? '✅' : '⚠️';
   };
 
@@ -269,6 +271,8 @@ export default function AdminPanel({ onClose }) {
     if (target) return target.norwegianLabel;
     const ripple = RIPPLE_EVENTS.find(r => r.id === fragmentId);
     if (ripple) return ripple.norwegianLabel;
+    const blobFragment = BLOB_FRAGMENTS.find(f => f.id === fragmentId);
+    if (blobFragment) return blobFragment.norwegianLabel;
     const playerMatch = fragmentId.match(/^player_(\d+)$/);
     if (playerMatch) return `${t('playerNumbersGroupLabel')} ${playerMatch[1]}`;
     return fragmentId;
@@ -333,6 +337,9 @@ export default function AdminPanel({ onClose }) {
     const primaryGame = (char.games && char.games[0]) || 'werewolf';
     (charactersByGame[primaryGame] || (charactersByGame[primaryGame] = [])).push(char);
   });
+  Object.values(charactersByGame).forEach(list =>
+    list.sort((a, b) => displayName(a).localeCompare(displayName(b), language === 'no' ? 'nb' : 'en'))
+  );
 
   return (
     <div className="admin-panel">
@@ -496,6 +503,13 @@ export default function AdminPanel({ onClose }) {
                       {RIPPLE_EVENTS.map(ripple => (
                         <option key={ripple.id} value={ripple.id}>
                           {fragmentAudioStatus(ripple.id)} {ripple.norwegianLabel}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label={t('blobPhrasesGroupLabel')}>
+                      {BLOB_FRAGMENTS.map(fragment => (
+                        <option key={fragment.id} value={fragment.id}>
+                          {fragmentAudioStatus(fragment.id)} {fragment.norwegianLabel}
                         </option>
                       ))}
                     </optgroup>

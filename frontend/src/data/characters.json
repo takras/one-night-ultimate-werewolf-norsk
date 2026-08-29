@@ -315,7 +315,9 @@
         { "id": "alien_stare", "norwegianName": "Romvesner (bare stirr)", "name": "Alien (just stare)", "weight": 15 },
         { "id": "alien_show_cards", "norwegianName": "Romvesner (vis kort)", "name": "Alien (show cards)", "weight": 10 },
         { "id": "alien_look_left", "norwegianName": "Romvesner (se til venstre)", "name": "Alien (look left)", "weight": 5, "targetType": "left" },
-        { "id": "alien_look_right", "norwegianName": "Romvesner (se til høyre)", "name": "Alien (look right)", "weight": 5, "targetType": "right" }
+        { "id": "alien_look_right", "norwegianName": "Romvesner (se til høyre)", "name": "Alien (look right)", "weight": 5, "targetType": "right" },
+        { "id": "alien_lowest_number", "norwegianName": "Romvesner (laveste nummer ser)", "name": "Alien (lowest number looks)", "weight": 2.5 },
+        { "id": "alien_highest_number", "norwegianName": "Romvesner (høyeste nummer ser)", "name": "Alien (highest number looks)", "weight": 2.5 }
       ]
     },
     {
@@ -340,7 +342,8 @@
       "norwegianName": "Blobb",
       "image": "blob.webp",
       "position": null,
-      "games": ["alien"]
+      "games": ["alien"],
+      "noEndAudio": true
     },
     {
       "id": "cow",
@@ -442,7 +445,7 @@
     { "position": 8, "characterId": "zerb" },
     {
       "position": 9,
-      "characterIds": ["varulv_1", "varulv_2", "alfa_ulv", "mystisk_ulv"]
+      "characterIds": ["varulv_1", "varulv_2", "alfa_ulv", "mystisk_ulv", "droemme_ulv"]
     },
     { "position": 10, "characterId": "undersaatt" },
     { "position": 11, "characterId": "garver_laerling" },

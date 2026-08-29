@@ -109,7 +109,9 @@ export const CHARACTER_SCRIPTS = {
     activation: 'Romvesner, våkn opp.\n\nÉn av følgende, tilfeldig valgt av appen (se de enkelte variantene i rollelisten for nøyaktig tekst per variant):\n'
       + '  Én romvesen ser i hemmelighet på et kort (30%)\n  Alle romvesner ser i hemmelighet på et kort (30%)\n'
       + '  Bare stirr på hverandre (15%)\n  Vis kortene til hverandre (10%)\n'
-      + '  Se på spilleren til venstre for deg (5%)\n  Se på spilleren til høyre for deg (5%)\n\n'
+      + '  Se på spilleren til venstre for deg (5%)\n  Se på spilleren til høyre for deg (5%)\n'
+      + '  Romvesenet med laveste nummer kan se hvilket som helst kort (2,5%)\n'
+      + '  Romvesenet med høyeste nummer kan se hvilket som helst kort (2,5%)\n\n'
       + '--- Ku (mens romvesnene fortsatt er våkne) ---\n[Ku lukker øynene HER, mens Romvesnene ennå ikke har lukket sine.]\n'
       + 'Ku, våkn opp og hold frem knyttneven. [Hvis en romvesen sitter ved siden av Ku, tipper en av dem kua ved å trykke på knyttneven hennes.]\n'
       + 'Ku, legg ned neven. Ku, lukk øynene.',
@@ -152,11 +154,8 @@ export const CHARACTER_SCRIPTS = {
     end: 'Avslører, lukk øynene.',
   },
   blob: {
-    activation: '[Blobb våkner ikke - ingen "våkn opp"/"lukk øynene" trengs. Teksten avhenger av antall spillere; velges IKKE automatisk av appen ennå, så les den som passer runden:]\n\n'
-      + 'A (ved 8+ spillere): Spilleren på hver side av deg er nå del av blobben. Hold deg selv og dem i live for å vinne.\n\n'
-      + 'B (ved 10 spillere): De fire spillerne til [høyre/venstre] for deg (tilfeldig valgt) er nå blobben. Hold deg selv og dem i live for å vinne.\n\n'
-      + 'C (ved 5 spillere): Spilleren til høyre for deg er nå blobben. Hold deg selv og dem i live for å vinne.',
-    end: '[Ingen "lukk øynene"-replikk - Blobb våkner aldri.]',
+    activation: 'Blobb, våkn opp. [Kun denne åpningslinjen - hvem som blir del av blobben spleises automatisk inn etterpå fra egne fragment-opptak (se "Fragment"-kategorien: 8-9 spillere, 10 spillere venstre/høyre, og en felles avslutningslinje), avhengig av antall spillere. Ved 5 spillere gjenbrukes "Spilleren til høyre"-fragmentet fra målfrasene.]',
+    end: '[Ingen egen "slutt"-lyd trengs - avslutningslinjen er del av fragment-sekvensen over.]',
   },
   mortician: {
     activation: 'Begravelsesagent, våkn opp. Du kan se på kortet til [se de enkelte variantene i rollelisten for nøyaktig tekst per variant: 1 kort 70%, 2 kort 25%, "later som" 5%].',
@@ -191,6 +190,8 @@ export const VARIANT_SCRIPTS = {
   alien_show_cards: { activation: 'Romvesner: vis kortene til hverandre.', end: 'Romvesner, lukk øynene.' },
   alien_look_left: { activation: 'Romvesner, se på spilleren til venstre for deg.', end: 'Romvesner, lukk øynene.' },
   alien_look_right: { activation: 'Romvesner, se på spilleren til høyre for deg.', end: 'Romvesner, lukk øynene.' },
+  alien_lowest_number: { activation: 'Romvesenet med laveste nummer kan se på hvilket som helst kort.', end: 'Romvesner, lukk øynene.' },
+  alien_highest_number: { activation: 'Romvesenet med høyeste nummer kan se på hvilket som helst kort.', end: 'Romvesner, lukk øynene.' },
 
   rascal_troublemaker: {
     activation: 'Rakker: bytt om kortene til [gjenbrukbar målfrase - to spillere, tilfeldig valgt av appen].',
@@ -260,6 +261,15 @@ export const RIPPLE_SCRIPTS = {
   ripple_you_are_alien: 'Du er nå et romvesen.',
 };
 
+// Blob's "who joins the blob" text, composed at runtime depending on
+// player count - see instruksjoner_alien.txt, "BLOBB"
+export const BLOB_SEQUENCE_SCRIPTS = {
+  blob_target_8p: 'Spillerne på hver side av deg',
+  blob_target_10p_left: 'De fire spillerne til venstre for deg',
+  blob_target_10p_right: 'De fire spillerne til høyre for deg',
+  blob_ending: '...er nå også del av blobben. Hold deg selv og dem i live for å vinne.',
+};
+
 export function getCharacterScript(characterId, audioType) {
   const entry = CHARACTER_SCRIPTS[characterId] || VARIANT_SCRIPTS[characterId];
   if (!entry) return NO_SCRIPT_FOUND;
@@ -269,6 +279,7 @@ export function getCharacterScript(characterId, audioType) {
 export function getFragmentScript(fragmentId) {
   if (FRAGMENT_SCRIPTS[fragmentId]) return FRAGMENT_SCRIPTS[fragmentId];
   if (RIPPLE_SCRIPTS[fragmentId]) return RIPPLE_SCRIPTS[fragmentId];
+  if (BLOB_SEQUENCE_SCRIPTS[fragmentId]) return BLOB_SEQUENCE_SCRIPTS[fragmentId];
   const playerMatch = /^player_(\d+)$/.exec(fragmentId || '');
   if (playerMatch) return `Spiller ${playerMatch[1]}.`;
   return NO_SCRIPT_FOUND;

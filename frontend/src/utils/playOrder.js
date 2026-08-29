@@ -48,6 +48,7 @@ export function buildPlayOrder(selectedIds, baseDuration, complexCharacters) {
           position: position,
           duration: duration,
           isComplex: isComplex,
+          skipEndAudio: character.noEndAudio || false,
         });
 
         // Doppelgänger + Minion: the base slot keeps its normal activation,

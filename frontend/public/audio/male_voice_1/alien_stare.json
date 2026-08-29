@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_stare",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_stare_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:35:19.019Z"
+  },
+  "end": {
+    "filename": "alien_stare_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-07-14T09:35:26.648Z"
+  }
+}
