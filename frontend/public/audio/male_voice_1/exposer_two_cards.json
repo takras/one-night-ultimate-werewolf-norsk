@@ -1,0 +1,14 @@
+{
+  "characterId": "exposer_two_cards",
+  "isComplex": false,
+  "activation": {
+    "filename": "exposer_two_cards_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:31:38.264Z"
+  },
+  "end": {
+    "filename": "exposer_two_cards_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:31:54.990Z"
+  }
+}

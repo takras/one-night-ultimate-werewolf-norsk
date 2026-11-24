@@ -1,0 +1,40 @@
+!(function (w, d) {
+    "use strict";
+
+    const NOW = 1 * new Date();
+    const P = '158';
+    const AU_SEG = {'segments': ['AU_SEG_TEST_0001']};
+
+    function getCache() {
+        if (typeof (Storage) !== 'undefined') {
+            let item = w.localStorage.getItem('au/seg');
+            if (item) {
+                item = JSON.parse(item);
+                const expireAt = item['e'];
+                if (expireAt > NOW) {
+                    return item['v'];
+                }
+            }
+        }
+        return null;
+    }
+
+    function responseHandler(response) {
+        // default behaviour saves segments in the window context
+        w.au_seg = response;
+
+        // trigger custom event to notify other libraries that the data is ready
+        d.dispatchEvent(new CustomEvent('auSegReady', { 'detail': response }));
+    }
+
+    const cres = getCache();
+    if (cres === null) {
+        console.log('[Audigent/' + P + '] Segment Service > Cache Miss');
+
+        responseHandler(AU_SEG);
+    } else {
+        console.log('[Audigent/' + P + '] Segment Service > Cache Hit');
+
+        responseHandler(cres);
+    }
+})(window, document);

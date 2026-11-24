@@ -44,9 +44,9 @@ galt.]
   hvis Orakelet dør."
   Riktig: [ikke observert ennå]
 
-"Vil du garantere en ripple?" (5%)
-  Ja: "OK, det blir en ripple." [ripple-typen bestemmes og vises i appen]
-  Nei: "Seriøst, hvorfor ikke? OK, greit." [det kan likevel bli en ripple]
+"Vil du garantere en tidsbølge?" (5%)
+  Ja: "OK, det blir en tidsbølge." [tidsbølge-typen bestemmes og vises i appen]
+  Nei: "Seriøst, hvorfor ikke? OK, greit." [det kan likevel bli en tidsbølge]
 
 "Vil du bli med på romvesen-laget?" (15%)
   Ja: [ikke observert ennå]
@@ -180,16 +180,16 @@ Begravelsesagent, våkn opp. Du kan se på kortet til:
 Begravelsesagent, lukk øynene.
 
 ====================================================================
-RIPPLE-EFFEKTER
+TIDSBØLGE-EFFEKTER
 ====================================================================
 Sannsynlighetene under er hentet fra appens variabler og summerer ikke
-til 100% - sannsynligvis fordi enkelte ripple-typer (Bråkmaker, Heks)
+til 100% - sannsynligvis fordi enkelte tidsbølge-typer (Bråkmaker, Heks)
 bare er mulige når den tilhørende rollen faktisk er valgt i den
 pågående runden, og resten fordeles på nytt blant de gyldige valgene.
 
-Når en ripple inntreffer: "Det har vært en ripple i tiden!"
+Når en tidsbølge inntreffer: "Det har vært en tidsbølge!"
 
-  Ingen ripple (20%)
+  Ingen tidsbølge (20%)
 
   Tidssløyfe (5%): "Det har vært en tidssløyfe. Rekkefølgen starter på
   nytt, men ikke alle roller våkner, og det er igjen tilfeldig hva de
@@ -272,7 +272,7 @@ stedet for å spille inn hver fulle kombinasjon separat:
   - "...en spiller med lavere nummer enn deg."
   - "...en hvilken som helst spiller."
 
-For "se eget kort"-ripplene trengs i tillegg isolerte spillernummer-
+For "se eget kort"-tidsbølgene trengs i tillegg isolerte spillernummer-
 klipp (spiller 1, spiller 2, spiller 3, ...) som kan settes sammen til
 "Spiller [X] (og [Y])" ved avspilling, siden hvilke spillere som
 velges er tilfeldig og varierer fra spill til spill.

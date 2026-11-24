@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_all_view",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_all_view_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:04:31.890Z"
+  },
+  "end": {
+    "filename": "alien_all_view_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:04:38.985Z"
+  }
+}

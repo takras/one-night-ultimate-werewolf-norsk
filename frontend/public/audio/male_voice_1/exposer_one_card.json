@@ -1,0 +1,14 @@
+{
+  "characterId": "exposer_one_card",
+  "isComplex": false,
+  "activation": {
+    "filename": "exposer_one_card_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:30:37.513Z"
+  },
+  "end": {
+    "filename": "exposer_one_card_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:30:44.485Z"
+  }
+}

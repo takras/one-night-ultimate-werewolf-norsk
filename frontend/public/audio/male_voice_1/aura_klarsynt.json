@@ -1,0 +1,14 @@
+{
+  "characterId": "aura_klarsynt",
+  "isComplex": false,
+  "activation": {
+    "filename": "aura_klarsynt_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T09:15:10.681Z"
+  },
+  "end": {
+    "filename": "aura_klarsynt_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T09:15:29.406Z"
+  }
+}

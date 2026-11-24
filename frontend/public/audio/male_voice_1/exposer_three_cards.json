@@ -1,0 +1,14 @@
+{
+  "characterId": "exposer_three_cards",
+  "isComplex": false,
+  "activation": {
+    "filename": "exposer_three_cards_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:32:12.683Z"
+  },
+  "end": {
+    "filename": "exposer_three_cards_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:32:19.519Z"
+  }
+}

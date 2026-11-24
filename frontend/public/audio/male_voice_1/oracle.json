@@ -1,0 +1,14 @@
+{
+  "characterId": "oracle",
+  "isComplex": false,
+  "activation": {
+    "filename": "oracle_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:02:58.954Z"
+  },
+  "end": {
+    "filename": "oracle_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:03:05.607Z"
+  }
+}

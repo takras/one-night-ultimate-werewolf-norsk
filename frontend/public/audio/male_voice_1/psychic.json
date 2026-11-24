@@ -1,0 +1,14 @@
+{
+  "characterId": "psychic",
+  "isComplex": false,
+  "activation": {
+    "filename": "psychic_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:03:20.853Z"
+  },
+  "end": {
+    "filename": "psychic_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:03:29.060Z"
+  }
+}

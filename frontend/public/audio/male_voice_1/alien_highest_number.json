@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_highest_number",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_highest_number_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:05:51.186Z"
+  },
+  "end": {
+    "filename": "alien_highest_number_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:05:59.370Z"
+  }
+}

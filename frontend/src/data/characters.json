@@ -9,7 +9,7 @@
       "games": ["daybreak"]
     },
     {
-      "id": "dobbeltgjenger",
+      "id": "dobbeltgjenger", "defaultComplex": true,
       "name": "Doppelgänger",
       "norwegianName": "Dobbeltgjenger",
       "image": "dobbeltgjenger.webp",
@@ -261,7 +261,7 @@
       "games": ["daybreak"]
     },
     {
-      "id": "paranormal_etterforsker",
+      "id": "paranormal_etterforsker", "defaultComplex": true,
       "name": "Paranormal Investigator",
       "norwegianName": "Paranormal Etterforsker",
       "image": "paranormal_etterforsker.webp",
@@ -310,14 +310,15 @@
       "position": null,
       "games": ["alien"],
       "narrationVariants": [
-        { "id": "alien_view_secretly", "norwegianName": "Romvesner (én ser hemmelig)", "name": "Alien (one views secretly)", "weight": 30 },
-        { "id": "alien_all_view", "norwegianName": "Romvesner (alle ser hemmelig)", "name": "Alien (all view secretly)", "weight": 30 },
+        { "id": "alien_view_secretly", "norwegianName": "Romvesner (én ser hemmelig)", "name": "Alien (one views secretly)", "weight": 30, "targetType": "view" },
+        { "id": "alien_all_view", "norwegianName": "Romvesner (alle ser hemmelig)", "name": "Alien (all view secretly)", "weight": 30, "targetType": "view" },
         { "id": "alien_stare", "norwegianName": "Romvesner (bare stirr)", "name": "Alien (just stare)", "weight": 15 },
         { "id": "alien_show_cards", "norwegianName": "Romvesner (vis kort)", "name": "Alien (show cards)", "weight": 10 },
-        { "id": "alien_look_left", "norwegianName": "Romvesner (se til venstre)", "name": "Alien (look left)", "weight": 5, "targetType": "left" },
-        { "id": "alien_look_right", "norwegianName": "Romvesner (se til høyre)", "name": "Alien (look right)", "weight": 5, "targetType": "right" },
-        { "id": "alien_lowest_number", "norwegianName": "Romvesner (laveste nummer ser)", "name": "Alien (lowest number looks)", "weight": 2.5 },
-        { "id": "alien_highest_number", "norwegianName": "Romvesner (høyeste nummer ser)", "name": "Alien (highest number looks)", "weight": 2.5 }
+        { "id": "alien_pass_left", "norwegianName": "Romvesner (gi kort til venstre)", "name": "Alien (pass card left)", "weight": 5 },
+        { "id": "alien_pass_right", "norwegianName": "Romvesner (gi kort til høyre)", "name": "Alien (pass card right)", "weight": 5 },
+        { "id": "alien_timer", "norwegianName": "Romvesner (halvert tid)", "name": "Alien (timer halved)", "weight": 5 },
+        { "id": "alien_new_alien", "norwegianName": "Romvesner (nytt romvesen)", "name": "Alien (new alien)", "weight": 0 },
+        { "id": "alien_helper", "norwegianName": "Romvesner (romvesen-hjelper)", "name": "Alien (alien helper)", "weight": 0 }
       ]
     },
     {
@@ -334,7 +335,8 @@
       "norwegianName": "Syntetisk Romvesen",
       "image": "synthetic_alien.webp",
       "position": null,
-      "games": ["alien"]
+      "games": ["alien"],
+      "noNightAction": true
     },
     {
       "id": "blob",
@@ -367,7 +369,7 @@
       ]
     },
     {
-      "id": "groob_alien",
+      "id": "groob_alien", "defaultComplex": true,
       "name": "Groob",
       "norwegianName": "Groob (Romvesen)",
       "image": "groob_alien.webp",
@@ -390,18 +392,33 @@
       "position": null,
       "games": ["alien"],
       "narrationVariants": [
-        { "id": "mortician_one_card", "norwegianName": "Begravelsesagent (ett kort)", "name": "Mortician (one card)", "weight": 70 },
+        { "id": "mortician_one_card", "norwegianName": "Begravelsesagent (nabo etter eget valg)", "name": "Mortician (neighbor of choice)", "weight": 25 },
+        { "id": "mortician_neighbor_left", "norwegianName": "Begravelsesagent (nabo til venstre)", "name": "Mortician (left neighbor)", "weight": 12.5, "targetType": "left" },
+        { "id": "mortician_neighbor_right", "norwegianName": "Begravelsesagent (nabo til høyre)", "name": "Mortician (right neighbor)", "weight": 12.5, "targetType": "right" },
+        { "id": "mortician_own_card", "norwegianName": "Begravelsesagent (eget kort)", "name": "Mortician (own card)", "weight": 20 },
         { "id": "mortician_two_cards", "norwegianName": "Begravelsesagent (to kort)", "name": "Mortician (two cards)", "weight": 25 },
         { "id": "mortician_pretend", "norwegianName": "Begravelsesagent (later som)", "name": "Mortician (pretend)", "weight": 5 }
       ]
     },
     {
-      "id": "oracle",
+      "id": "oracle", "defaultComplex": true,
       "name": "Oracle",
       "norwegianName": "Orakel",
       "image": "oracle.webp",
       "position": null,
-      "games": ["alien"]
+      "games": ["alien"],
+      "narrationFallbackVariantId": "oracle_number",
+      "narrationVariants": [
+        { "id": "oracle_change_team_werewolf", "norwegianName": "Orakel (bytt til varulv-laget)", "name": "Oracle (join werewolf team)", "weight": 22.5, "group": "change_team", "requiresAnyOf": ["varulv_1", "varulv_2", "alfa_ulv", "mystisk_ulv", "droemme_ulv"] },
+        { "id": "oracle_change_team_alien", "norwegianName": "Orakel (bytt til romvesen-laget)", "name": "Oracle (join alien team)", "weight": 22.5, "group": "change_team", "requiresAnyOf": ["alien_1", "alien_2", "groob_alien", "zerb"] },
+        { "id": "oracle_alien_exchange", "norwegianName": "Orakel (romvesen-bytte)", "name": "Oracle (alien exchange)", "weight": 0, "requiresAtLeast": 2, "requiresAnyOf": ["alien_1", "synthetic_alien", "groob_alien", "zerb"] },
+        { "id": "oracle_exchange", "norwegianName": "Orakel (Dranker-handling)", "name": "Oracle (Drunk action)", "weight": 10 },
+        { "id": "oracle_center", "norwegianName": "Orakel (se i midten)", "name": "Oracle (view center)", "weight": 10 },
+        { "id": "oracle_ripple", "norwegianName": "Orakel (garanter tidsbølge)", "name": "Oracle (guarantee ripple)", "weight": 10, "requiresAnyOf": ["alien_1", "alien_2", "groob_alien", "zerb"] },
+        { "id": "oracle_even_odd", "norwegianName": "Orakel (partall/oddetall)", "name": "Oracle (even/odd)", "weight": 10 },
+        { "id": "oracle_player_number", "norwegianName": "Orakel (spillernummer)", "name": "Oracle (player number)", "weight": 10 },
+        { "id": "oracle_number", "norwegianName": "Orakel (gjett tallet)", "name": "Oracle (guess the number)", "weight": 5 }
+      ]
     },
     {
       "id": "psychic",
@@ -410,7 +427,10 @@
       "image": "psychic.webp",
       "position": null,
       "games": ["alien"],
-      "targetType": "single"
+      "narrationVariants": [
+        { "id": "psychic_one_card", "norwegianName": "Psykisk (ett kort)", "name": "Psychic (one card)", "weight": 100, "targetType": "psychic", "cardCount": 1 },
+        { "id": "psychic_two_cards", "norwegianName": "Psykisk (to kort)", "name": "Psychic (two cards)", "weight": 0, "targetType": "psychic", "cardCount": 2 }
+      ]
     },
     {
       "id": "rascal",
@@ -422,11 +442,13 @@
       "narrationVariants": [
         { "id": "rascal_troublemaker", "norwegianName": "Rakker (Bråkmaker-variant)", "name": "Rascal (Troublemaker variant)", "weight": 40 },
         { "id": "rascal_robber", "norwegianName": "Rakker (Røver-variant)", "name": "Rascal (Robber variant)", "weight": 30, "targetType": "single" },
-        { "id": "rascal_witch", "norwegianName": "Rakker (Heks-variant)", "name": "Rascal (Witch variant)", "weight": 30, "targetType": "single" }
+        { "id": "rascal_witch", "norwegianName": "Rakker (Heks-variant)", "name": "Rascal (Witch variant)", "weight": 30, "targetType": "single" },
+        { "id": "rascal_village_idiot", "norwegianName": "Rakker (Landsbyidiot-variant)", "name": "Rascal (Village Idiot variant)", "weight": 0 },
+        { "id": "rascal_drunk", "norwegianName": "Rakker (Dranker-variant)", "name": "Rascal (Drunk variant)", "weight": 0 }
       ]
     },
     {
-      "id": "zerb",
+      "id": "zerb", "defaultComplex": true,
       "name": "Zerb",
       "norwegianName": "Zerb (Romvesen)",
       "image": "zerb.webp",
@@ -439,7 +461,6 @@
     { "position": 2, "characterId": "dobbeltgjenger" },
     { "position": 3, "characterId": "vakt" },
     { "position": 4, "characterIds": ["alien_1", "alien_2"] },
-    { "position": 5, "characterId": "synthetic_alien" },
     { "position": 6, "characterId": "cow" },
     { "position": 7, "characterId": "groob_alien" },
     { "position": 8, "characterId": "zerb" },

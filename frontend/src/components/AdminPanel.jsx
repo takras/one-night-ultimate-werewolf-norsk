@@ -5,6 +5,7 @@ import { useTranslation } from '../i18n.jsx';
 import { SINGLE_TARGET_FRAGMENTS, MAX_PLAYER_NUMBER_FRAGMENTS, playerNumberFragmentId } from '../data/targetFragments';
 import { RIPPLE_EVENTS } from '../data/rippleEvents';
 import { BLOB_FRAGMENTS } from '../data/blobFragments';
+import { FRAGMENT_LINKS } from '../data/fragmentLinks';
 import { getCharacterScript, getFragmentScript, GAME_PHASE_SCRIPTS, NO_FIXED_SCRIPT } from '../data/narrationScripts';
 
 // Duplicate roles (varulv_1/varulv_2, ...) share one audio entry
@@ -252,8 +253,20 @@ export default function AdminPanel({ onClose }) {
     return char ? displayName(char) : id;
   };
 
+  // Roles whose narration is picked among variants (Alien, Oracle, Exposer,
+  // Mortician, Rascal, Psychic) are only an overview here: nothing is
+  // recorded under the role itself, each variant is recorded on its own
+  const isOverviewRole = (groupId) =>
+    characters.some(c => baseCharacterId(c.id) === groupId && c.narrationVariants);
+  const overviewVariants = (groupId) =>
+    characters.find(c => baseCharacterId(c.id) === groupId)?.narrationVariants || [];
+
   // ✅ when both activation and end audio exist for the selected voice, ⚠️ otherwise
+  // (overview roles: ✅ only once every variant with a chance above 0% is recorded)
   const characterAudioStatus = (groupId) => {
+    if (isOverviewRole(groupId)) {
+      return overviewVariants(groupId).filter(v => v.weight > 0).every(v => characterAudioStatus(v.id) === '✅') ? '✅' : '📋';
+    }
     const hasActivation = uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'activation' && a.voiceId === selectedVoice);
     const needsEnd = !characters.find(c => baseCharacterId(c.id) === groupId)?.noEndAudio;
     const hasEnd = !needsEnd || uploadedAudio.some(a => a.characterId === groupId && a.audioType === 'end' && a.voiceId === selectedVoice);
@@ -422,7 +435,7 @@ export default function AdminPanel({ onClose }) {
                       <optgroup key={gameId} label={t(`game_${gameId}`)}>
                         {charactersByGame[gameId].map(char => (
                           <option key={char.id} value={char.id}>
-                            {characterAudioStatus(char.id)} {displayName(char)}
+                            {characterAudioStatus(char.id)} {displayName(char)}{isOverviewRole(char.id) ? ` (${t('overviewSuffix')})` : ''}
                           </option>
                         ))}
                       </optgroup>
@@ -430,6 +443,16 @@ export default function AdminPanel({ onClose }) {
                   </select>
                 </div>
 
+                {isOverviewRole(selectedCharacter) ? (
+                  <div className="info-box">
+                    <p>{t('overviewRoleInfo')}</p>
+                    <ul>
+                      {overviewVariants(selectedCharacter).map(v => (
+                        <li key={v.id}>{characterAudioStatus(v.id)} {displayName(v)} ({v.weight}%)</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (<>
                 <div className="form-group">
                   <label>{t('audioTypeLabel')}</label>
                   <select 
@@ -453,6 +476,7 @@ export default function AdminPanel({ onClose }) {
                     <span>{t('complexCharacterOption')}</span>
                   </label>
                 </div>
+                </>)}
               </>
             )}
 
@@ -533,6 +557,22 @@ export default function AdminPanel({ onClose }) {
               </div>
             )}
 
+            {audioTypeCategory === 'character' && FRAGMENT_LINKS[selectedCharacter] && (
+              <div className="info-box">
+                <p>{t('fragmentLinkInfo')}</p>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setSelectedFragment(FRAGMENT_LINKS[selectedCharacter]);
+                    setAudioTypeCategory('fragment');
+                  }}
+                >
+                  {t('fragmentLinkButton')}
+                </button>
+              </div>
+            )}
+
             {currentScript() && (
               <div className="form-group">
                 <label>{t('scriptLabel')}</label>
@@ -540,6 +580,7 @@ export default function AdminPanel({ onClose }) {
               </div>
             )}
 
+            {!(audioTypeCategory === 'character' && isOverviewRole(selectedCharacter)) && (<>
             {/* Recording Controls */}
             <div className="recording-controls">
               {recordingState === 'idle' && !recordedBlob && (
@@ -602,6 +643,7 @@ export default function AdminPanel({ onClose }) {
                 disabled={recordingState === 'recording' || uploading}
               />
             </div>
+            </>)}
 
             {/* Status Message */}
             {message && (

@@ -1,0 +1,14 @@
+{
+  "characterId": "groob_alien",
+  "isComplex": false,
+  "activation": {
+    "filename": "groob_alien_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:57:27.644Z"
+  },
+  "end": {
+    "filename": "groob_alien_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:57:34.475Z"
+  }
+}

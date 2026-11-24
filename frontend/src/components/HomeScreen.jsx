@@ -5,10 +5,29 @@ import { rolePresets } from '../data/rolePresets';
 import { getCharacters } from '../utils/playOrder';
 import { assetUrl } from '../utils/assetUrl';
 import { getVoices } from '../data/voicesCatalog';
+import { getAudioCatalog } from '../data/audioCatalog';
 import { unlockAudioContext } from '../utils/audioContext';
 
 // Static bundle data - no backend needed, works on GitHub Pages
 const allCharacters = getCharacters();
+
+// Same grouping the play order uses: duplicates (varulv_1/varulv_2) share
+// one recording under the base id
+const baseCharacterId = (id) => id.replace(/_\d+$/, '');
+
+// A role is playable with a voice when that voice has an activation clip for
+// it - either the role's own clip, or (for roles whose narration is picked
+// among variants, e.g. Alien or Oracle) a clip for at least one variant.
+// Roles with no night action need no recording at all. Until the catalog and voice have
+// loaded nothing is treated as missing, to avoid a flash of greyed-out
+// cards.
+function hasRecording(character, audioCatalog, voiceId) {
+  if (character.noNightAction || !audioCatalog || !voiceId) return true;
+  const ids = new Set([baseCharacterId(character.id), ...(character.narrationVariants || []).map(v => v.id)]);
+  return audioCatalog.some(
+    a => ids.has(a.characterId) && a.audioType === 'activation' && a.voiceId === voiceId
+  );
+}
 
 const GAMES = [
   { id: 'werewolf', image: 'games/werewolf.png' },
@@ -33,13 +52,16 @@ export default function HomeScreen({
   const [discussionDuration, setDiscussionDuration] = useState(120);
   const [voices, setVoices] = useState([]);
   const [selectedVoiceId, setSelectedVoiceId] = useState('');
+  const [audioCatalog, setAudioCatalog] = useState(null);
+
+  const isMissing = (character) => !hasRecording(character, audioCatalog, selectedVoiceId);
 
   // Only offer presets whose every character belongs to a currently active
   // game - a preset with even one role from a deselected game is dropped
   const availablePresets = rolePresets.filter(preset =>
     preset.characterIds.every(id => {
       const character = allCharacters.find(c => c.id === id);
-      return character && (character.games || []).some(g => selectedGames.includes(g));
+      return character && (character.games || []).some(g => selectedGames.includes(g)) && !isMissing(character);
     })
   );
   const presetsByPlayerCount = availablePresets.reduce((acc, preset) => {
@@ -49,6 +71,22 @@ export default function HomeScreen({
   const presetPlayerCounts = Object.keys(presetsByPlayerCount).map(Number).sort((a, b) => a - b);
 
   const [presetPlayerCount, setPresetPlayerCount] = useState(presetPlayerCounts[0]);
+
+  useEffect(() => {
+    getAudioCatalog().then(setAudioCatalog);
+  }, []);
+
+  // Changing voice (or the catalog loading) can make selected roles
+  // unplayable - drop them from the selection instead of starting a game
+  // that would stay silent for them
+  useEffect(() => {
+    if (!audioCatalog || !selectedVoiceId) return;
+    const missingIds = new Set(allCharacters.filter(isMissing).map(c => c.id));
+    if (missingIds.size === 0) return;
+    setSelectedCharacters(prev => (prev.some(id => missingIds.has(id)) ? prev.filter(id => !missingIds.has(id)) : prev));
+    setComplexCharacters(prev => (prev.some(id => missingIds.has(id)) ? prev.filter(id => !missingIds.has(id)) : prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioCatalog, selectedVoiceId]);
 
   useEffect(() => {
     getVoices().then(list => {
@@ -66,14 +104,21 @@ export default function HomeScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGames]);
 
+  // Roles flagged defaultComplex (Doppelgänger, Paranormal Investigator,
+  // Oracle, Groob/Zerb) start with "double time" on when selected; it can
+  // still be switched off per role afterwards
+  const isDefaultComplex = (id) => !!allCharacters.find(c => c.id === id)?.defaultComplex;
+
   const toggleCharacter = (characterId) => {
-    setSelectedCharacters(prev => {
-      if (prev.includes(characterId)) {
-        return prev.filter(id => id !== characterId);
-      } else {
-        return [...prev, characterId];
-      }
-    });
+    const adding = !selectedCharacters.includes(characterId);
+    setSelectedCharacters(prev =>
+      prev.includes(characterId) ? prev.filter(id => id !== characterId) : [...prev, characterId]
+    );
+    if (adding && isDefaultComplex(characterId)) {
+      setComplexCharacters(prev => (prev.includes(characterId) ? prev : [...prev, characterId]));
+    } else if (!adding) {
+      setComplexCharacters(prev => prev.filter(id => id !== characterId));
+    }
   };
 
   const toggleComplex = (characterId) => {
@@ -88,7 +133,7 @@ export default function HomeScreen({
 
   const applyPreset = (preset) => {
     setSelectedCharacters(preset.characterIds);
-    setComplexCharacters([]);
+    setComplexCharacters(preset.characterIds.filter(isDefaultComplex));
   };
 
   const toggleGame = (gameId) => {
@@ -112,9 +157,13 @@ export default function HomeScreen({
   // this is what makes Werewolf/Landsbyboer crossovers appear under either.
   // Sorted by translated (display) name so the grid order follows whichever
   // language is active.
-  const filteredCharacters = allCharacters
+  const visibleCharacters = allCharacters
     .filter(character => (character.games || []).some(g => selectedGames.includes(g)))
     .sort((a, b) => displayName(a).localeCompare(displayName(b), language === 'no' ? 'nb' : 'en'));
+  // Roles without a recording for the chosen voice can't be played, so they
+  // move to their own greyed-out, unselectable section below the rest
+  const filteredCharacters = visibleCharacters.filter(c => !isMissing(c));
+  const missingCharacters = visibleCharacters.filter(isMissing);
 
   // 3 cards go to the center, so players = selected characters - 3
   const playerCount = Math.max(0, selectedCharacters.length - 3);
@@ -244,7 +293,7 @@ export default function HomeScreen({
             ))}
           </div>
 
-          {filteredCharacters.length === 0 && (
+          {visibleCharacters.length === 0 && (
             <p className="no-roles-match">{t('noRolesMatchFilter')}</p>
           )}
 
@@ -288,6 +337,30 @@ export default function HomeScreen({
               </div>
             ))}
           </div>
+
+          {missingCharacters.length > 0 && (
+            <>
+              <h3 className="missing-recording-header">{t('missingRecordingHeader')} ({missingCharacters.length})</h3>
+              <div className="grid">
+                {missingCharacters.map(character => (
+                  <div key={character.id} className="character-card missing" aria-disabled="true">
+                    <div className="character-image">
+                      <img
+                        src={assetUrl(`karakterer/${character.image}`)}
+                        alt={displayName(character)}
+                        onError={(e) => {
+                          e.target.src = assetUrl('karakterer/livvakt.webp');
+                        }}
+                      />
+                    </div>
+                    <div className="character-info">
+                      <h3>{displayName(character)}</h3>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </section>
       </div>
     </div>

@@ -1,0 +1,14 @@
+{
+  "characterId": "mortician_pretend",
+  "isComplex": false,
+  "activation": {
+    "filename": "mortician_pretend_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:33:03.555Z"
+  },
+  "end": {
+    "filename": "mortician_pretend_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T11:33:12.293Z"
+  }
+}

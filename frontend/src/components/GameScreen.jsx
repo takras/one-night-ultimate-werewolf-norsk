@@ -6,8 +6,9 @@ import { getAudioCatalog } from '../data/audioCatalog';
 import { assetUrl } from '../utils/assetUrl';
 import charactersData from '../data/characters.json';
 import { weightedRandomPick } from '../utils/weightedRandom';
-import { pickTargetFragmentId, playerNumberFragmentId, MAX_PLAYER_NUMBER_FRAGMENTS } from '../data/targetFragments';
-import { RIPPLE_TRIGGER_CHANCE_PER_TYPE, eligibleRippleEvents } from '../data/rippleEvents';
+import { pickTargetFragmentSequence, playerNumberFragmentId, MAX_PLAYER_NUMBER_FRAGMENTS } from '../data/targetFragments';
+import { pickRipple, rippleSequence } from '../data/rippleEvents';
+import { blobFragmentSequence } from '../data/blobFragments';
 import { unlockAudioContext, getAudioContext } from '../utils/audioContext';
 
 // Chance a random noise plays before/after any given step in the night phase
@@ -23,9 +24,34 @@ charactersData.characters.forEach((char) => {
   if (!char.narrationVariants && !char.targetType) return;
   narrationConfigByGroupId[baseCharacterId(char.id)] = {
     narrationVariants: char.narrationVariants || null,
+    narrationFallbackVariantId: char.narrationFallbackVariantId || null,
     targetType: char.targetType || null,
   };
 });
+
+// A variant with requiresAnyOf can only happen if at least
+// `requiresAtLeast` (default 1) of those roles are in the game
+const variantEligible = (variant, selectedIds) => {
+  if (!variant.requiresAnyOf) return true;
+  const present = variant.requiresAnyOf.filter(id => selectedIds.includes(id)).length;
+  return present >= (variant.requiresAtLeast || 1);
+};
+
+// Weighted pick that honours requirements. A rolled variant whose
+// requirements aren't met is replaced by another eligible one from its
+// `group` (e.g. Oracle: a team that isn't in the game -> a team that is),
+// otherwise by the role's fallback variant (Oracle: the Number question).
+function pickEligibleVariant(narrationConfig, selectedIds) {
+  const variants = narrationConfig.narrationVariants;
+  const rolled = weightedRandomPick(variants);
+  if (variantEligible(rolled, selectedIds)) return rolled;
+  if (rolled.group) {
+    const sameGroup = variants.filter(v => v.group === rolled.group && variantEligible(v, selectedIds));
+    if (sameGroup.length > 0) return weightedRandomPick(sameGroup);
+  }
+  const fallback = variants.find(v => v.id === narrationConfig.narrationFallbackVariantId);
+  return fallback || rolled;
+}
 
 // Picks `count` distinct player numbers from 1..maxN, for ripples that
 // call out specific seats (e.g. "Spiller 3 og 7, ...")
@@ -55,6 +81,7 @@ export default function GameScreen({ config, onGameEnd }) {
   const [musicVolume, setMusicVolume] = useState(0.4);
   const [narrationVolume, setNarrationVolume] = useState(1);
   const [oracleGuaranteedRipple, setOracleGuaranteedRipple] = useState(false);
+  const [oracleVariantId, setOracleVariantId] = useState(null);
 
   // Game phases: 'start', 'night', 'night_end', 'discussion_instructions', 'discussion', 'discussion_end', 'complete'
   const [gamePhase, setGamePhase] = useState('start');
@@ -361,17 +388,18 @@ export default function GameScreen({ config, onGameEnd }) {
     if (narrationConfig.narrationVariants) {
       let variant = variantChoiceRef.current[stepIndex];
       if (audioType === 'activation' || !variant) {
-        variant = weightedRandomPick(narrationConfig.narrationVariants);
+        variant = pickEligibleVariant(narrationConfig, config.selectedCharacters);
+        if (characterId === 'oracle' && audioType === 'activation') setOracleVariantId(variant.id);
         variantChoiceRef.current[stepIndex] = variant;
       }
-      return { clipId: variant.id, targetType: audioType === 'activation' ? (variant.targetType || null) : null };
+      return { clipId: variant.id, targetType: audioType === 'activation' ? (variant.targetType || null) : null, cardCount: variant.cardCount || 1 };
     }
 
     return { clipId: characterId, targetType: audioType === 'activation' ? narrationConfig.targetType : null };
   };
 
   const playCharacterAudio = async (characterId, audioType, stepIndex) => {
-    const { clipId, targetType } = resolveActivationClip(characterId, audioType, stepIndex);
+    const { clipId, targetType, cardCount } = resolveActivationClip(characterId, audioType, stepIndex);
 
     let audioFile = getAudioUrl(
       a => a.characterId === clipId && a.audioType === audioType && a.voiceId === config.voiceId
@@ -388,31 +416,26 @@ export default function GameScreen({ config, onGameEnd }) {
     await playAudioToEnd(audioFile.url);
 
     if (audioType !== 'activation' || !targetType) return;
-    await playFragmentClip(pickTargetFragmentId(targetType));
+    const maxPlayer = Math.max(0, config.selectedCharacters.length - 3);
+    for (const fragmentId of pickTargetFragmentSequence(targetType, cardCount, maxPlayer)) {
+      if (cancelledRef.current) return;
+      await playFragmentClip(fragmentId);
+    }
   };
 
   // Blob has no single fixed target line - who joins the blob depends on
-  // player count (see instruksjoner_alien.txt, "BLOBB"), so it's composed
-  // from the base activation clip + a player-count-specific "who" fragment
-  // + a shared ending, instead of one fixed recording. 5 players reuses the
-  // existing target_right fragment (always the same single player to the
-  // right); 6-7/9 player counts aren't documented, so they fall back to the
-  // "each side" phrasing as the closest match.
+  // player count (wiki: Blob), so it's composed from the base activation
+  // clip + the fragments chosen by blobFragmentSequence (see
+  // data/blobFragments.js).
   const playBlobSequence = async () => {
     await playCharacterAudio('blob', 'activation', 0);
     if (cancelledRef.current) return;
 
     const playerCount = Math.max(0, config.selectedCharacters.length - 3);
-    if (playerCount === 5) {
-      await playFragmentClip('target_right');
-    } else if (playerCount === 10) {
-      await playFragmentClip(Math.random() < 0.5 ? 'blob_target_10p_left' : 'blob_target_10p_right');
-    } else {
-      await playFragmentClip('blob_target_8p');
+    for (const fragmentId of blobFragmentSequence(playerCount)) {
+      if (cancelledRef.current) return;
+      await playFragmentClip(fragmentId);
     }
-    if (cancelledRef.current) return;
-
-    await playFragmentClip('blob_ending');
   };
 
   const playGameAudio = async (audioType) => {
@@ -496,44 +519,37 @@ export default function GameScreen({ config, onGameEnd }) {
   };
 
   // Ripples are never triggered by the narrator - the app rolls for one
-  // itself. Each eligible ripple gets an independent 5% roll, checked one
-  // at a time in random order; the first one that hits is the one that
-  // happens, and checking stops there - if none hit, no ripple this round.
-  // The Oracle player answering "yes" to the in-game "guarantee a ripple?"
-  // question (see the Oracle prompt rendered during their night turn) skips
-  // the rolls entirely and guarantees one, picked uniformly at random.
-  const pickTriggeredRipple = (eligible) => {
-    if (oracleGuaranteedRippleRef.current) {
-      return eligible[Math.floor(Math.random() * eligible.length)];
-    }
-    const shuffled = [...eligible].sort(() => Math.random() - 0.5);
-    for (const ripple of shuffled) {
-      if (Math.random() < RIPPLE_TRIGGER_CHANCE_PER_TYPE) return ripple;
-    }
-    return null;
-  };
+  // itself, but only when the Alien team is in the game (wiki: Ripples).
+  // It's ONE weighted pick across all ripple types plus "none" (20%), see
+  // rippleEvents.js. The Oracle player answering "yes" to "guarantee a
+  // ripple?" removes the "none" outcome. Returns the ripple that played
+  // (or null), so the caller can apply its effect on the discussion timer.
+  const ALIEN_TEAM_IDS = ['alien_1', 'alien_2', 'groob_alien', 'zerb'];
 
   const maybePlayRipple = async () => {
-    const eligible = eligibleRippleEvents(config.selectedCharacters);
-    if (eligible.length === 0) return;
+    if (!config.selectedCharacters.some(id => ALIEN_TEAM_IDS.includes(id))) return null;
 
-    const ripple = pickTriggeredRipple(eligible);
-    if (!ripple) return;
+    const ripple = pickRipple(oracleGuaranteedRippleRef.current);
+    if (!ripple) return null;
 
     await playFragmentClip('ripple_intro');
-    if (cancelledRef.current) return;
+    if (cancelledRef.current) return ripple;
     await playFragmentClip(ripple.id);
-    if (cancelledRef.current) return;
 
-    if (ripple.playerNumbersNeeded) {
-      const playerCount = Math.max(0, config.selectedCharacters.length - 3);
-      const maxN = Math.min(playerCount, MAX_PLAYER_NUMBER_FRAGMENTS);
-      const numbers = pickDistinctPlayerNumbers(maxN, ripple.playerNumbersNeeded);
-      for (const n of numbers) {
-        if (cancelledRef.current) return;
-        await playFragmentClip(playerNumberFragmentId(n));
+    const sequence = rippleSequence(ripple);
+    const playerCount = Math.max(0, config.selectedCharacters.length - 3);
+    const maxN = Math.min(playerCount, MAX_PLAYER_NUMBER_FRAGMENTS);
+    const numbers = pickDistinctPlayerNumbers(maxN, sequence.filter(s => s === 'player').length);
+    for (const step of sequence) {
+      if (cancelledRef.current) return ripple;
+      if (step === 'player') {
+        const n = numbers.shift();
+        if (n !== undefined) await playFragmentClip(playerNumberFragmentId(n));
+      } else {
+        await playFragmentClip(step);
       }
     }
+    return ripple;
   };
 
   // Picks a noise other than whichever one just played, so the same clip
@@ -628,15 +644,25 @@ export default function GameScreen({ config, onGameEnd }) {
     await playGameAudio('night_end');
     if (cancelledRef.current) return;
 
-    await maybePlayRipple();
+    const ripple = await maybePlayRipple();
     if (cancelledRef.current) return;
+
+    // Discussion length: "1 Minute" ripple sets it to 60s, and the Alien
+    // "Timer" variant halves it - whichever leaves less time wins.
+    let discussionSeconds = config.discussionDuration || 120;
+    if (Object.values(variantChoiceRef.current).some(v => v?.id === 'alien_timer')) {
+      discussionSeconds = Math.floor(discussionSeconds / 2);
+    }
+    if (ripple?.id === 'ripple_one_minute') {
+      discussionSeconds = Math.min(discussionSeconds, 60);
+    }
 
     setGamePhase('discussion_instructions');
     await playGameAudio('discussion_instruction');
     if (cancelledRef.current) return;
 
     setGamePhase('discussion');
-    await countdown(config.discussionDuration || 120);
+    await countdown(discussionSeconds);
     if (cancelledRef.current) return;
 
     setGamePhase('discussion_end');
@@ -745,7 +771,7 @@ export default function GameScreen({ config, onGameEnd }) {
                     <div className="character-name">
                       {characterName(currentCharacter)}
                     </div>
-                    {currentCharacter.characterId === 'oracle' && (
+                    {currentCharacter.characterId === 'oracle' && oracleVariantId === 'oracle_ripple' && (
                       <div className="oracle-ripple-prompt">
                         <p>{t('oracleRipplePrompt')}</p>
                         <div className="oracle-ripple-buttons">

@@ -51,6 +51,13 @@ export function buildPlayOrder(selectedIds, baseDuration, complexCharacters) {
           skipEndAudio: character.noEndAudio || false,
         });
 
+        // Cow: the Aliens must still be awake while she holds out her fist,
+        // so their own "close your eyes" is skipped and the Cow's end clip
+        // closes the Aliens' eyes instead
+        if (groupId === 'alien' && selectedSet.has('cow')) {
+          order[order.length - 1].skipEndAudio = true;
+        }
+
         // Doppelgänger + Minion: the base slot keeps its normal activation,
         // but the minion phase audio replaces the normal end and gets its
         // own end audio afterwards (3 audio clips in total)

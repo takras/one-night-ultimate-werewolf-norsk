@@ -1,0 +1,14 @@
+{
+  "characterId": "zerb",
+  "isComplex": false,
+  "activation": {
+    "filename": "zerb_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:07:32.779Z"
+  },
+  "end": {
+    "filename": "zerb_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:07:39.040Z"
+  }
+}

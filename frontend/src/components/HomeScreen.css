@@ -448,3 +448,16 @@
     font-size: 0.8rem;
   }
 }
+
+.missing-recording-header {
+  margin: 28px 0 12px;
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+
+.character-card.missing {
+  opacity: 0.4;
+  filter: grayscale(1);
+  cursor: not-allowed;
+  pointer-events: none;
+}

@@ -1,0 +1,14 @@
+{
+  "characterId": "rascal_robber",
+  "isComplex": false,
+  "activation": {
+    "filename": "rascal_robber_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:04:12.647Z"
+  },
+  "end": {
+    "filename": "rascal_robber_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T12:04:19.617Z"
+  }
+}
