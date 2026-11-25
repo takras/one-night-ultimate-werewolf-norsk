@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_pass_right",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_pass_right_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:58:00.411Z"
+  },
+  "end": {
+    "filename": "alien_pass_right_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:58:09.776Z"
+  }
+}

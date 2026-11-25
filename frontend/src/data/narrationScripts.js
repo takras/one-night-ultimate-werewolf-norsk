@@ -1,3 +1,4 @@
+import { ORACLE_RESPONSES } from './oracleResponses';
 // Norwegian narration scripts, sourced from instruksjoner.txt (base game)
 // and instruksjoner_alien.txt (Alien expansion), shown in the admin panel
 // next to whichever recording is selected so the narrator knows what to
@@ -142,10 +143,7 @@ export const CHARACTER_SCRIPTS = {
     end: "Ku, legg ned neven. Romvesner, lukk øynene. [Når Ku er med, spilles ikke Romvesnenes egen slutt-lyd før dette, siden de må være våkne mens Ku stikker ut neven.]",
   },
   groob_alien: {
-    activation: "Groob og Zerb, våkn opp. Se på hverandre.",
-    end: "Groob og Zerb, lukk øynene.",
-  },
-  zerb: {
+    // One shared wake-up for both roles (Groob and Zerb are one night step)
     activation: "Groob og Zerb, våkn opp. Se på hverandre.",
     end: "Groob og Zerb, lukk øynene.",
   },
@@ -477,6 +475,8 @@ export function getCharacterScript(characterId, audioType) {
 }
 
 export function getFragmentScript(fragmentId) {
+  const oracleResponse = ORACLE_RESPONSES.find(r => r.id === fragmentId);
+  if (oracleResponse) return oracleResponse.script;
   if (FRAGMENT_SCRIPTS[fragmentId]) return FRAGMENT_SCRIPTS[fragmentId];
   if (RIPPLE_SCRIPTS[fragmentId]) return RIPPLE_SCRIPTS[fragmentId];
   if (BLOB_SEQUENCE_SCRIPTS[fragmentId])

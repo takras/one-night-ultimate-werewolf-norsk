@@ -2,14 +2,17 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './AdminPanel.css';
 import { useTranslation } from '../i18n.jsx';
-import { SINGLE_TARGET_FRAGMENTS, MAX_PLAYER_NUMBER_FRAGMENTS, playerNumberFragmentId } from '../data/targetFragments';
-import { RIPPLE_EVENTS } from '../data/rippleEvents';
-import { BLOB_FRAGMENTS } from '../data/blobFragments';
+import { SINGLE_TARGET_FRAGMENTS, MAX_PLAYER_NUMBER_FRAGMENTS, playerNumberFragmentId, pickTargetFragmentSequence } from '../data/targetFragments';
+import { trimBounds } from '../utils/trimSilence';
+import { RIPPLE_EVENTS, rippleSequence } from '../data/rippleEvents';
+import { BLOB_FRAGMENTS, blobFragmentSequence } from '../data/blobFragments';
 import { FRAGMENT_LINKS } from '../data/fragmentLinks';
+import { ORACLE_RESPONSES } from '../data/oracleResponses';
 import { getCharacterScript, getFragmentScript, GAME_PHASE_SCRIPTS, NO_FIXED_SCRIPT } from '../data/narrationScripts';
 
 // Duplicate roles (varulv_1/varulv_2, ...) share one audio entry
-const baseCharacterId = (id) => id.replace(/_\d+$/, '');
+// Zerb shares Groob's single wake-up (one recording, one night step)
+const baseCharacterId = (id) => (id === 'zerb' ? 'groob_alien' : id.replace(/_\d+$/, ''));
 
 export default function AdminPanel({ onClose }) {
   const { t, language } = useTranslation();
@@ -241,6 +244,108 @@ export default function AdminPanel({ onClose }) {
     }
   };
 
+  // Preview of narration that is spliced together at game time: plays the
+  // given clips back to back with the selected voice, using the same random
+  // picks as the game. Steps are { id, type } - clips that aren't recorded
+  // yet are skipped and listed in the message afterwards.
+  const [previewPlayers, setPreviewPlayers] = useState(8);
+  const [previewing, setPreviewing] = useState(false);
+  const previewTokenRef = useRef(0);
+  const previewAudioRef = useRef(null);
+  const previewCtxRef = useRef(null);
+
+  const playCombined = async (steps) => {
+    const token = ++previewTokenRef.current;
+    previewAudioRef.current?.pause();
+    setPreviewing(true);
+    setMessage('');
+    const missing = [];
+    for (const step of steps) {
+      if (token !== previewTokenRef.current) return;
+      const clip = uploadedAudio.find(a => a.characterId === step.id && a.audioType === step.type && a.voiceId === selectedVoice);
+      if (!clip) { missing.push(step.id); continue; }
+      // Same silence trimming as in the game, so the preview sounds the same
+      const spliced = step.type === 'fragment' || step.trim;
+      await new Promise(async (resolve) => {
+        try {
+          const ctx = previewCtxRef.current || (previewCtxRef.current = new (window.AudioContext || window.webkitAudioContext)());
+          const buffer = await ctx.decodeAudioData(await (await fetch(clip.url)).arrayBuffer());
+          if (token !== previewTokenRef.current) return resolve();
+          const source = ctx.createBufferSource();
+          source.buffer = buffer;
+          source.connect(ctx.destination);
+          source.onended = resolve;
+          previewAudioRef.current = { pause: () => { try { source.stop(); } catch { /* done */ } } };
+          if (spliced) {
+            const { start, duration } = trimBounds(buffer);
+            source.start(0, start, duration);
+          } else {
+            source.start(0);
+          }
+        } catch {
+          resolve();
+        }
+      });
+    }
+    if (token !== previewTokenRef.current) return;
+    setPreviewing(false);
+    if (missing.length) setMessage(t('combinedMissing') + ' ' + missing.join(', '));
+  };
+
+  const stopCombined = () => {
+    previewTokenRef.current++;
+    previewAudioRef.current?.pause();
+    setPreviewing(false);
+  };
+
+  const distinctPlayerSteps = (count) => {
+    const pool = Array.from({ length: Math.min(previewPlayers, MAX_PLAYER_NUMBER_FRAGMENTS) }, (_, i) => i + 1);
+    const out = [];
+    for (let i = 0; i < count && pool.length; i++) {
+      out.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+    }
+    return out;
+  };
+
+  const combinedForVariant = (v) => [
+    { id: v.id, type: 'activation', trim: true },
+    ...pickTargetFragmentSequence(v.targetType, v.cardCount || 1, previewPlayers).map(id => ({ id, type: 'fragment' })),
+  ];
+
+  const combinedForBlob = () => [
+    { id: 'blob', type: 'activation', trim: true },
+    ...blobFragmentSequence(previewPlayers).map(id => ({ id, type: 'fragment' })),
+  ];
+
+  const combinedForRipple = (ripple) => {
+    const sequence = rippleSequence(ripple);
+    const numbers = distinctPlayerSteps(sequence.filter(x => x === 'player').length);
+    return [
+      { id: 'ripple_intro', type: 'fragment' },
+      { id: ripple.id, type: 'fragment' },
+      ...sequence.map(x => ({ id: x === 'player' ? playerNumberFragmentId(numbers.shift()) : x, type: 'fragment' })),
+    ];
+  };
+
+  const playersSelect = (
+    <label className="combined-players">
+      {t('combinedPlayers')}{' '}
+      <select value={previewPlayers} onChange={(e) => setPreviewPlayers(Number(e.target.value))}>
+        {Array.from({ length: 10 }, (_, i) => i + 3).map(n => <option key={n} value={n}>{n}</option>)}
+      </select>
+    </label>
+  );
+
+  const playButton = (steps) => (
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={() => (previewing ? stopCombined() : playCombined(steps()))}
+    >
+      {previewing ? '⏹' : '▶'} {t('playCombinedButton')}
+    </button>
+  );
+
   const displayName = (char) =>
     language === 'no' ? char.norwegianName : (char.name || char.norwegianName);
 
@@ -286,6 +391,8 @@ export default function AdminPanel({ onClose }) {
     if (ripple) return ripple.norwegianLabel;
     const blobFragment = BLOB_FRAGMENTS.find(f => f.id === fragmentId);
     if (blobFragment) return blobFragment.norwegianLabel;
+    const oracleResponse = ORACLE_RESPONSES.find(f => f.id === fragmentId);
+    if (oracleResponse) return oracleResponse.label;
     const playerMatch = fragmentId.match(/^player_(\d+)$/);
     if (playerMatch) return `${t('playerNumbersGroupLabel')} ${playerMatch[1]}`;
     return fragmentId;
@@ -331,7 +438,11 @@ export default function AdminPanel({ onClose }) {
     const groupId = baseCharacterId(char.id);
     if (seenGroups.has(groupId)) return;
     seenGroups.add(groupId);
-    groupedCharacters.push({ ...char, id: groupId });
+    groupedCharacters.push({
+      ...char,
+      id: groupId,
+      ...(char.audioName ? { norwegianName: char.audioName, name: char.audioNameEnglish || char.audioName } : {}),
+    });
     (char.audioVariants || []).forEach(variant => {
       seenGroups.add(variant.id);
       groupedCharacters.push({ ...variant, games: char.games });
@@ -448,7 +559,7 @@ export default function AdminPanel({ onClose }) {
                     <p>{t('overviewRoleInfo')}</p>
                     <ul>
                       {overviewVariants(selectedCharacter).map(v => (
-                        <li key={v.id}>{characterAudioStatus(v.id)} {displayName(v)} ({v.weight}%)</li>
+                        <li key={v.id}>{characterAudioStatus(v.id)} {displayName(v)} ({v.weight}%){v.targetType && <> {playButton(() => combinedForVariant(v))}</>}</li>
                       ))}
                     </ul>
                   </div>
@@ -537,6 +648,13 @@ export default function AdminPanel({ onClose }) {
                         </option>
                       ))}
                     </optgroup>
+                    <optgroup label={t('oracleResponsesGroupLabel')}>
+                      {ORACLE_RESPONSES.map(fragment => (
+                        <option key={fragment.id} value={fragment.id}>
+                          {fragmentAudioStatus(fragment.id)} {fragment.label}
+                        </option>
+                      ))}
+                    </optgroup>
                   </select>
                 </div>
                 <div className="info-box">
@@ -570,6 +688,13 @@ export default function AdminPanel({ onClose }) {
                 >
                   {t('fragmentLinkButton')}
                 </button>
+                {selectedCharacter === 'blob' && (<> {playersSelect} {playButton(combinedForBlob)}</>)}
+              </div>
+            )}
+
+            {audioTypeCategory === 'fragment' && RIPPLE_EVENTS.find(r => r.id === selectedFragment && r.weight !== undefined) && (
+              <div className="info-box">
+                {playersSelect} {playButton(() => combinedForRipple(RIPPLE_EVENTS.find(r => r.id === selectedFragment)))}
               </div>
             )}
 

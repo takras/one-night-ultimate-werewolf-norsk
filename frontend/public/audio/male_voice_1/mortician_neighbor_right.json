@@ -1,0 +1,14 @@
+{
+  "characterId": "mortician_neighbor_right",
+  "isComplex": false,
+  "activation": {
+    "filename": "mortician_neighbor_right_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:46:38.387Z"
+  },
+  "end": {
+    "filename": "mortician_neighbor_right_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:46:58.924Z"
+  }
+}

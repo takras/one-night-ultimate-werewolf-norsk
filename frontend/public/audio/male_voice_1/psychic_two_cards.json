@@ -1,0 +1,14 @@
+{
+  "characterId": "psychic_two_cards",
+  "isComplex": false,
+  "activation": {
+    "filename": "psychic_two_cards_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:56:41.016Z"
+  },
+  "end": {
+    "filename": "psychic_two_cards_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:56:48.466Z"
+  }
+}

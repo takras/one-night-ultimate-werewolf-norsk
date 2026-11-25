@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_helper",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_helper_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:59:36.739Z"
+  },
+  "end": {
+    "filename": "alien_helper_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:59:45.794Z"
+  }
+}

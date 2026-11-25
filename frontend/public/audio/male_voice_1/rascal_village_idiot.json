@@ -1,0 +1,14 @@
+{
+  "characterId": "rascal_village_idiot",
+  "isComplex": false,
+  "activation": {
+    "filename": "rascal_village_idiot_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:57:28.164Z"
+  },
+  "end": {
+    "filename": "rascal_village_idiot_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:57:35.462Z"
+  }
+}

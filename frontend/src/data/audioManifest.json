@@ -107,6 +107,326 @@
     "originalName": null
   },
   {
+    "characterId": "alien_all_view",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_all_view_activation.webm",
+    "url": "/audio/male_voice_1/alien_all_view_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_all_view_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:31.890Z"
+    },
+    "end": {
+      "filename": "alien_all_view_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:38.985Z"
+    },
+    "uploadedAt": "2026-11-25T12:04:31.890Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_all_view",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_all_view_end.webm",
+    "url": "/audio/male_voice_1/alien_all_view_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_all_view_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:31.890Z"
+    },
+    "end": {
+      "filename": "alien_all_view_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:38.985Z"
+    },
+    "uploadedAt": "2026-11-25T12:04:38.985Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_highest_number",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_highest_number_activation.webm",
+    "url": "/audio/male_voice_1/alien_highest_number_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_highest_number_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:51.186Z"
+    },
+    "end": {
+      "filename": "alien_highest_number_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:59.370Z"
+    },
+    "uploadedAt": "2026-11-25T12:05:51.186Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_highest_number",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_highest_number_end.webm",
+    "url": "/audio/male_voice_1/alien_highest_number_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_highest_number_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:51.186Z"
+    },
+    "end": {
+      "filename": "alien_highest_number_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:59.370Z"
+    },
+    "uploadedAt": "2026-11-25T12:05:59.370Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_look_left",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_look_left_activation.webm",
+    "url": "/audio/male_voice_1/alien_look_left_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_look_left_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:52.453Z"
+    },
+    "end": {
+      "filename": "alien_look_left_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:57.715Z"
+    },
+    "uploadedAt": "2026-11-25T12:06:52.453Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_look_left",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_look_left_end.webm",
+    "url": "/audio/male_voice_1/alien_look_left_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_look_left_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:52.453Z"
+    },
+    "end": {
+      "filename": "alien_look_left_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:57.715Z"
+    },
+    "uploadedAt": "2026-11-25T12:06:57.715Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_look_right",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_look_right_activation.webm",
+    "url": "/audio/male_voice_1/alien_look_right_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_look_right_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:42.216Z"
+    },
+    "end": {
+      "filename": "alien_look_right_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:32.858Z"
+    },
+    "uploadedAt": "2026-11-25T12:06:42.216Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_look_right",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_look_right_end.webm",
+    "url": "/audio/male_voice_1/alien_look_right_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_look_right_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:42.216Z"
+    },
+    "end": {
+      "filename": "alien_look_right_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:32.858Z"
+    },
+    "uploadedAt": "2026-11-25T12:06:32.858Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_lowest_number",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_lowest_number_activation.webm",
+    "url": "/audio/male_voice_1/alien_lowest_number_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_lowest_number_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:10.032Z"
+    },
+    "end": {
+      "filename": "alien_lowest_number_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:16.376Z"
+    },
+    "uploadedAt": "2026-11-25T12:06:10.032Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_lowest_number",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_lowest_number_end.webm",
+    "url": "/audio/male_voice_1/alien_lowest_number_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_lowest_number_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:10.032Z"
+    },
+    "end": {
+      "filename": "alien_lowest_number_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:06:16.376Z"
+    },
+    "uploadedAt": "2026-11-25T12:06:16.376Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_show_cards",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_show_cards_activation.webm",
+    "url": "/audio/male_voice_1/alien_show_cards_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_show_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:09.402Z"
+    },
+    "end": {
+      "filename": "alien_show_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:15.180Z"
+    },
+    "uploadedAt": "2026-11-25T12:07:09.402Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_show_cards",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_show_cards_end.webm",
+    "url": "/audio/male_voice_1/alien_show_cards_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_show_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:09.402Z"
+    },
+    "end": {
+      "filename": "alien_show_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:15.180Z"
+    },
+    "uploadedAt": "2026-11-25T12:07:15.180Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_stare",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_stare_activation.webm",
+    "url": "/audio/male_voice_1/alien_stare_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_stare_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:50.781Z"
+    },
+    "end": {
+      "filename": "alien_stare_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:57.684Z"
+    },
+    "uploadedAt": "2026-11-25T12:04:50.781Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_stare",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_stare_end.webm",
+    "url": "/audio/male_voice_1/alien_stare_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_stare_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:50.781Z"
+    },
+    "end": {
+      "filename": "alien_stare_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:57.684Z"
+    },
+    "uploadedAt": "2026-11-25T12:04:57.684Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_view_secretly",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "alien_view_secretly_activation.webm",
+    "url": "/audio/male_voice_1/alien_view_secretly_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_view_secretly_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:09.052Z"
+    },
+    "end": {
+      "filename": "alien_view_secretly_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:14.842Z"
+    },
+    "uploadedAt": "2026-11-25T12:05:09.052Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "alien_view_secretly",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "alien_view_secretly_end.webm",
+    "url": "/audio/male_voice_1/alien_view_secretly_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "alien_view_secretly_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:09.052Z"
+    },
+    "end": {
+      "filename": "alien_view_secretly_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:05:14.842Z"
+    },
+    "uploadedAt": "2026-11-25T12:05:14.842Z",
+    "originalName": "recording.webm"
+  },
+  {
     "characterId": "aura_klarsynt",
     "audioType": "activation",
     "voiceId": "male_voice_1",
@@ -187,6 +507,111 @@
     "originalName": "recording.webm"
   },
   {
+    "characterId": "blob",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_activation.webm",
+    "url": "/audio/male_voice_1/blob_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "blob_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:34:26.413Z"
+    },
+    "uploadedAt": "2026-11-25T11:34:26.413Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "blob_alone_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_alone_fragment.webm",
+    "url": "/audio/male_voice_1/blob_alone_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_both_1_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_both_1_fragment.webm",
+    "url": "/audio/male_voice_1/blob_both_1_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_both_2_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_both_2_fragment.webm",
+    "url": "/audio/male_voice_1/blob_both_2_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_ending_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_ending_fragment.webm",
+    "url": "/audio/male_voice_1/blob_ending_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_left_2_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_left_2_fragment.webm",
+    "url": "/audio/male_voice_1/blob_left_2_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_left_3_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_left_3_fragment.webm",
+    "url": "/audio/male_voice_1/blob_left_3_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_left_4_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_left_4_fragment.webm",
+    "url": "/audio/male_voice_1/blob_left_4_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_right_2_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_right_2_fragment.webm",
+    "url": "/audio/male_voice_1/blob_right_2_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_right_3_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_right_3_fragment.webm",
+    "url": "/audio/male_voice_1/blob_right_3_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "blob_right_4_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "blob_right_4_fragment.webm",
+    "url": "/audio/male_voice_1/blob_right_4_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
     "characterId": "braakmaker",
     "audioType": "activation",
     "voiceId": "male_voice_1",
@@ -224,6 +649,46 @@
       "uploadedAt": "2026-07-11T19:20:48.651Z"
     },
     "uploadedAt": "2026-07-11T19:20:34.207Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "cow",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "cow_activation.webm",
+    "url": "/audio/male_voice_1/cow_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "cow_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:59:54.255Z"
+    },
+    "end": {
+      "filename": "cow_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:00:08.268Z"
+    },
+    "uploadedAt": "2026-11-25T11:59:54.255Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "cow",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "cow_end.webm",
+    "url": "/audio/male_voice_1/cow_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "cow_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:59:54.255Z"
+    },
+    "end": {
+      "filename": "cow_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:00:08.268Z"
+    },
+    "uploadedAt": "2026-11-25T12:00:08.268Z",
     "originalName": "recording.webm"
   },
   {
@@ -535,6 +1000,126 @@
     "originalName": "recording.webm"
   },
   {
+    "characterId": "exposer_one_card",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "exposer_one_card_activation.webm",
+    "url": "/audio/male_voice_1/exposer_one_card_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "exposer_one_card_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:30:37.513Z"
+    },
+    "end": {
+      "filename": "exposer_one_card_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:30:44.485Z"
+    },
+    "uploadedAt": "2026-11-25T11:30:37.513Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "exposer_one_card",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "exposer_one_card_end.webm",
+    "url": "/audio/male_voice_1/exposer_one_card_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "exposer_one_card_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:30:37.513Z"
+    },
+    "end": {
+      "filename": "exposer_one_card_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:30:44.485Z"
+    },
+    "uploadedAt": "2026-11-25T11:30:44.485Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "exposer_three_cards",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "exposer_three_cards_activation.webm",
+    "url": "/audio/male_voice_1/exposer_three_cards_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "exposer_three_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:12.683Z"
+    },
+    "end": {
+      "filename": "exposer_three_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:19.519Z"
+    },
+    "uploadedAt": "2026-11-25T11:32:12.683Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "exposer_three_cards",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "exposer_three_cards_end.webm",
+    "url": "/audio/male_voice_1/exposer_three_cards_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "exposer_three_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:12.683Z"
+    },
+    "end": {
+      "filename": "exposer_three_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:19.519Z"
+    },
+    "uploadedAt": "2026-11-25T11:32:19.519Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "exposer_two_cards",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "exposer_two_cards_activation.webm",
+    "url": "/audio/male_voice_1/exposer_two_cards_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "exposer_two_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:31:38.264Z"
+    },
+    "end": {
+      "filename": "exposer_two_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:31:54.990Z"
+    },
+    "uploadedAt": "2026-11-25T11:31:38.264Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "exposer_two_cards",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "exposer_two_cards_end.webm",
+    "url": "/audio/male_voice_1/exposer_two_cards_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "exposer_two_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:31:38.264Z"
+    },
+    "end": {
+      "filename": "exposer_two_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:31:54.990Z"
+    },
+    "uploadedAt": "2026-11-25T11:31:54.990Z",
+    "originalName": "recording.webm"
+  },
+  {
     "characterId": "frimurer",
     "audioType": "activation",
     "voiceId": "male_voice_1",
@@ -626,6 +1211,46 @@
       "uploadedAt": "2026-11-25T09:15:55.889Z"
     },
     "uploadedAt": "2026-11-25T09:15:55.889Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "groob_alien",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "groob_alien_activation.webm",
+    "url": "/audio/male_voice_1/groob_alien_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "groob_alien_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:57:27.644Z"
+    },
+    "end": {
+      "filename": "groob_alien_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:57:34.475Z"
+    },
+    "uploadedAt": "2026-11-25T11:57:27.644Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "groob_alien",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "groob_alien_end.webm",
+    "url": "/audio/male_voice_1/groob_alien_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "groob_alien_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:57:27.644Z"
+    },
+    "end": {
+      "filename": "groob_alien_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:57:34.475Z"
+    },
+    "uploadedAt": "2026-11-25T11:57:34.475Z",
     "originalName": "recording.webm"
   },
   {
@@ -829,6 +1454,166 @@
     "originalName": "recording.webm"
   },
   {
+    "characterId": "leader",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "leader_activation.webm",
+    "url": "/audio/male_voice_1/leader_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "leader_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:02:11.440Z"
+    },
+    "end": {
+      "filename": "leader_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:02:17.481Z"
+    },
+    "uploadedAt": "2026-11-25T12:02:11.440Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "leader",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "leader_end.webm",
+    "url": "/audio/male_voice_1/leader_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "leader_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:02:11.440Z"
+    },
+    "end": {
+      "filename": "leader_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:02:17.481Z"
+    },
+    "uploadedAt": "2026-11-25T12:02:17.481Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "mortician_one_card",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "mortician_one_card_activation.webm",
+    "url": "/audio/male_voice_1/mortician_one_card_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "mortician_one_card_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:35.619Z"
+    },
+    "end": {
+      "filename": "mortician_one_card_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:43.454Z"
+    },
+    "uploadedAt": "2026-11-25T11:32:35.619Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "mortician_one_card",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "mortician_one_card_end.webm",
+    "url": "/audio/male_voice_1/mortician_one_card_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "mortician_one_card_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:35.619Z"
+    },
+    "end": {
+      "filename": "mortician_one_card_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:32:43.454Z"
+    },
+    "uploadedAt": "2026-11-25T11:32:43.454Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "mortician_pretend",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "mortician_pretend_activation.webm",
+    "url": "/audio/male_voice_1/mortician_pretend_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "mortician_pretend_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:03.555Z"
+    },
+    "end": {
+      "filename": "mortician_pretend_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:12.293Z"
+    },
+    "uploadedAt": "2026-11-25T11:33:03.555Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "mortician_pretend",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "mortician_pretend_end.webm",
+    "url": "/audio/male_voice_1/mortician_pretend_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "mortician_pretend_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:03.555Z"
+    },
+    "end": {
+      "filename": "mortician_pretend_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:12.293Z"
+    },
+    "uploadedAt": "2026-11-25T11:33:12.293Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "mortician_two_cards",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "mortician_two_cards_activation.webm",
+    "url": "/audio/male_voice_1/mortician_two_cards_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "mortician_two_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:28.919Z"
+    },
+    "end": {
+      "filename": "mortician_two_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:58.696Z"
+    },
+    "uploadedAt": "2026-11-25T11:33:28.919Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "mortician_two_cards",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "mortician_two_cards_end.webm",
+    "url": "/audio/male_voice_1/mortician_two_cards_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "mortician_two_cards_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:28.919Z"
+    },
+    "end": {
+      "filename": "mortician_two_cards_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T11:33:58.696Z"
+    },
+    "uploadedAt": "2026-11-25T11:33:58.696Z",
+    "originalName": "recording.webm"
+  },
+  {
     "characterId": "mystisk_ulv",
     "audioType": "activation",
     "voiceId": "male_voice_1",
@@ -879,6 +1664,46 @@
     "originalName": null
   },
   {
+    "characterId": "oracle",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "oracle_activation.webm",
+    "url": "/audio/male_voice_1/oracle_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "oracle_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:02:58.954Z"
+    },
+    "end": {
+      "filename": "oracle_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:05.607Z"
+    },
+    "uploadedAt": "2026-11-25T12:02:58.954Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "oracle",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "oracle_end.webm",
+    "url": "/audio/male_voice_1/oracle_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "oracle_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:02:58.954Z"
+    },
+    "end": {
+      "filename": "oracle_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:05.607Z"
+    },
+    "uploadedAt": "2026-11-25T12:03:05.607Z",
+    "originalName": "recording.webm"
+  },
+  {
     "characterId": "paranormal_etterforsker",
     "audioType": "activation",
     "voiceId": "male_voice_1",
@@ -917,6 +1742,472 @@
     },
     "uploadedAt": "2026-07-12T21:12:44.973Z",
     "originalName": "recording.webm"
+  },
+  {
+    "characterId": "player_10_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_10_fragment.webm",
+    "url": "/audio/male_voice_1/player_10_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_11_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_11_fragment.webm",
+    "url": "/audio/male_voice_1/player_11_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_12_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_12_fragment.webm",
+    "url": "/audio/male_voice_1/player_12_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_1_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_1_fragment.webm",
+    "url": "/audio/male_voice_1/player_1_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_2_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_2_fragment.webm",
+    "url": "/audio/male_voice_1/player_2_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_3_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_3_fragment.webm",
+    "url": "/audio/male_voice_1/player_3_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_4_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_4_fragment.webm",
+    "url": "/audio/male_voice_1/player_4_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_5_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_5_fragment.webm",
+    "url": "/audio/male_voice_1/player_5_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_6_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_6_fragment.webm",
+    "url": "/audio/male_voice_1/player_6_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_7_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_7_fragment.webm",
+    "url": "/audio/male_voice_1/player_7_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_8_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_8_fragment.webm",
+    "url": "/audio/male_voice_1/player_8_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "player_9_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "player_9_fragment.webm",
+    "url": "/audio/male_voice_1/player_9_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "psychic",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "psychic_activation.webm",
+    "url": "/audio/male_voice_1/psychic_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "psychic_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:20.853Z"
+    },
+    "end": {
+      "filename": "psychic_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:29.060Z"
+    },
+    "uploadedAt": "2026-11-25T12:03:20.853Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "psychic",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "psychic_end.webm",
+    "url": "/audio/male_voice_1/psychic_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "psychic_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:20.853Z"
+    },
+    "end": {
+      "filename": "psychic_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:29.060Z"
+    },
+    "uploadedAt": "2026-11-25T12:03:29.060Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "rascal_robber",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "rascal_robber_activation.webm",
+    "url": "/audio/male_voice_1/rascal_robber_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "rascal_robber_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:12.647Z"
+    },
+    "end": {
+      "filename": "rascal_robber_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:19.617Z"
+    },
+    "uploadedAt": "2026-11-25T12:04:12.647Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "rascal_robber",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "rascal_robber_end.webm",
+    "url": "/audio/male_voice_1/rascal_robber_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "rascal_robber_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:12.647Z"
+    },
+    "end": {
+      "filename": "rascal_robber_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:19.617Z"
+    },
+    "uploadedAt": "2026-11-25T12:04:19.617Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "rascal_troublemaker",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "rascal_troublemaker_activation.webm",
+    "url": "/audio/male_voice_1/rascal_troublemaker_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "rascal_troublemaker_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:38.534Z"
+    },
+    "end": {
+      "filename": "rascal_troublemaker_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:45.154Z"
+    },
+    "uploadedAt": "2026-11-25T12:03:38.534Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "rascal_troublemaker",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "rascal_troublemaker_end.webm",
+    "url": "/audio/male_voice_1/rascal_troublemaker_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "rascal_troublemaker_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:38.534Z"
+    },
+    "end": {
+      "filename": "rascal_troublemaker_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:45.154Z"
+    },
+    "uploadedAt": "2026-11-25T12:03:45.154Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "rascal_witch",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "rascal_witch_activation.webm",
+    "url": "/audio/male_voice_1/rascal_witch_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "rascal_witch_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:55.679Z"
+    },
+    "end": {
+      "filename": "rascal_witch_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:01.199Z"
+    },
+    "uploadedAt": "2026-11-25T12:03:55.679Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "rascal_witch",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "rascal_witch_end.webm",
+    "url": "/audio/male_voice_1/rascal_witch_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "rascal_witch_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:03:55.679Z"
+    },
+    "end": {
+      "filename": "rascal_witch_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:04:01.199Z"
+    },
+    "uploadedAt": "2026-11-25T12:04:01.199Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "ripple_connector_swap_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_connector_swap_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_connector_swap_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_connector_targets_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_connector_targets_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_connector_targets_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_connector_target_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_connector_target_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_connector_target_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_drunk_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_drunk_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_drunk_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_dual_shuffle_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_dual_shuffle_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_dual_shuffle_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_dual_view_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_dual_view_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_dual_view_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_face_away_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_face_away_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_face_away_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_insomniac_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_insomniac_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_insomniac_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_intro_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_intro_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_intro_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_i_am_an_alien_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_i_am_an_alien_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_i_am_an_alien_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_may_not_speak_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_may_not_speak_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_may_not_speak_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_one_minute_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_one_minute_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_one_minute_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_reveal_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_reveal_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_reveal_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_steal_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_steal_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_steal_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_time_loop_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_time_loop_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_time_loop_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_time_loop_one_awake_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_time_loop_one_awake_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_time_loop_one_awake_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_troublemaker_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_troublemaker_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_troublemaker_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_two_hand_vote_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_two_hand_vote_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_two_hand_vote_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_view_one_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_view_one_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_view_one_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_view_two_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_view_two_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_view_two_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_vote_for_app_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_vote_for_app_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_vote_for_app_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "ripple_witch_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "ripple_witch_fragment.webm",
+    "url": "/audio/male_voice_1/ripple_witch_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
   },
   {
     "characterId": "roever",
@@ -997,6 +2288,105 @@
     },
     "uploadedAt": "2026-07-11T19:23:22.387Z",
     "originalName": "recording.webm"
+  },
+  {
+    "characterId": "target_any_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_any_fragment.webm",
+    "url": "/audio/male_voice_1/target_any_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_center_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_center_fragment.webm",
+    "url": "/audio/male_voice_1/target_center_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_even_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_even_fragment.webm",
+    "url": "/audio/male_voice_1/target_even_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_higher_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_higher_fragment.webm",
+    "url": "/audio/male_voice_1/target_higher_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_left_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_left_fragment.webm",
+    "url": "/audio/male_voice_1/target_left_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_lower_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_lower_fragment.webm",
+    "url": "/audio/male_voice_1/target_lower_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_neighbors_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_neighbors_fragment.webm",
+    "url": "/audio/male_voice_1/target_neighbors_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_odd_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_odd_fragment.webm",
+    "url": "/audio/male_voice_1/target_odd_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_right_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_right_fragment.webm",
+    "url": "/audio/male_voice_1/target_right_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_specific_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_specific_fragment.webm",
+    "url": "/audio/male_voice_1/target_specific_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
+  },
+  {
+    "characterId": "target_specific_two_fragment",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "target_specific_two_fragment.webm",
+    "url": "/audio/male_voice_1/target_specific_two_fragment.webm",
+    "uploadedAt": null,
+    "originalName": null
   },
   {
     "characterId": "undersaatt",
@@ -1099,5 +2489,45 @@
     },
     "uploadedAt": "2026-07-11T18:19:17.079Z",
     "originalName": null
+  },
+  {
+    "characterId": "zerb",
+    "audioType": "activation",
+    "voiceId": "male_voice_1",
+    "filename": "zerb_activation.webm",
+    "url": "/audio/male_voice_1/zerb_activation.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "zerb_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:32.779Z"
+    },
+    "end": {
+      "filename": "zerb_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:39.040Z"
+    },
+    "uploadedAt": "2026-11-25T12:07:32.779Z",
+    "originalName": "recording.webm"
+  },
+  {
+    "characterId": "zerb",
+    "audioType": "end",
+    "voiceId": "male_voice_1",
+    "filename": "zerb_end.webm",
+    "url": "/audio/male_voice_1/zerb_end.webm",
+    "isComplex": false,
+    "activation": {
+      "filename": "zerb_activation.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:32.779Z"
+    },
+    "end": {
+      "filename": "zerb_end.webm",
+      "originalName": "recording.webm",
+      "uploadedAt": "2026-11-25T12:07:39.040Z"
+    },
+    "uploadedAt": "2026-11-25T12:07:39.040Z",
+    "originalName": "recording.webm"
   }
 ]

@@ -5,6 +5,7 @@
 // included).
 export const FRAGMENT_LINKS = {
   blob: 'blob_alone',
+  oracle: 'oracle_resp_ripple_yes',
   psychic: 'target_even',
   psychic_one_card: 'target_even',
   psychic_two_cards: 'target_specific_two',

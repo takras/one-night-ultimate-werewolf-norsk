@@ -2,6 +2,8 @@ import characterConfig from '../data/characters.json';
 
 // Duplicate roles (varulv_1/varulv_2, frimurer_1/2, ...) share one group id
 function baseCharacterId(id) {
+  // Zerb shares Groob's single wake-up (one recording, one night step)
+  if (id === 'zerb') return 'groob_alien';
   return id.replace(/_\d+$/, '');
 }
 

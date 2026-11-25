@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import './GameScreen.css';
 import { useTranslation } from '../i18n.jsx';
 import { buildPlayOrder } from '../utils/playOrder';
+import { trimBounds } from '../utils/trimSilence';
+import { ORACLE_SELECT_SECONDS, oracleOptionValues, oracleResponseSequence } from '../data/oracleResponses';
 import { getAudioCatalog } from '../data/audioCatalog';
 import { assetUrl } from '../utils/assetUrl';
 import charactersData from '../data/characters.json';
@@ -14,7 +16,8 @@ import { unlockAudioContext, getAudioContext } from '../utils/audioContext';
 // Chance a random noise plays before/after any given step in the night phase
 const NOISE_CHANCE = 0.3;
 
-const baseCharacterId = (id) => id.replace(/_\d+$/, '');
+// Zerb shares Groob's single wake-up (one recording, one night step)
+const baseCharacterId = (id) => (id === 'zerb' ? 'groob_alien' : id.replace(/_\d+$/, ''));
 
 // Roles whose narration branches (Rascal/Alien/Exposer/Mortician) or target
 // (Psychic) are picked at runtime rather than recorded as one fixed clip,
@@ -82,6 +85,8 @@ export default function GameScreen({ config, onGameEnd }) {
   const [narrationVolume, setNarrationVolume] = useState(1);
   const [oracleGuaranteedRipple, setOracleGuaranteedRipple] = useState(false);
   const [oracleVariantId, setOracleVariantId] = useState(null);
+  const [oracleChoice, setOracleChoice] = useState(null);
+  const [oracleSelecting, setOracleSelecting] = useState(false);
 
   // Game phases: 'start', 'night', 'night_end', 'discussion_instructions', 'discussion', 'discussion_end', 'complete'
   const [gamePhase, setGamePhase] = useState('start');
@@ -90,6 +95,7 @@ export default function GameScreen({ config, onGameEnd }) {
   const backgroundMusicRef = useRef(new Audio());
   const timerIntervalRef = useRef(null);
   const wakeLockRef = useRef(null);
+  const wakeLockWantedRef = useRef(true);
   const cancelledRef = useRef(false);
   const hasStartedRef = useRef(false);
   const pendingAudioResolveRef = useRef(null);
@@ -104,6 +110,11 @@ export default function GameScreen({ config, onGameEnd }) {
   const preloadedAudioRef = useRef([]);
   const variantChoiceRef = useRef({});
   const oracleGuaranteedRippleRef = useRef(false);
+  const oracleChoiceRef = useRef(null);
+  // Effects of the Oracle's answer on the rest of the night: the team she
+  // joined (wakes with that team's first step) and a forced Alien power
+  const oracleTeamRef = useRef(null);
+  const forcedAlienVariantRef = useRef(null);
   const narrationGainRef = useRef(null);
   const musicGainRef = useRef(null);
   const audioBufferCacheRef = useRef(new Map());
@@ -115,9 +126,23 @@ export default function GameScreen({ config, onGameEnd }) {
     // missing cleanup; the synthetic unmount's cleanup below sets this true,
     // so it must be reset here or the real run looks cancelled forever.
     cancelledRef.current = false;
+    wakeLockWantedRef.current = true;
+    const narrationEl = audioRef.current;
+    const musicEl = backgroundMusicRef.current;
     fetchPlayOrder();
     requestWakeLock();
+    // Browsers drop the lock whenever the tab is hidden (switching apps,
+    // locking the phone), and Safari/Firefox may refuse a request that isn't
+    // tied to a tap - so ask again when the tab comes back and on the first
+    // touch/click.
+    const reacquireWakeLock = () => {
+      if (document.visibilityState === 'visible') requestWakeLock();
+    };
+    document.addEventListener('visibilitychange', reacquireWakeLock);
+    document.addEventListener('pointerdown', reacquireWakeLock);
     return () => {
+      document.removeEventListener('visibilitychange', reacquireWakeLock);
+      document.removeEventListener('pointerdown', reacquireWakeLock);
       cancelledRef.current = true;
       releaseWakeLock();
       if (timerIntervalRef.current) {
@@ -137,10 +162,13 @@ export default function GameScreen({ config, onGameEnd }) {
       // React may have already detached these refs (set to null) by the
       // time this cleanup runs, since ref detachment happens in the commit
       // phase before passive-effect cleanup fires
-      audioRef.current?.pause();
-      if (backgroundMusicRef.current) {
-        backgroundMusicRef.current.onended = null;
-        backgroundMusicRef.current.pause();
+      // Use the elements captured at mount - the refs themselves are already
+      // null here, which used to leave the music (and a fallback narration
+      // clip) playing after leaving the game
+      narrationEl?.pause();
+      if (musicEl) {
+        musicEl.onended = null;
+        musicEl.pause();
       }
       if (currentBufferSourceRef.current) {
         try { currentBufferSourceRef.current.stop(); } catch { /* already stopped */ }
@@ -313,7 +341,9 @@ export default function GameScreen({ config, onGameEnd }) {
   // Plays a clip and resolves once it has actually finished playing (or
   // immediately if there's nothing to play / it can't play), so the game
   // never advances over the top of narration.
-  const playAudioToEnd = async (url) => {
+  // trim: skip the silent start/end of the file (for clips that are spliced
+  // together with others, so there's no long gap between them)
+  const playAudioToEnd = async (url, { trim = false } = {}) => {
     const ctx = getAudioContext();
     if (!ctx || !narrationGainRef.current) {
       return playViaAudioElement(url);
@@ -359,7 +389,12 @@ export default function GameScreen({ config, onGameEnd }) {
       safetyTimeout = setTimeout(finish, (buffer.duration + 5) * 1000);
 
       currentBufferSourceRef.current = source;
-      source.start(0);
+      if (trim) {
+        const { start, duration } = trimBounds(buffer);
+        source.start(0, start, duration);
+      } else {
+        source.start(0);
+      }
     });
   };
 
@@ -372,7 +407,7 @@ export default function GameScreen({ config, onGameEnd }) {
       a => a.characterId === fragmentId && a.audioType === 'fragment' && a.voiceId === config.voiceId
     );
     if (!audioFile) return;
-    await playAudioToEnd(audioFile.url);
+    await playAudioToEnd(audioFile.url, { trim: true });
   };
 
   // For roles with narrationVariants (Rascal/Alien/Exposer/Mortician), picks
@@ -388,8 +423,10 @@ export default function GameScreen({ config, onGameEnd }) {
     if (narrationConfig.narrationVariants) {
       let variant = variantChoiceRef.current[stepIndex];
       if (audioType === 'activation' || !variant) {
-        variant = pickEligibleVariant(narrationConfig, config.selectedCharacters);
-        if (characterId === 'oracle' && audioType === 'activation') setOracleVariantId(variant.id);
+        variant = (audioType === 'activation' && characterId === 'alien' && forcedAlienVariantRef.current
+          && narrationConfig.narrationVariants.find(v => v.id === forcedAlienVariantRef.current))
+          || pickEligibleVariant(narrationConfig, config.selectedCharacters);
+        if (characterId === 'oracle' && audioType === 'activation') { setOracleVariantId(variant.id); setOracleChoice(null); setOracleSelecting(true); oracleChoiceRef.current = null; }
         variantChoiceRef.current[stepIndex] = variant;
       }
       return { clipId: variant.id, targetType: audioType === 'activation' ? (variant.targetType || null) : null, cardCount: variant.cardCount || 1 };
@@ -413,7 +450,10 @@ export default function GameScreen({ config, onGameEnd }) {
       );
     }
     if (!audioFile) return;
-    await playAudioToEnd(audioFile.url);
+    // Activation clips that get a fragment spliced on play trimmed, so the
+    // join has no dead air
+    const splicedOn = audioType === 'activation' && (!!targetType || characterId === 'blob');
+    await playAudioToEnd(audioFile.url, { trim: splicedOn });
 
     if (audioType !== 'activation' || !targetType) return;
     const maxPlayer = Math.max(0, config.selectedCharacters.length - 3);
@@ -518,18 +558,70 @@ export default function GameScreen({ config, onGameEnd }) {
     oracleGuaranteedRippleRef.current = value;
   };
 
+  // The Oracle answers on screen while the night timer runs. Picking an
+  // answer never ends the step early (nobody should be able to tell from the
+  // timing whether - or when - the Oracle chose); the step always runs the
+  // full time. Only "guarantee a ripple" changes game state so far.
+  const oracleMaxPlayer = () => Math.max(0, config.selectedCharacters.length - 3);
+
+  const oracleOptions = (variantId) => oracleOptionValues(variantId, oracleMaxPlayer()).map(value => ({
+    value,
+    label: value === 'yes' ? t('yesLabel') : value === 'no' ? t('noLabel')
+      : value === 'even' ? t('evenLabel') : value === 'odd' ? t('oddLabel') : value,
+  }));
+
+  // The Oracle step: ORACLE_SELECT_SECONDS to pick (always the full time,
+  // whether or not they answer early), then the app answers out loud - at
+  // random if nothing was picked - and the role's normal action time runs.
+  const runOracleChoice = async (variantId, actionSeconds) => {
+    await countdown(ORACLE_SELECT_SECONDS);
+    if (cancelledRef.current) return;
+    setOracleSelecting(false);
+
+    const values = oracleOptionValues(variantId, oracleMaxPlayer());
+    let choice = oracleChoiceRef.current;
+    if (!values.includes(choice)) {
+      choice = values[Math.floor(Math.random() * values.length)];
+      chooseOracleOption(choice);
+    }
+
+    const clips = oracleResponseSequence(variantId, choice, oracleMaxPlayer());
+    if (clips.includes('oracle_resp_werewolf_yes')) oracleTeamRef.current = 'werewolf';
+    if (clips.includes('oracle_resp_alien_yes')) oracleTeamRef.current = 'alien';
+    // "Force the aliens to swap cards": their power this round is passing
+    // cards (to a random side)
+    if (clips.includes('oracle_resp_alien_exchange_yes')) {
+      forcedAlienVariantRef.current = Math.random() < 0.5 ? 'alien_pass_left' : 'alien_pass_right';
+    }
+    for (const clipId of clips) {
+      if (cancelledRef.current) return;
+      await playFragmentClip(clipId);
+    }
+    if (cancelledRef.current) return;
+
+    setTimeRemaining(actionSeconds);
+    await countdown(actionSeconds);
+  };
+
+  const chooseOracleOption = (value) => {
+    oracleChoiceRef.current = value;
+    setOracleChoice(value);
+    if (oracleVariantId === 'oracle_ripple') setOracleGuarantee(value === 'yes');
+  };
+
   // Ripples are never triggered by the narrator - the app rolls for one
   // itself, but only when the Alien team is in the game (wiki: Ripples).
   // It's ONE weighted pick across all ripple types plus "none" (20%), see
   // rippleEvents.js. The Oracle player answering "yes" to "guarantee a
   // ripple?" removes the "none" outcome. Returns the ripple that played
   // (or null), so the caller can apply its effect on the discussion timer.
+  const TIME_LOOP_RIPPLE_IDS = ['ripple_time_loop', 'ripple_time_loop_one_awake'];
   const ALIEN_TEAM_IDS = ['alien_1', 'alien_2', 'groob_alien', 'zerb'];
 
-  const maybePlayRipple = async () => {
+  const maybePlayRipple = async (excludeIds = []) => {
     if (!config.selectedCharacters.some(id => ALIEN_TEAM_IDS.includes(id))) return null;
 
-    const ripple = pickRipple(oracleGuaranteedRippleRef.current);
+    const ripple = pickRipple(oracleGuaranteedRippleRef.current, excludeIds);
     if (!ripple) return null;
 
     await playFragmentClip('ripple_intro');
@@ -604,19 +696,27 @@ export default function GameScreen({ config, onGameEnd }) {
     resolve();
   };
 
-  const runGameSequence = async () => {
-    ensureAudioGraph();
-    startBackgroundMusic();
+  // First night step of each team the Oracle can join - she wakes with it
+  const ORACLE_TEAM_STEPS = {
+    werewolf: ['varulv', 'alfa_ulv', 'mystisk_ulv', 'droemme_ulv'],
+    alien: ['alien', 'groob_alien'],
+  };
+  const oracleTeamStepIndex = () => {
+    const ids = ORACLE_TEAM_STEPS[oracleTeamRef.current];
+    return ids ? playOrder.findIndex(e => ids.includes(e.characterId)) : -1;
+  };
 
-    setGamePhase('start');
-    await playGameAudio('game_start');
-    if (cancelledRef.current) return;
-
+  const runNight = async () => {
+    oracleTeamRef.current = null;
+    forcedAlienVariantRef.current = null;
     setGamePhase('night');
     for (let i = 0; i < playOrder.length; i++) {
       if (cancelledRef.current) return;
       setCurrentIndex(i);
       const entry = playOrder[i];
+
+      // Show the time they'll get once the wake-up clip is done, instead of 0
+      setTimeRemaining(entry.characterId === 'oracle' ? ORACLE_SELECT_SECONDS : entry.duration);
 
       await maybePlayRandomNoise();
       if (cancelledRef.current) return;
@@ -628,8 +728,23 @@ export default function GameScreen({ config, onGameEnd }) {
       }
       if (cancelledRef.current) return;
 
-      await countdown(entry.duration);
+      const oracleJoinsHere = i === oracleTeamStepIndex();
+      if (oracleJoinsHere) {
+        await playFragmentClip('oracle_join_wake');
+        if (cancelledRef.current) return;
+      }
+
+      if (entry.characterId === 'oracle' && variantChoiceRef.current[i]) {
+        await runOracleChoice(variantChoiceRef.current[i].id, entry.duration);
+      } else {
+        await countdown(entry.duration);
+      }
       if (cancelledRef.current) return;
+
+      if (oracleJoinsHere) {
+        await playFragmentClip('oracle_join_sleep');
+        if (cancelledRef.current) return;
+      }
 
       if (!entry.skipEndAudio) {
         await playCharacterAudio(entry.characterId, 'end', i);
@@ -642,10 +757,37 @@ export default function GameScreen({ config, onGameEnd }) {
 
     setGamePhase('night_end');
     await playGameAudio('night_end');
+  };
+
+  const runGameSequence = async () => {
+    ensureAudioGraph();
+    startBackgroundMusic();
+
+    setGamePhase('start');
+    await playGameAudio('game_start');
     if (cancelledRef.current) return;
 
-    const ripple = await maybePlayRipple();
-    if (cancelledRef.current) return;
+    let ripple = null;
+    let nightsPlayed = 0;
+    // A time loop ripple replays the whole night. Every role's random
+    // choices (variants, targets, Oracle question, ...) are rolled afresh
+    // for the replay, and a second ripple is rolled after it - but never
+    // another time loop, so the night repeats at most once.
+    while (true) {
+      if (nightsPlayed > 0) {
+        variantChoiceRef.current = {};
+        setOracleVariantId(null);
+        setOracleChoice(null);
+        setOracleGuarantee(false);
+      }
+      await runNight();
+      if (cancelledRef.current) return;
+      nightsPlayed++;
+
+      ripple = await maybePlayRipple(nightsPlayed > 1 ? TIME_LOOP_RIPPLE_IDS : []);
+      if (cancelledRef.current) return;
+      if (!ripple || !TIME_LOOP_RIPPLE_IDS.includes(ripple.id)) break;
+    }
 
     // Discussion length: "1 Minute" ripple sets it to 60s, and the Alien
     // "Timer" variant halves it - whichever leaves less time wins.
@@ -675,8 +817,9 @@ export default function GameScreen({ config, onGameEnd }) {
   };
 
   const requestWakeLock = async () => {
+    if (wakeLockWantedRef.current === false) return;
     try {
-      if ('wakeLock' in navigator) {
+      if ('wakeLock' in navigator && !(wakeLockRef.current && !wakeLockRef.current.released)) {
         wakeLockRef.current = await navigator.wakeLock.request('screen');
         console.log('Wake Lock acquired');
       }
@@ -686,6 +829,7 @@ export default function GameScreen({ config, onGameEnd }) {
   };
 
   const releaseWakeLock = async () => {
+    wakeLockWantedRef.current = false;
     if (wakeLockRef.current) {
       try {
         await wakeLockRef.current.release();
@@ -713,6 +857,9 @@ export default function GameScreen({ config, onGameEnd }) {
   // cancelledRef, so this just needs the confirmation gate.
   const handleBackToHome = () => {
     if (confirm(t('confirmEndGame'))) {
+      // Stop everything now, while the <audio> refs are still attached
+      cancelledRef.current = true;
+      endGame();
       onGameEnd();
     }
   };
@@ -771,25 +918,21 @@ export default function GameScreen({ config, onGameEnd }) {
                     <div className="character-name">
                       {characterName(currentCharacter)}
                     </div>
-                    {currentCharacter.characterId === 'oracle' && oracleVariantId === 'oracle_ripple' && (
+                    {currentCharacter.characterId === 'oracle' && oracleVariantId && (
                       <div className="oracle-ripple-prompt">
-                        <p>{t('oracleRipplePrompt')}</p>
-                        <div className="oracle-ripple-buttons">
-                          <button
-                            type="button"
-                            className={`oracle-ripple-button ${oracleGuaranteedRipple ? 'active' : ''}`}
-                            onClick={() => setOracleGuarantee(true)}
-                          >
-                            {t('yesLabel')}
-                          </button>
-                          <button
-                            type="button"
-                            className={`oracle-ripple-button ${!oracleGuaranteedRipple ? 'active' : ''}`}
-                            onClick={() => setOracleGuarantee(false)}
-                          >
-                            {t('noLabel')}
-                          </button>
-                        </div>
+                        <p>{t(`oracleQ_${oracleVariantId}`)}</p>
+                        {oracleSelecting && <div className="oracle-ripple-buttons">
+                          {oracleOptions(oracleVariantId).map(opt => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              className={`oracle-ripple-button ${oracleChoice === opt.value ? 'active' : ''}`}
+                              onClick={() => chooseOracleOption(opt.value)}
+                            >
+                              {opt.label}
+                            </button>
+                          ))}
+                        </div>}
                       </div>
                     )}
                   </>

@@ -1,0 +1,14 @@
+{
+  "characterId": "oracle_change_team_alien",
+  "isComplex": false,
+  "activation": {
+    "filename": "oracle_change_team_alien_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:50:37.295Z"
+  },
+  "end": {
+    "filename": "oracle_change_team_alien_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:50:47.550Z"
+  }
+}

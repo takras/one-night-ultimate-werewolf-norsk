@@ -62,8 +62,8 @@ export function rippleSequence(ripple) {
 // One weighted pick over every ripple plus "none". `guaranteed` (the Oracle
 // said yes) leaves "none" out, so the pick is proportional among the real
 // ripples. Returns null when no ripple happens.
-export function pickRipple(guaranteed = false) {
-  const pool = RIPPLE_EVENTS.filter(r => r.weight > 0);
+export function pickRipple(guaranteed = false, excludeIds = []) {
+  const pool = RIPPLE_EVENTS.filter(r => r.weight > 0 && !excludeIds.includes(r.id));
   const total = pool.reduce((s, r) => s + r.weight, 0) + (guaranteed ? 0 : RIPPLE_NONE_WEIGHT);
   let roll = Math.random() * total;
   for (const ripple of pool) {

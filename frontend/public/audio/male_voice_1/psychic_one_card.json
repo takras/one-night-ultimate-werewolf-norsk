@@ -1,0 +1,14 @@
+{
+  "characterId": "psychic_one_card",
+  "isComplex": false,
+  "activation": {
+    "filename": "psychic_one_card_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:55:46.529Z"
+  },
+  "end": {
+    "filename": "psychic_one_card_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:55:55.227Z"
+  }
+}

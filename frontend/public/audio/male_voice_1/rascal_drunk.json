@@ -1,0 +1,14 @@
+{
+  "characterId": "rascal_drunk",
+  "isComplex": false,
+  "activation": {
+    "filename": "rascal_drunk_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:57:04.489Z"
+  },
+  "end": {
+    "filename": "rascal_drunk_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:57:10.889Z"
+  }
+}

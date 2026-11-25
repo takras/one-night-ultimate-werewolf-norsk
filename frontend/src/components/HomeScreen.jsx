@@ -13,7 +13,8 @@ const allCharacters = getCharacters();
 
 // Same grouping the play order uses: duplicates (varulv_1/varulv_2) share
 // one recording under the base id
-const baseCharacterId = (id) => id.replace(/_\d+$/, '');
+// Zerb shares Groob's single wake-up (one recording, one night step)
+const baseCharacterId = (id) => (id === 'zerb' ? 'groob_alien' : id.replace(/_\d+$/, ''));
 
 // A role is playable with a voice when that voice has an activation clip for
 // it - either the role's own clip, or (for roles whose narration is picked
@@ -21,9 +22,15 @@ const baseCharacterId = (id) => id.replace(/_\d+$/, '');
 // Roles with no night action need no recording at all. Until the catalog and voice have
 // loaded nothing is treated as missing, to avoid a flash of greyed-out
 // cards.
-function hasRecording(character, audioCatalog, voiceId) {
+function hasRecording(character, audioCatalog, voiceId, allCharacters = []) {
   if (character.noNightAction || !audioCatalog || !voiceId) return true;
-  const ids = new Set([baseCharacterId(character.id), ...(character.narrationVariants || []).map(v => v.id)]);
+  // Duplicates of a role (alien_1/alien_2) share one recording, which may
+  // be filed under the variants of whichever copy declares them
+  const group = baseCharacterId(character.id);
+  const variants = allCharacters
+    .filter(c => baseCharacterId(c.id) === group)
+    .flatMap(c => c.narrationVariants || []);
+  const ids = new Set([group, ...variants.map(v => v.id)]);
   return audioCatalog.some(
     a => ids.has(a.characterId) && a.audioType === 'activation' && a.voiceId === voiceId
   );
@@ -54,7 +61,7 @@ export default function HomeScreen({
   const [selectedVoiceId, setSelectedVoiceId] = useState('');
   const [audioCatalog, setAudioCatalog] = useState(null);
 
-  const isMissing = (character) => !hasRecording(character, audioCatalog, selectedVoiceId);
+  const isMissing = (character) => !hasRecording(character, audioCatalog, selectedVoiceId, allCharacters);
 
   // Only offer presets whose every character belongs to a currently active
   // game - a preset with even one role from a deselected game is dropped

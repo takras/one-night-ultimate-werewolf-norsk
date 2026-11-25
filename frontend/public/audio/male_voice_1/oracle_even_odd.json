@@ -1,0 +1,14 @@
+{
+  "characterId": "oracle_even_odd",
+  "isComplex": false,
+  "activation": {
+    "filename": "oracle_even_odd_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:52:16.732Z"
+  },
+  "end": {
+    "filename": "oracle_even_odd_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:52:23.400Z"
+  }
+}

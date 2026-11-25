@@ -1,0 +1,14 @@
+{
+  "characterId": "oracle_change_team_werewolf",
+  "isComplex": false,
+  "activation": {
+    "filename": "oracle_change_team_werewolf_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:51:00.193Z"
+  },
+  "end": {
+    "filename": "oracle_change_team_werewolf_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:51:05.999Z"
+  }
+}

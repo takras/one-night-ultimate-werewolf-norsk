@@ -1,0 +1,14 @@
+{
+  "characterId": "alien_timer",
+  "isComplex": false,
+  "activation": {
+    "filename": "alien_timer_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:58:41.411Z"
+  },
+  "end": {
+    "filename": "alien_timer_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:58:47.981Z"
+  }
+}

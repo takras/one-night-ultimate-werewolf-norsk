@@ -1,0 +1,14 @@
+{
+  "characterId": "oracle_ripple",
+  "isComplex": false,
+  "activation": {
+    "filename": "oracle_ripple_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:51:36.980Z"
+  },
+  "end": {
+    "filename": "oracle_ripple_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T13:51:43.583Z"
+  }
+}

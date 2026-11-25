@@ -272,8 +272,9 @@
 }
 
 .oracle-ripple-button {
-  padding: 8px 22px;
-  font-size: 0.9rem;
+  padding: 22px 28px;
+  min-height: 72px;
+  font-size: 1.1rem;
   font-weight: bold;
   background: transparent;
   color: #b0b0c0;
