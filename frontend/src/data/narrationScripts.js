@@ -3,163 +3,193 @@
 // next to whichever recording is selected so the narrator knows what to
 // say. Entries with no verified source text are marked explicitly instead
 // of inventing rulebook wording.
-export const NO_SCRIPT_FOUND = 'Ingen bekreftet tekst funnet i skriptet for denne rollen ennå. Skriv/les inn egen tekst.';
-export const NO_FIXED_SCRIPT = 'Ingen fast tekst - dette er fritt valgt lyd/musikk uten manus.';
+export const NO_SCRIPT_FOUND =
+  "Ingen bekreftet tekst funnet i skriptet for denne rollen ennå. Skriv/les inn egen tekst.";
+export const NO_FIXED_SCRIPT =
+  "Ingen fast tekst - dette er fritt valgt lyd/musikk uten manus.";
 
 // characterId (base id, same as used in the play order) -> activation/end text
 export const CHARACTER_SCRIPTS = {
   // Werewolf / Daybreak (instruksjoner.txt)
   vakt: {
-    activation: 'Vakt, våkn opp. Du kan legge en skjoldbrikke på en annen spillers kort.',
-    end: 'Vakt, lukk øynene.',
+    activation:
+      "Vakt, våkn opp. Du kan legge en skjoldbrikke på en annen spillers kort.",
+    end: "Vakt, lukk øynene.",
   },
   dobbeltgjenger: {
-    activation: 'Dobbeltgjenger, våkn opp. Se på en annen spillers kort. Du er nå også den rollen. Hvis den rollen har en handling på natten, gjør den nå.',
-    end: 'Dobbeltgjenger, lukk øynene.',
+    activation:
+      "Dobbeltgjenger, våkn opp. Se på en annen spillers kort. Du er nå også den rollen. Hvis den rollen har en handling på natten, gjør den nå.",
+    end: "Dobbeltgjenger, lukk øynene.",
   },
   varulv: {
-    activation: 'Varulver, våkn opp. Se etter andre varulver. Hvis du er alene, kikk i stedet på et av kortene i midten.\n\n[Hvis Drømmeulv er med i spillet, brukes i stedet: "Varulver, unntatt drømmeulv, våkn opp. Se etter andre varulver. Drømmeulv, stikk ut tommelen så de andre varulvene kan se den." - se rollen Drømmeulv.]',
+    activation:
+      'Varulver, våkn opp. Se etter andre varulver. Hvis du er alene, kikk i stedet på et av kortene i midten.\n\n[Hvis Drømmeulv er med i spillet, brukes i stedet: "Varulver, unntatt drømmeulv, våkn opp. Se etter andre varulver. Drømmeulv, stikk ut tommelen så de andre varulvene kan se den." - se rollen Drømmeulv.]',
     end: 'Varulver, lukk øynene.\n\n[Med Drømmeulv: "Drømmeulv, bort med tommelen. Varulver, lukk øynene."]',
   },
   droemme_ulv: {
-    activation: '[Del av Varulv-blokken, ikke egen oppvåkning:] Varulver, unntatt drømmeulv, våkn opp. Se etter andre varulver. Drømmeulv, stikk ut tommelen så de andre varulvene kan se den.',
-    end: 'Drømmeulv, bort med tommelen. Varulver, lukk øynene.',
+    activation:
+      "[Del av Varulv-blokken, ikke egen oppvåkning:] Varulver, unntatt drømmeulv, våkn opp. Se etter andre varulver. Drømmeulv, stikk ut tommelen så de andre varulvene kan se den.",
+    end: "Drømmeulv, bort med tommelen. Varulver, lukk øynene.",
   },
   alfa_ulv: {
-    activation: 'Alfa ulv, våkn opp. Du skal bytte Varulv-kortet i midten med en annen spillers kort.',
-    end: 'Alfa ulv, lukk øynene.',
+    activation:
+      "Alfa ulv, våkn opp. Du skal bytte Varulv-kortet i midten med en annen spillers kort.",
+    end: "Alfa ulv, lukk øynene.",
   },
   mystisk_ulv: {
-    activation: 'Mystisk ulv, våkn opp. Du kan se på en annen spillers kort.',
-    end: 'Mystisk ulv, lukk øynene.',
+    activation: "Mystisk ulv, våkn opp. Du kan se på en annen spillers kort.",
+    end: "Mystisk ulv, lukk øynene.",
   },
   undersaatt: {
-    activation: 'Undersått, våkn opp. Varulver, hold frem tommelen deres, så undersåtten kan se hvem dere er.',
-    end: 'Varulver, fjern tomlene. Undersått, lukk øynene.',
+    activation:
+      "Undersått, våkn opp. Varulver, hold frem tommelen deres, så undersåtten kan se hvem dere er.",
+    end: "Varulver, fjern tomlene. Undersått, lukk øynene.",
   },
   frimurer: {
     activation: NO_SCRIPT_FOUND,
     end: NO_SCRIPT_FOUND,
   },
   klarsynt: {
-    activation: 'Klarsynt, våkn opp. Du kan se på en annen spillers kort, eller to av kortene i midten.',
-    end: 'Klarsynt, lukk øynene.',
+    activation:
+      "Klarsynt, våkn opp. Du kan se på en annen spillers kort, eller to av kortene i midten.",
+    end: "Klarsynt, lukk øynene.",
   },
   roever: {
-    activation: 'Røver, våkn opp. Du kan bytte ditt eget kort med en annen spillers kort. Hvis du gjorde det, se på ditt nye kort.',
-    end: 'Røver, lukk øynene.',
+    activation:
+      "Røver, våkn opp. Du kan bytte ditt eget kort med en annen spillers kort. Hvis du gjorde det, se på ditt nye kort.",
+    end: "Røver, lukk øynene.",
   },
   heks: {
-    activation: 'Heks, våkn opp. Du kan se på et av kortene i midten. Hvis du gjør det, må du bytte det kortet med en annen spillers kort.',
-    end: 'Heks, lukk øynene.',
+    activation:
+      "Heks, våkn opp. Du kan se på et av kortene i midten. Hvis du gjør det, må du bytte det kortet med en annen spillers kort.",
+    end: "Heks, lukk øynene.",
   },
   braakmaker: {
-    activation: 'Bråkmaker, våkn opp. Du kan bytte om kortene til to andre spillere.',
-    end: 'Bråkmaker, lukk øynene.',
+    activation:
+      "Bråkmaker, våkn opp. Du kan bytte om kortene til to andre spillere.",
+    end: "Bråkmaker, lukk øynene.",
   },
   landsbyidiiot: {
-    activation: 'Landsbyidiot, våkn opp. Du kan flytte på alle spilleres kort utenom ditt eget, alle til venstre eller alle til høyre.',
-    end: 'Landsbyidiot, lukk øynene.',
+    activation:
+      "Landsbyidiot, våkn opp. Du kan flytte på alle spilleres kort utenom ditt eget, alle til venstre eller alle til høyre.",
+    end: "Landsbyidiot, lukk øynene.",
   },
   dranker: {
-    activation: 'Dranker, våkn opp og bytt kortet ditt med ett i midten, uten å se på det.',
-    end: 'Dranker, lukk øynene.',
+    activation:
+      "Dranker, våkn opp og bytt kortet ditt med ett i midten, uten å se på det.",
+    end: "Dranker, lukk øynene.",
   },
   soevnloes: {
-    activation: 'Søvnløs, gjesp, våkn opp. Se på kortet ditt.',
-    end: 'Søvnløs, lukk øynene.',
+    activation: "Søvnløs, gjesp, våkn opp. Se på kortet ditt.",
+    end: "Søvnløs, lukk øynene.",
   },
   klarsynt_laerling: {
-    activation: 'Klarsynt lærling, våkn opp. Du kan se på et av kortene i midten.',
-    end: 'Klarsynt lærling, lukk øynene.',
+    activation:
+      "Klarsynt lærling, våkn opp. Du kan se på et av kortene i midten.",
+    end: "Klarsynt lærling, lukk øynene.",
   },
   paranormal_etterforsker: {
-    activation: 'Paranormal etterforsker, våkn opp. Du kan se på opp til to kort til andre spillere. Hvis du ser en varulv eller garver, må du stoppe, og du er nå blitt det du så, en varulv eller garver.',
-    end: 'Paranormal etterforsker, lukk øynene.',
+    activation:
+      "Paranormal etterforsker, våkn opp. Du kan se på opp til to kort til andre spillere. Hvis du ser en varulv eller garver, må du stoppe, og du er nå blitt det du så, en varulv eller garver.",
+    end: "Paranormal etterforsker, lukk øynene.",
   },
   avsloerer: {
-    activation: 'Trollmann, våkn opp. Du kan flippe over en annen spillers kort. Hvis det var en Varulv eller garver, flipp det tilbake igjen.',
-    end: 'Trollmann, lukk øynene.',
+    activation:
+      "Trollmann, våkn opp. Du kan flippe over en annen spillers kort. Hvis det var en Varulv eller garver, flipp det tilbake igjen.",
+    end: "Trollmann, lukk øynene.",
   },
   kurator: {
-    activation: 'Kurator, våkn opp. Du kan legge en skatt-brikke skjult ned på en annen spillers kort.',
-    end: 'Kurator, lukk øynene.',
+    activation:
+      "Kurator, våkn opp. Du kan legge en skatt-brikke skjult ned på en annen spillers kort.",
+    end: "Kurator, lukk øynene.",
   },
   garver_laerling: {
-    activation: NO_SCRIPT_FOUND,
-    end: NO_SCRIPT_FOUND,
+    activation:
+      "Garvers lærling, våkn opp. Garver, stikk ut tommelen din så Garvers lærling kan se den og hvem du er.",
+    end: "Garver, bort med tommelen. Garvers lærling, lukk øynene.",
   },
   aura_klarsynt: {
-    activation: NO_SCRIPT_FOUND,
-    end: NO_SCRIPT_FOUND,
+    activation:
+      "Aura klarsynt, våkn opp. Alle sammen: hvis du har sett på eller flyttet på noen som helst kort, stikk ut tommelen din, så Aura klarsynt kan se den.",
+    end: "Alle sammen, bort med tomlene. Aura klarsynt, lukk øynene.",
   },
 
   // Alien (instruksjoner_alien.txt)
   oracle: {
-    activation: 'Orakel, våkn opp og svar på følgende spørsmål. [Vent 5 sekunder, selv om spilleren svarer før den tid.]\n\n'
-      + 'Hvert spørsmål under stilles uavhengig av de andre (flere kan stilles i samme Orakel-tur). Ca. 30% av tiden gir appen en respons som avviser/motsier spillerens svar - nøyaktig ordlyd for dette er ikke bekreftet.\n\n'
-      + '"Se på kortene i midten?" (10%)\n  Ja: "Hva er så ille med å være et orakel? Behold kortet ditt."\n  Nei: "Selvfølgelig ikke. Behold kortet ditt."\n\n'
-      + '"Hvilket tall tenker jeg på?" (75%) [Vis tallene 1-10 som knapper.]\n  Feil: "Feil! Du vinner bare hvis du ikke dør. Alle andre: dere vinner hvis Orakelet dør."\n  Riktig: [ikke bekreftet]\n\n'
-      + '"Vil du garantere en ripple?" (5%)\n  Ja: "OK, det blir en ripple."\n  Nei: "Seriøst, hvorfor ikke? OK, greit."\n\n'
-      + '"Vil du bli med på romvesen-laget?" (15%)\n  Ja: [ikke bekreftet]\n  Nei: "Bra for deg. Bli værende på menneske-laget."\n\n'
-      + '"Vil du bli med på varulv-laget?" (15%)\n  Ja: [ikke bekreftet]\n  Nei: [ikke bekreftet]',
-    end: 'Orakel, lukk øynene.',
+    activation:
+      "Orakel, våkn opp og svar på følgende spørsmål. [Vent 5 sekunder, selv om spilleren svarer før den tid.]\n\n" +
+      "Hvert spørsmål under stilles uavhengig av de andre (flere kan stilles i samme Orakel-tur). Ca. 30% av tiden gir appen en respons som avviser/motsier spillerens svar - nøyaktig ordlyd for dette er ikke bekreftet.\n\n" +
+      '"Se på kortene i midten?" (10%)\n  Ja: "Hva er så ille med å være et orakel? Behold kortet ditt."\n  Nei: "Selvfølgelig ikke. Behold kortet ditt."\n\n' +
+      '"Hvilket tall tenker jeg på?" (75%) [Vis tallene 1-10 som knapper.]\n  Feil: "Feil! Du vinner bare hvis du ikke dør. Alle andre: dere vinner hvis Orakelet dør."\n  Riktig: [ikke bekreftet]\n\n' +
+      '"Vil du garantere en ripple?" (5%)\n  Ja: "OK, det blir en ripple."\n  Nei: "Seriøst, hvorfor ikke? OK, greit."\n\n' +
+      '"Vil du bli med på romvesen-laget?" (15%)\n  Ja: [ikke bekreftet]\n  Nei: "Bra for deg. Bli værende på menneske-laget."\n\n' +
+      '"Vil du bli med på varulv-laget?" (15%)\n  Ja: [ikke bekreftet]\n  Nei: [ikke bekreftet]',
+    end: "Orakel, lukk øynene.",
   },
   alien: {
-    activation: 'Romvesner, våkn opp.\n\nÉn av følgende, tilfeldig valgt av appen (se de enkelte variantene i rollelisten for nøyaktig tekst per variant):\n'
-      + '  Én romvesen ser i hemmelighet på et kort (30%)\n  Alle romvesner ser i hemmelighet på et kort (30%)\n'
-      + '  Bare stirr på hverandre (15%)\n  Vis kortene til hverandre (10%)\n'
-      + '  Se på spilleren til venstre for deg (5%)\n  Se på spilleren til høyre for deg (5%)\n'
-      + '  Romvesenet med laveste nummer kan se hvilket som helst kort (2,5%)\n'
-      + '  Romvesenet med høyeste nummer kan se hvilket som helst kort (2,5%)\n\n'
-      + '--- Ku (mens romvesnene fortsatt er våkne) ---\n[Ku lukker øynene HER, mens Romvesnene ennå ikke har lukket sine.]\n'
-      + 'Ku, våkn opp og hold frem knyttneven. [Hvis en romvesen sitter ved siden av Ku, tipper en av dem kua ved å trykke på knyttneven hennes.]\n'
-      + 'Ku, legg ned neven. Ku, lukk øynene.',
-    end: 'Romvesner, lukk øynene.',
+    activation:
+      "Romvesner, våkn opp.\n\nÉn av følgende, tilfeldig valgt av appen (se de enkelte variantene i rollelisten for nøyaktig tekst per variant):\n" +
+      "  Én romvesen ser i hemmelighet på et kort (30%)\n  Alle romvesner ser i hemmelighet på et kort (30%)\n" +
+      "  Bare stirr på hverandre (15%)\n  Vis kortene til hverandre (10%)\n" +
+      "  Se på spilleren til venstre for deg (5%)\n  Se på spilleren til høyre for deg (5%)\n" +
+      "  Romvesenet med laveste nummer kan se hvilket som helst kort (2,5%)\n" +
+      "  Romvesenet med høyeste nummer kan se hvilket som helst kort (2,5%)\n\n" +
+      "--- Ku (mens romvesnene fortsatt er våkne) ---\n[Ku lukker øynene HER, mens Romvesnene ennå ikke har lukket sine.]\n" +
+      "Ku, våkn opp og hold frem knyttneven. [Hvis en romvesen sitter ved siden av Ku, tipper en av dem kua ved å trykke på knyttneven hennes.]\n" +
+      "Ku, legg ned neven. Ku, lukk øynene.",
+    end: "Romvesner, lukk øynene.",
   },
   synthetic_alien: {
-    activation: '[Synthetic Alien våkner sammen med romvesnene (se "alien") - ingen egen replikk for ham utover det.]',
+    activation:
+      '[Synthetic Alien våkner sammen med romvesnene (se "alien") - ingen egen replikk for ham utover det.]',
     end: '[Ingen egen "lukk øynene"-replikk - lukkes sammen med romvesnene.]',
   },
   cow: {
-    activation: '[Del av Romvesner-blokken, ikke egen oppvåkning - se "alien":] Ku, våkn opp og hold frem knyttneven. Ku, legg ned neven. Ku, lukk øynene.',
-    end: 'Ku, lukk øynene.',
+    activation:
+      '[Del av Romvesner-blokken, ikke egen oppvåkning - se "alien":] Ku, våkn opp og hold frem knyttneven. Ku, legg ned neven. Ku, lukk øynene.',
+    end: "Ku, lukk øynene.",
   },
   groob_alien: {
-    activation: 'Groob og Zerb, våkn opp. Se på hverandre.',
-    end: 'Groob og Zerb, lukk øynene.',
+    activation: "Groob og Zerb, våkn opp. Se på hverandre.",
+    end: "Groob og Zerb, lukk øynene.",
   },
   zerb: {
-    activation: 'Groob og Zerb, våkn opp. Se på hverandre.',
-    end: 'Groob og Zerb, lukk øynene.',
+    activation: "Groob og Zerb, våkn opp. Se på hverandre.",
+    end: "Groob og Zerb, lukk øynene.",
   },
   leader: {
-    activation: 'Leder, våkn opp.\nRomvesner, stikk ut tommelen. Romvesner, legg ned tommelen.\nZerb og Groob, hvis dere så hverandre, stikk ut tommelen igjen.\n'
-      + 'Leder, hvis du ser Zerb og Groob: du kan bare vinne hvis [én av dem / begge to] (tilfeldig valgt av appen) forblir i live.\nLegg ned tomlene.',
-    end: 'Leder, lukk øynene.',
+    activation:
+      "Leder, våkn opp.\nRomvesner, stikk ut tommelen. Romvesner, legg ned tommelen.\nZerb og Groob, hvis dere så hverandre, stikk ut tommelen igjen.\n" +
+      "Leder, hvis du ser Zerb og Groob: du kan bare vinne hvis [én av dem / begge to] (tilfeldig valgt av appen) forblir i live.\nLegg ned tomlene.",
+    end: "Leder, lukk øynene.",
   },
   psychic: {
-    activation: 'Psykisk, våkn opp. Se på ett kort fra [en gjenbrukbar målfrase settes inn her etter avspilling, f.eks. "en tilfeldig valgt spiller med partallsnummer"].',
-    end: 'Psykisk, lukk øynene.',
+    activation:
+      'Psykisk, våkn opp. Se på ett kort fra [en gjenbrukbar målfrase settes inn her etter avspilling, f.eks. "en tilfeldig valgt spiller med partallsnummer"].',
+    end: "Psykisk, lukk øynene.",
   },
   rascal: {
-    activation: 'Rakker, våkn opp. Én av følgende, tilfeldig valgt av appen (se de enkelte variantene i rollelisten for nøyaktig tekst per variant):\n'
-      + '  Bråkmaker-variant (40%): Bytt om kortene til to spillere.\n'
-      + '  Røver-variant (30%): Du kan stjele en spillers kort. [Rakkeren blir IKKE rollen og ser ikke på det stjålne kortet.]\n'
-      + '  Heks-variant (30%): Gi et kort fra midten til en annen spiller.',
-    end: 'Rakker, lukk øynene.',
+    activation:
+      "Rakker, våkn opp. Én av følgende, tilfeldig valgt av appen (se de enkelte variantene i rollelisten for nøyaktig tekst per variant):\n" +
+      "  Bråkmaker-variant (40%): Bytt om kortene til to spillere.\n" +
+      "  Røver-variant (30%): Du kan stjele en spillers kort. [Rakkeren blir IKKE rollen og ser ikke på det stjålne kortet.]\n" +
+      "  Heks-variant (30%): Gi et kort fra midten til en annen spiller.",
+    end: "Rakker, lukk øynene.",
   },
   exposer: {
-    activation: 'Avslører, våkn opp. Snu [ett / to / tre] kort i midten (se de enkelte variantene i rollelisten for nøyaktig antall).',
-    end: 'Avslører, lukk øynene.',
+    activation:
+      "Avslører, våkn opp. Snu [ett / to / tre] kort i midten (se de enkelte variantene i rollelisten for nøyaktig antall).",
+    end: "Avslører, lukk øynene.",
   },
   blob: {
-    activation: 'Blobb, våkn opp. [Kun denne åpningslinjen - hvem som blir del av blobben spleises automatisk inn etterpå fra egne fragment-opptak (se "Fragment"-kategorien: 8-9 spillere, 10 spillere venstre/høyre, og en felles avslutningslinje), avhengig av antall spillere. Ved 5 spillere gjenbrukes "Spilleren til høyre"-fragmentet fra målfrasene.]',
+    activation:
+      'Blobb, våkn opp. [Kun denne åpningslinjen - hvem som blir del av blobben spleises automatisk inn etterpå fra egne fragment-opptak (se "Fragment"-kategorien: 8-9 spillere, 10 spillere venstre/høyre, og en felles avslutningslinje), avhengig av antall spillere. Ved 5 spillere gjenbrukes "Spilleren til høyre"-fragmentet fra målfrasene.]',
     end: '[Ingen egen "slutt"-lyd trengs - avslutningslinjen er del av fragment-sekvensen over.]',
   },
   mortician: {
-    activation: 'Begravelsesagent, våkn opp. Du kan se på kortet til [se de enkelte variantene i rollelisten for nøyaktig tekst per variant: 1 kort 70%, 2 kort 25%, "later som" 5%].',
-    end: 'Begravelsesagent, lukk øynene.',
+    activation:
+      'Begravelsesagent, våkn opp. Du kan se på kortet til [se de enkelte variantene i rollelisten for nøyaktig tekst per variant: 1 kort 70%, 2 kort 25%, "later som" 5%].',
+    end: "Begravelsesagent, lukk øynene.",
   },
 };
 
@@ -168,106 +198,162 @@ export const CHARACTER_SCRIPTS = {
 // in the admin dropdown, so gets its own script entry.
 export const VARIANT_SCRIPTS = {
   dobbeltgjenger_undersaatt: {
-    activation: 'Dobbeltgjenger, hvis du nå er en Undersått, fortsett å ha øynene åpne. Ellers, lukk dem. Varulver, stikk ut tommelen deres så Dobbeltgjenger-undersåtten kan se den.',
-    end: 'Varulver, bort med tommelen deres. Dobbeltgjenger, lukk øynene.',
+    activation:
+      "Dobbeltgjenger, hvis du nå er en Undersått, fortsett å ha øynene åpne. Ellers, lukk dem. Varulver, stikk ut tommelen deres så Dobbeltgjenger-undersåtten kan se den.",
+    end: "Varulver, bort med tommelen deres. Dobbeltgjenger, lukk øynene.",
   },
   dobbeltgjenger_soevnloes: {
-    activation: 'Dobbeltgjenger, hvis du så på Søvnløs sitt kort, våkn opp nå og se på kortet ditt.',
-    end: 'Dobbeltgjenger, lukk øynene.',
+    activation:
+      "Dobbeltgjenger, hvis du så på Søvnløs sitt kort, våkn opp nå og se på kortet ditt.",
+    end: "Dobbeltgjenger, lukk øynene.",
   },
   dobbeltgjenger_avsloerer: {
-    activation: 'Dobbeltgjenger, hvis du så på Trollmann-kortet, våkn opp, og flipp et kort. Hvis det kortet er en varulv eller garver, flipp det tilbake. Du er fortsatt Dobbeltgjenger-trollmann.',
-    end: 'Dobbeltgjenger, lukk øynene.',
+    activation:
+      "Dobbeltgjenger, hvis du så på Trollmann-kortet, våkn opp, og flipp et kort. Hvis det kortet er en varulv eller garver, flipp det tilbake. Du er fortsatt Dobbeltgjenger-trollmann.",
+    end: "Dobbeltgjenger, lukk øynene.",
   },
   dobbeltgjenger_kurator: {
-    activation: 'Dobbeltgjenger, hvis du så på Kurator-kortet, våkn opp og legg en skatt-brikke skjult på et hvilket som helst kort.',
-    end: 'Dobbeltgjenger, lukk øynene.',
+    activation:
+      "Dobbeltgjenger, hvis du så på Kurator-kortet, våkn opp og legg en skatt-brikke skjult på et hvilket som helst kort.",
+    end: "Dobbeltgjenger, lukk øynene.",
   },
 
-  alien_view_secretly: { activation: 'Romvesner: én av dere ser i hemmelighet på et kort.', end: 'Romvesner, lukk øynene.' },
-  alien_all_view: { activation: 'Romvesner: alle ser i hemmelighet på et kort.', end: 'Romvesner, lukk øynene.' },
-  alien_stare: { activation: 'Romvesner: bare stirr på hverandre.', end: 'Romvesner, lukk øynene.' },
-  alien_show_cards: { activation: 'Romvesner: vis kortene til hverandre.', end: 'Romvesner, lukk øynene.' },
-  alien_look_left: { activation: 'Romvesner, se på spilleren til venstre for deg.', end: 'Romvesner, lukk øynene.' },
-  alien_look_right: { activation: 'Romvesner, se på spilleren til høyre for deg.', end: 'Romvesner, lukk øynene.' },
-  alien_lowest_number: { activation: 'Romvesenet med laveste nummer kan se på hvilket som helst kort.', end: 'Romvesner, lukk øynene.' },
-  alien_highest_number: { activation: 'Romvesenet med høyeste nummer kan se på hvilket som helst kort.', end: 'Romvesner, lukk øynene.' },
+  alien_view_secretly: {
+    activation: "Romvesner: én av dere ser i hemmelighet på et kort.",
+    end: "Romvesner, lukk øynene.",
+  },
+  alien_all_view: {
+    activation: "Romvesner: alle ser i hemmelighet på et kort.",
+    end: "Romvesner, lukk øynene.",
+  },
+  alien_stare: {
+    activation: "Romvesner: bare stirr på hverandre.",
+    end: "Romvesner, lukk øynene.",
+  },
+  alien_show_cards: {
+    activation: "Romvesner: vis kortene til hverandre.",
+    end: "Romvesner, lukk øynene.",
+  },
+  alien_look_left: {
+    activation: "Romvesner, se på spilleren til venstre for deg.",
+    end: "Romvesner, lukk øynene.",
+  },
+  alien_look_right: {
+    activation: "Romvesner, se på spilleren til høyre for deg.",
+    end: "Romvesner, lukk øynene.",
+  },
+  alien_lowest_number: {
+    activation:
+      "Romvesenet med laveste nummer kan se på hvilket som helst kort.",
+    end: "Romvesner, lukk øynene.",
+  },
+  alien_highest_number: {
+    activation:
+      "Romvesenet med høyeste nummer kan se på hvilket som helst kort.",
+    end: "Romvesner, lukk øynene.",
+  },
 
   rascal_troublemaker: {
-    activation: 'Rakker: bytt om kortene til [gjenbrukbar målfrase - to spillere, tilfeldig valgt av appen].',
-    end: 'Rakker, lukk øynene.',
+    activation:
+      "Rakker: bytt om kortene til [gjenbrukbar målfrase - to spillere, tilfeldig valgt av appen].",
+    end: "Rakker, lukk øynene.",
   },
   rascal_robber: {
-    activation: 'Rakker: du kan stjele kortet til [gjenbrukbar målfrase]. Du blir IKKE den rollen og ser ikke på det stjålne kortet.',
-    end: 'Rakker, lukk øynene.',
+    activation:
+      "Rakker: du kan stjele kortet til [gjenbrukbar målfrase]. Du blir IKKE den rollen og ser ikke på det stjålne kortet.",
+    end: "Rakker, lukk øynene.",
   },
   rascal_witch: {
-    activation: 'Rakker: gi et kort fra midten til [gjenbrukbar målfrase].',
-    end: 'Rakker, lukk øynene.',
+    activation: "Rakker: gi et kort fra midten til [gjenbrukbar målfrase].",
+    end: "Rakker, lukk øynene.",
   },
 
-  exposer_one_card: { activation: 'Avslører, snu ett kort i midten.', end: 'Avslører, lukk øynene.' },
-  exposer_two_cards: { activation: 'Avslører, snu to kort i midten.', end: 'Avslører, lukk øynene.' },
-  exposer_three_cards: { activation: 'Avslører, snu tre kort i midten.', end: 'Avslører, lukk øynene.' },
+  exposer_one_card: {
+    activation: "Avslører, snu ett kort i midten.",
+    end: "Avslører, lukk øynene.",
+  },
+  exposer_two_cards: {
+    activation: "Avslører, snu to kort i midten.",
+    end: "Avslører, lukk øynene.",
+  },
+  exposer_three_cards: {
+    activation: "Avslører, snu tre kort i midten.",
+    end: "Avslører, lukk øynene.",
+  },
 
   mortician_one_card: {
-    activation: 'Begravelsesagent, du kan se på ett kort: en av naboene dine, naboen til høyre, eller deg selv. [Nøyaktig hvem er ikke bekreftet - trolig undervarianter av dette utfallet.]',
-    end: 'Begravelsesagent, lukk øynene.',
+    activation:
+      "Begravelsesagent, du kan se på ett kort: en av naboene dine, naboen til høyre, eller deg selv. [Nøyaktig hvem er ikke bekreftet - trolig undervarianter av dette utfallet.]",
+    end: "Begravelsesagent, lukk øynene.",
   },
   mortician_two_cards: {
-    activation: 'Begravelsesagent, du kan se på begge naboene dine sine kort.',
-    end: 'Begravelsesagent, lukk øynene.',
+    activation: "Begravelsesagent, du kan se på begge naboene dine sine kort.",
+    end: "Begravelsesagent, lukk øynene.",
   },
   mortician_pretend: {
-    activation: '[Ikke bekreftet hva dette faktisk innebærer - trolig later Begravelsesagenten som om hen ser på et kort uten å faktisk gjøre det.] Begravelsesagent, du kan late som du ser på et kort.',
-    end: 'Begravelsesagent, lukk øynene.',
+    activation:
+      "[Ikke bekreftet hva dette faktisk innebærer - trolig later Begravelsesagenten som om hen ser på et kort uten å faktisk gjøre det.] Begravelsesagent, du kan late som du ser på et kort.",
+    end: "Begravelsesagent, lukk øynene.",
   },
 };
 
 export const GAME_PHASE_SCRIPTS = {
-  game_start: 'Det er natt og tid for nattens herjinger. Alle sammen, lukk øynene deres.',
-  night_end: 'Hold øynene igjen, alle sammen. Strekk ut hånden deres og finn kortet deres, og beveg litt på det.\nAlle sammen, det er morgen. Våkn opp.',
-  discussion_instruction: NO_SCRIPT_FOUND + ' (fritt valgt intro til diskusjonsfasen, f.eks. forklar at spillerne nå skal diskutere og finne ut hvem som er skurk).',
-  discussion_end: 'Tiden er ute! Alle sammen: 3, 2, 1, Stem!',
+  game_start:
+    "Det er natt og tid for nattens herjinger. Alle sammen, lukk øynene deres.",
+  night_end:
+    "Hold øynene igjen, alle sammen. Strekk ut hånden deres og finn kortet deres, og beveg litt på det.\nAlle sammen, det er morgen. Våkn opp.",
+  discussion_instruction:
+    NO_SCRIPT_FOUND +
+    " (fritt valgt intro til diskusjonsfasen, f.eks. forklar at spillerne nå skal diskutere og finne ut hvem som er skurk).",
+  discussion_end: "Tiden er ute! Alle sammen: 3, 2, 1, Stem!",
 };
 
 // "...continuation" phrasing for the reusable target fragments, meant to be
 // spliced onto the end of an activation sentence (see targetFragments.js
 // for the admin-facing labels used to pick which one to record)
 export const FRAGMENT_SCRIPTS = {
-  target_even: '...en tilfeldig valgt spiller med partallsnummer.',
-  target_odd: '...en tilfeldig valgt spiller med oddetallsnummer.',
-  target_left: '...spilleren til venstre for deg.',
-  target_right: '...spilleren til høyre for deg.',
-  target_lower: '...en spiller med lavere nummer enn deg.',
-  target_any: '...en hvilken som helst spiller.',
+  target_even: "...en tilfeldig valgt spiller med partallsnummer.",
+  target_odd: "...en tilfeldig valgt spiller med oddetallsnummer.",
+  target_left: "...spilleren til venstre for deg.",
+  target_right: "...spilleren til høyre for deg.",
+  target_lower: "...en spiller med lavere nummer enn deg.",
+  target_any: "...en hvilken som helst spiller.",
 };
 
 // Ripple ("Forstyrrelse i tiden") announcements - see instruksjoner_alien.txt,
 // "RIPPLE-EFFEKTER". Percentages are the app's observed weights, not
 // something this app rolls automatically yet.
 export const RIPPLE_SCRIPTS = {
-  ripple_intro: 'Det har vært en ripple i tiden!',
-  ripple_time_loop: 'Det har vært en tidssløyfe. Rekkefølgen starter på nytt, men ikke alle roller våkner, og det er igjen tilfeldig hva de gjør.\n\n'
-    + '[Følgende våkner på nytt hvis de er valgt i spillet: Romvesner og Ku, Groob og Zerb, Leder (inkl. Groob og Zerb), Psykisk, Rakker, Avslører, Begravelsesagent.]',
-  ripple_one_minute_left: 'Dere har bare 1 minutt igjen før dere må stemme.',
-  ripple_no_talking: 'Alle sammen! Dere får ikke lov til å snakke før etter avstemningen.',
-  ripple_turn_away: 'Spiller [X], snu deg bort før avstemningen. [Spillernummeret spleises inn fra et isolert spillernummer-klipp.]',
-  ripple_troublemaker_again: 'Bråkmaker får våkne opp igjen og gjøre handlingen sin en gang til. [Krever at Bråkmaker er valgt i runden.]',
-  ripple_witch_again: 'Heks får våkne opp igjen og gjøre handlingen sin en gang til. [Krever at Heks er valgt i runden.]',
-  ripple_view_own_card_one: 'Spiller [X]. Du kan i hemmelighet se på ditt eget kort. [Spillernummeret spleises inn fra et isolert spillernummer-klipp.]',
-  ripple_view_own_card_two: 'Spiller [X] og [Y]. Dere kan i hemmelighet se på deres eget kort. [To spillernummer spleises inn.]',
-  ripple_two_handed_vote: 'Én spiller får stemme med begge hender. [Hvilken spiller er ikke bekreftet ennå - trolig etterfulgt av et spillernummer.]',
-  ripple_you_are_alien: 'Du er nå et romvesen.',
+  ripple_intro: "Det har vært en ripple i tiden!",
+  ripple_time_loop:
+    "Det har vært en tidssløyfe. Rekkefølgen starter på nytt, men ikke alle roller våkner, og det er igjen tilfeldig hva de gjør.\n\n" +
+    "[Følgende våkner på nytt hvis de er valgt i spillet: Romvesner og Ku, Groob og Zerb, Leder (inkl. Groob og Zerb), Psykisk, Rakker, Avslører, Begravelsesagent.]",
+  ripple_one_minute_left: "Dere har bare 1 minutt igjen før dere må stemme.",
+  ripple_no_talking:
+    "Alle sammen! Dere får ikke lov til å snakke før etter avstemningen.",
+  ripple_turn_away:
+    "Spiller [X], snu deg bort før avstemningen. [Spillernummeret spleises inn fra et isolert spillernummer-klipp.]",
+  ripple_troublemaker_again:
+    "Bråkmaker får våkne opp igjen og gjøre handlingen sin en gang til. [Krever at Bråkmaker er valgt i runden.]",
+  ripple_witch_again:
+    "Heks får våkne opp igjen og gjøre handlingen sin en gang til. [Krever at Heks er valgt i runden.]",
+  ripple_view_own_card_one:
+    "Spiller [X]. Du kan i hemmelighet se på ditt eget kort. [Spillernummeret spleises inn fra et isolert spillernummer-klipp.]",
+  ripple_view_own_card_two:
+    "Spiller [X] og [Y]. Dere kan i hemmelighet se på deres eget kort. [To spillernummer spleises inn.]",
+  ripple_two_handed_vote:
+    "Én spiller får stemme med begge hender. [Hvilken spiller er ikke bekreftet ennå - trolig etterfulgt av et spillernummer.]",
+  ripple_you_are_alien: "Du er nå et romvesen.",
 };
 
 // Blob's "who joins the blob" text, composed at runtime depending on
 // player count - see instruksjoner_alien.txt, "BLOBB"
 export const BLOB_SEQUENCE_SCRIPTS = {
-  blob_target_8p: 'Spillerne på hver side av deg',
-  blob_target_10p_left: 'De fire spillerne til venstre for deg',
-  blob_target_10p_right: 'De fire spillerne til høyre for deg',
-  blob_ending: '...er nå også del av blobben. Hold deg selv og dem i live for å vinne.',
+  blob_target_8p: "Spillerne på hver side av deg",
+  blob_target_10p_left: "De fire spillerne til venstre for deg",
+  blob_target_10p_right: "De fire spillerne til høyre for deg",
+  blob_ending:
+    "...er nå også del av blobben. Hold deg selv og dem i live for å vinne.",
 };
 
 export function getCharacterScript(characterId, audioType) {
@@ -279,8 +365,9 @@ export function getCharacterScript(characterId, audioType) {
 export function getFragmentScript(fragmentId) {
   if (FRAGMENT_SCRIPTS[fragmentId]) return FRAGMENT_SCRIPTS[fragmentId];
   if (RIPPLE_SCRIPTS[fragmentId]) return RIPPLE_SCRIPTS[fragmentId];
-  if (BLOB_SEQUENCE_SCRIPTS[fragmentId]) return BLOB_SEQUENCE_SCRIPTS[fragmentId];
-  const playerMatch = /^player_(\d+)$/.exec(fragmentId || '');
+  if (BLOB_SEQUENCE_SCRIPTS[fragmentId])
+    return BLOB_SEQUENCE_SCRIPTS[fragmentId];
+  const playerMatch = /^player_(\d+)$/.exec(fragmentId || "");
   if (playerMatch) return `Spiller ${playerMatch[1]}.`;
   return NO_SCRIPT_FOUND;
 }

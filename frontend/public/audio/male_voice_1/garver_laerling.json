@@ -1,0 +1,14 @@
+{
+  "characterId": "garver_laerling",
+  "isComplex": false,
+  "activation": {
+    "filename": "garver_laerling_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T09:15:45.249Z"
+  },
+  "end": {
+    "filename": "garver_laerling_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T09:15:55.889Z"
+  }
+}

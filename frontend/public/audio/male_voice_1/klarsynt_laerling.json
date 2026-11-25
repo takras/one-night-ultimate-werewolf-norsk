@@ -1,0 +1,14 @@
+{
+  "characterId": "klarsynt_laerling",
+  "isComplex": false,
+  "activation": {
+    "filename": "klarsynt_laerling_activation.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T09:07:11.245Z"
+  },
+  "end": {
+    "filename": "klarsynt_laerling_end.webm",
+    "originalName": "recording.webm",
+    "uploadedAt": "2026-11-25T09:07:46.531Z"
+  }
+}
