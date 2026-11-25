@@ -2,6 +2,7 @@ import { useState, lazy, Suspense } from 'react';
 import './App.css';
 import HomeScreen from './components/HomeScreen';
 import GameScreen from './components/GameScreen';
+const VoiceStudio = lazy(() => import('./components/VoiceStudio'));
 import { useTranslation } from './i18n.jsx';
 import { assetUrl } from './utils/assetUrl';
 
@@ -64,6 +65,13 @@ function App() {
               🇬🇧
             </button>
           </div>
+          <button
+            className="admin-toggle"
+            onClick={() => setCurrentScreen(currentScreen === 'voices' ? 'home' : 'voices')}
+            title={language === 'no' ? 'Spill inn din egen stemme' : 'Record your own voice'}
+          >
+            🎙️
+          </button>
           {AdminPanel && (
             <button
               className="admin-toggle"
@@ -93,6 +101,11 @@ function App() {
             config={gameConfig}
             onGameEnd={handleBackToHome}
           />
+        )}
+        {currentScreen === 'voices' && (
+          <Suspense fallback={null}>
+            <VoiceStudio onClose={() => setCurrentScreen('home')} />
+          </Suspense>
         )}
         {currentScreen === 'admin' && AdminPanel && (
           <Suspense fallback={null}>

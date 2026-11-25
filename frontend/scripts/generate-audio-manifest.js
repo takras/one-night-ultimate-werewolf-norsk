@@ -21,6 +21,7 @@ const knownAudioTypes = [
   'random_noise',
   'game_start',
   'night_end',
+  'fragment',
   'activation',
   'end',
 ];
@@ -40,7 +41,7 @@ function parseAudioFilename(file) {
 }
 
 function isAudioFile(name) {
-  return name.endsWith('.mp3') || name.endsWith('.wav') || name.endsWith('.m4a') || name.endsWith('.webm');
+  return ['.mp3', '.wav', '.m4a', '.webm', '.ogg', '.mp4'].some((ext) => name.endsWith(ext));
 }
 
 // Lists one directory's audio files (non-recursive); voiceId is null for

@@ -1,0 +1,203 @@
+.voice-studio {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+  color: #e0e0e0;
+  box-sizing: border-box;
+}
+
+.voice-studio * {
+  box-sizing: border-box;
+}
+
+.voice-studio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.voice-studio h2,
+.voice-studio h3,
+.voice-studio h4 {
+  margin: 0 0 10px 0;
+  color: var(--accent-primary);
+}
+
+.vs-intro,
+.vs-warning,
+.vs-muted {
+  color: #b0b0c0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.vs-warning {
+  color: #fbc02d;
+}
+
+.vs-message {
+  background: rgba(var(--accent-primary-rgb), 0.15);
+  border: 1px solid var(--accent-primary);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 10px 0;
+}
+
+.vs-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
+  border-radius: 10px;
+  padding: 14px;
+  margin: 14px 0;
+}
+
+.vs-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: blur(6px);
+  background: rgba(20, 20, 35, 0.92);
+}
+
+.vs-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.voice-studio select,
+.voice-studio input:not([type='file']) {
+  background: rgba(0, 0, 0, 0.35);
+  color: #e0e0e0;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.4);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 1rem;
+  min-width: 0;
+}
+
+.vs-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.vs-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: #b0b0c0;
+}
+
+.vs-btn,
+.vs-close {
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  background: transparent;
+  color: #e0e0e0;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.5);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.vs-btn:hover:not(:disabled),
+.vs-close:hover {
+  border-color: var(--accent-primary);
+}
+
+.vs-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.vs-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: white;
+  border-color: transparent;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.vs-danger {
+  border-color: #ef5350;
+  color: #ef9a9a;
+}
+
+.vs-progress {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.vs-progress > div {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  transition: width 0.3s ease;
+}
+
+.vs-progress-label {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.vs-section {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.25);
+  border-radius: 10px;
+  margin: 10px 0;
+  padding: 0 12px;
+}
+
+.vs-section > summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-weight: bold;
+  color: var(--accent-primary);
+}
+
+.vs-clip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vs-clip-text {
+  flex: 1 1 300px;
+  min-width: 0;
+}
+
+.vs-clip-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #999;
+}
+
+.vs-say {
+  font-size: 1.05rem;
+  margin: 4px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.vs-note {
+  font-size: 0.85rem;
+  color: #8a8a9a;
+  overflow-wrap: anywhere;
+}
+
+.vs-clip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}

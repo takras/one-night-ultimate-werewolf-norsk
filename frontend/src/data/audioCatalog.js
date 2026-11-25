@@ -1,5 +1,6 @@
 import axios from 'axios';
 import staticManifest from './audioManifest.json';
+import { getLocalCatalog } from '../utils/localVoices';
 
 // In local dev the admin panel's backend is running and has the freshest
 // data (including anything just recorded/uploaded); on a static host there's
@@ -9,6 +10,11 @@ import staticManifest from './audioManifest.json';
 // this with `vite preview`), so a successful request isn't proof of a real
 // API - the response shape has to be checked too, not just catch() alone.
 export async function getAudioCatalog() {
+  const [shipped, local] = await Promise.all([getShippedCatalog(), getLocalCatalog().catch(() => [])]);
+  return [...shipped, ...local];
+}
+
+async function getShippedCatalog() {
   try {
     const response = await axios.get('/api/audio', { timeout: 3000 });
     if (Array.isArray(response.data)) {
